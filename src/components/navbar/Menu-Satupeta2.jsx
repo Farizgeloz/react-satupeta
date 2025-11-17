@@ -40,9 +40,15 @@ function MenuItem({title,submenu,linked}){
       }
     };
 
-    if(submenu!==""){
+    const semuaKosong = menuku2?.every(
+      (item) => !item.sub_menu || item.sub_menu.trim() === ""
+    );
+
+    const linkedFinal = semuaKosong ? menuku2?.[0]?.linked : linked;
+
+    if (menuku2 !== null && !semuaKosong) {
       return(
-        <div className="nav-link textsize14 font_weight600 text-black nav-item dropdown">
+        <div className="nav-link textsize12 font_weight600 text-black nav-item dropdown">
           <Link aria-expanded="false" role="button" className='dropdown-toggle nav-link textsize14 font_weight600 text-light' to="#">{title}</Link>
           <div data-bs-popper="static" className="dropdown-menu" aria-labelledby="">
             {
@@ -56,7 +62,7 @@ function MenuItem({title,submenu,linked}){
       );
     }else{
       return(
-        <Link className='text-white-a mx-1 textsize14 px-4 bg-border4 btn-overlay-white' to={linked}>{title}</Link>
+        <Link className='text-white-a mx-1 textsize12 px-4 bg-border4 btn-overlay-white' to={linkedFinal}>{title}</Link>
       );
     }
 }

@@ -57,19 +57,24 @@ function MenuItem({title,submenu,linked,backgroundd}){
     
     const getMenu = async () => {
       try {
+        const response = await api_url_satuadmin.get("api/open-item/menu-satupeta2", {
+          params: title ? { categoryku: title } : {}
+        });
 
-        const query = title ? `?categoryku=${encodeURIComponent(title)}` : '';
-        const response = await fetch( `api/open-item/menu-satupeta2${query}`);
-        const result = await response.json();
-        setMenu2(result);
+        setMenu2(response.data);
 
-       
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
     };
 
-    if(submenu!==""){
+    const semuaKosong = menuku2?.every(
+      (item) => !item.sub_menu || item.sub_menu.trim() === ""
+    );
+
+    const linkedFinal = semuaKosong ? menuku2?.[0]?.linked : linked;
+
+    if (menuku2 !== null && !semuaKosong) {
       return(
         <div className="nav-link textsize14 font_weight600 text-black nav-item dropdown">
           <Link aria-expanded="false" role="button" className={color2 ? 'dropdown-toggle nav-link textsize14 font_weight600 text-black-a2' : 'dropdown-toggle nav-link textsize12 font_weight600 text-light'} to="#">{title}</Link>
@@ -85,7 +90,7 @@ function MenuItem({title,submenu,linked,backgroundd}){
       );
     }else{
       return(
-        <LinkButton className='text-white-a mx-1 textsize14 px-4 bg-border4 btn-overlay-white' linked={linked} title={title} />
+        <LinkButton className='text-white-a mx-1 textsize14 px-4 bg-border4 btn-overlay-white' linked={linkedFinal} title={title} />
       );
     }
 }

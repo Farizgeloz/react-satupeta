@@ -42,7 +42,13 @@ function MenuItem({title,submenu,linked}){
       }
     };
 
-    if(submenu!==""){
+    const semuaKosong = menuku2?.every(
+      (item) => !item.sub_menu || item.sub_menu.trim() === ""
+    );
+
+    const linkedFinal = semuaKosong ? menuku2?.[0]?.linked : linked;
+
+    if (menuku2 !== null && !semuaKosong) {
       return(
         <div className="nav-link textsize12 font_weight600 text-black nav-item dropdown">
           <Link aria-expanded="false" role="button" className={color2 ? 'dropdown-toggle nav-link textsize12 font_weight600 text-light uppercaseku' : 'dropdown-toggle nav-link textsize10 font_weight600 text-light uppercaseku'} to="#">{title}</Link>
@@ -58,7 +64,7 @@ function MenuItem({title,submenu,linked}){
       );
     }else{
       return(
-        <Link className={color2 ? 'text-white-a mx-1 textsize12 px-4 bg-border4 btn-overlay-white' : 'text-white-a mx-1 textsize12 px-4 bg-border4 btn-overlay-white'} to={linked}>{title}</Link>
+        <Link className={color2 ? 'text-white-a mx-1 textsize12 px-4 bg-border4 btn-overlay-white' : 'text-white-a mx-1 textsize12 px-4 bg-border4 btn-overlay-white'} to={linkedFinal}>{title}</Link>
       );
     }
 }
