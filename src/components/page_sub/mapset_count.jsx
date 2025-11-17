@@ -6,8 +6,9 @@ import axios from "axios";
 import { MdCategory, MdMap } from "react-icons/md";
 import { FaBuildingColumns, FaDatabase, FaMapLocationDot, FaRectangleList } from 'react-icons/fa6';
 import { MdOutlineCategory } from "react-icons/md";
+import api_url_satuadmin from "../../api/axiosConfig";
 
-const apiurl=import.meta.env.VITE_API_URL;
+
 const portal = "Portal Satu Peta";
 
 
@@ -35,7 +36,7 @@ function AppStatistik() {
   const getStatistik = async () => {
     try {
 
-      const response3 = await axios.get(apiurl + 'api/satupeta/count');
+      const response3 = await api_url_satuadmin.get( 'api/satupeta/count');
       const data3 = response3.data;
       //console.log('DATA DARI BACKEND:', response3.data);
       setCountMapset(data3.count_mapset);

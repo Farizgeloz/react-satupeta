@@ -9,8 +9,9 @@ import AppData from '../page_sub/mapset_marker2';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import api_url_satuadmin from "../../api/axiosConfig";
 
-const apiurl=import.meta.env.VITE_API_URL;
+
 const portal = "Portal Satu Peta";
 
 function DatasetPengelolah() {
@@ -26,10 +27,10 @@ function DatasetPengelolah() {
     /* const increaseVisitor = async () => {
       try {
         // Increment visitor di backend
-        await axios.post(`${apiurl}api/satupeta_visitor/visitor`);
+        await api_url_satuadmin.post(`api/satupeta_visitor/visitor`);
 
         // Ambil total
-        const response = await axios.get(`${apiurl}api/satupeta_visitor/count`);
+        const response = await api_url_satuadmin.get(`api/satupeta_visitor/count`);
         setTotalVisitors(response.data);
       } catch (error) {
         console.error('Gagal ambil data pengunjung:', error);
@@ -53,7 +54,7 @@ function DatasetPengelolah() {
     try {
       
 
-      const response_image = await axios.get(apiurl + 'api/open-item/images_item', {
+      const response_image = await api_url_satuadmin.get( 'api/open-item/images_item', {
         params: {
           portal:portal
         }
@@ -61,7 +62,7 @@ function DatasetPengelolah() {
       const data_image = response_image.data.image_logo;
       setImage1(data_image.presignedUrl3);
 
-      const response_setting = await axios.get(`${apiurl}api/open-item/site_satupeta_setting`);
+      const response_setting = await api_url_satuadmin.get(`api/open-item/site_satupeta_setting`);
       const data_setting = response_setting.data;
       setSetting(data_setting);
 

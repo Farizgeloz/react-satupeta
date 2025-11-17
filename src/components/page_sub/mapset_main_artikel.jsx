@@ -12,8 +12,9 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { MdHomeFilled, MdInfoOutline, MdOutlineFeaturedPlayList, MdOutlineFeed } from 'react-icons/md';
 import { FaDownload } from "react-icons/fa6";
+import api_url_satuadmin from "../../api/axiosConfig";
 
-const apiurl = import.meta.env.VITE_API_URL;
+
 
 const Spinner = () => 
   <div className='text-center justify-content-center' style={{height:"110px"}}>
@@ -93,7 +94,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   const getData = async (page = 1) => {
     try {
 
-      const response_artikel = await axios.get(apiurl + 'api/satupeta/map_artikel', {
+      const response_artikel = await api_url_satuadmin.get( 'api/satupeta/map_artikel', {
         params: {
           search_kunci: kunci || '',
           page,
@@ -174,10 +175,9 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
           </div>
         </Col>
       </Row>
-      <Col md={10} className="px-4 mb-2 py-4 rad10 shaddow3" style={{backgroundColor:"#ECEFF1"}}>
+      <Col md={10} className="px-4 mb-2 py-4 rad10 shaddow3 bg-body" style={{backgroundColor:"#ECEFF1"}}>
         <p 
-          className="font_weight700 textsize24 mt-5"
-          style={{color:colortitleku}}
+          className="font_weight700 textsize24 mt-5 text-body"
         >Artikel Tentang Geospasial dan Mapset</p>
         <p 
           className={`block py-1 text-white px-5 py-2 rad10 textsize14`}
@@ -277,7 +277,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               <Container fluid className='rad15'>  
                 <Row className="mb-3 pb-2" style={{borderBottom:"1px solid #c5c3c3"}}>
                   <Col className="text-start">
-                    <p className="mb-0 text-muted textsize12 italicku">
+                    <p className="mb-0 text-muted textsize12 italicku text-body">
                       Ditemukan <strong>{sortedData.length}</strong> Artikel
                     </p>
                   </Col>
@@ -302,19 +302,19 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                         ? `/${data.tipe}/${data.location_id}`
                         : `/${data.tipe}?lokasi_map=${data.id}`;
                         return (
-                          <Col sm={12} md={4} lg={4} xs={12} key={data.id} className='py-2 col-6'>
-                            <div className='portfolio-wrapper rad15 bg-white shaddow2 p-2'>
+                          <Col sm={12} md={3} lg={3} xs={12} key={data.id} className='py-2 col-6'>
+                            <div className='portfolio-wrapper rad15 bg-body shaddow2 p-2'>
                                 <div
                                   className='justify-content-center'
                                 >
                                   <div 
                                     className='label text-left py-2'
-                                    style={{ height: '30vh',cursor: 'pointer',overflow:"hidden" }}
+                                    style={{ height: '25vh',cursor: 'pointer',overflow:"hidden" }}
                                   >
                                     <Image
                                       src={data.presignedUrl_tumb_a}
                                       className='shaddow3 rad10'
-                                      style={{ height: '30vh',width:"100%",cursor: 'pointer' }}
+                                      style={{ height: '25vh',width:"100%",cursor: 'pointer' }}
                                       onContextMenu={(e) => e.preventDefault()}
                                       draggable={false}
                                       onClick={() => handleShowModalArtikel(data)}
@@ -326,8 +326,8 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                       style={{color:colordateku}}
                                     >{convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
                                     <p
-                                      className={` textsize14 font_weight600 mb-2`}
-                                      style={{ lineHeight: '1.2',minHeight:"70px",color:colortitleku }}
+                                      className={` textsize14 font_weight600 mb-2 text-body`}
+                                      style={{ lineHeight: '1.2',minHeight:"70px" }}
                                     >
                                       {data.title.length > 70 ? data.title.slice(0, 70) + '...' : data.title}
                                     </p>

@@ -21,7 +21,7 @@ const Spinner = () =>
   </div>;
 
 
-const apiurl=import.meta.env.VITE_API_URL;
+
 
 
 
@@ -135,27 +135,24 @@ function App({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku3,bgi
                 <section id="Definisi" style={{paddingTop:'5%'}}>
                   <div className="pt-5 mb-4">
                     <p 
-                      className='textsize20 font_weight600  margin-t15s'
-                      style={{color:colortitleku}}
+                      className='textsize20 font_weight600 text-body  margin-t15s'
                     ><FaBuildingColumns style={{marginTop:"-5px",color:colordateku}} /> Apa itu <span className='text-red'>Satu Peta</span>?</p>
                   </div>
-                  <p className='textsize14'>Satupeta adalah sistem atau portal yang menyajikan data spasial (peta) dari berbagai sumber dalam satu platform terpadu agar bisa diakses, dibagi, dan digunakan bersama secara efisien.</p>
+                  <p className='textsize14 text-body'>Satupeta adalah sistem atau portal yang menyajikan data spasial (peta) dari berbagai sumber dalam satu platform terpadu agar bisa diakses, dibagi, dan digunakan bersama secara efisien.</p>
                 </section>
                 <section id="Metode" style={{paddingTop:'5%'}}>
                   <div className="pt-5 mb-4">
                     <p 
-                      className='textsize20 font_weight600  margin-t15s'
-                      style={{color:colortitleku}}
+                      className='textsize20 font_weight600  text-body  margin-t15s'
                     ><FaBuildingColumns style={{marginTop:"-5px",color:colordateku}} /> Mekanisme <span className='text-red'>Pengumpulan Data</span></p>
                   </div>
-                  <p className='textsize14'>Metode pengumpulan data dalam Satupeta meliputi beberapa tahapan utama, yaitu inventarisasi data geospasial dari berbagai instansi, survei dan pengukuran lapangan (menggunakan GPS atau drone), serta pemanfaatan citra satelit melalui penginderaan jauh. Selain itu, data dari peta analog didigitalisasi, lalu dilakukan sinkronisasi dan validasi antar instansi untuk menghindari tumpang tindih. Data juga bisa dikumpulkan melalui partisipasi masyarakat (crowdsourcing) dan integrasi dari sistem lain seperti SIG atau Satu Data. Semua data dikemas dalam format standar seperti GeoJSON, shapefile, atau WMS/WFS, mengacu pada SNI dan ISO agar dapat digunakan bersama secara akurat dan konsisten.</p>
+                  <p className='textsize14 text-body'>Metode pengumpulan data dalam Satupeta meliputi beberapa tahapan utama, yaitu inventarisasi data geospasial dari berbagai instansi, survei dan pengukuran lapangan (menggunakan GPS atau drone), serta pemanfaatan citra satelit melalui penginderaan jauh. Selain itu, data dari peta analog didigitalisasi, lalu dilakukan sinkronisasi dan validasi antar instansi untuk menghindari tumpang tindih. Data juga bisa dikumpulkan melalui partisipasi masyarakat (crowdsourcing) dan integrasi dari sistem lain seperti SIG atau Satu Data. Semua data dikemas dalam format standar seperti GeoJSON, shapefile, atau WMS/WFS, mengacu pada SNI dan ISO agar dapat digunakan bersama secara akurat dan konsisten.</p>
                   
                 </section>
                 <section id="Regulasi" style={{paddingTop:'5%'}}>
                   <div className="pt-5 mb-4">
                     <p 
-                      className='textsize20 font_weight600  margin-t15s'
-                      style={{color:colortitleku}}
+                      className='textsize20 font_weight600  text-body  margin-t15s'
                     ><FaBuildingColumns style={{marginTop:"-5px",color:colordateku}} /> Regulasi dan Kebijakan pendukung <span className='text-red'>Satu Peta</span></p>
                   </div>
                   <TableResponsive/>

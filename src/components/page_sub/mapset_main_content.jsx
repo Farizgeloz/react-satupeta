@@ -5,8 +5,9 @@ import Col from 'react-bootstrap/Col';
 import { useState, useEffect,useRef  } from "react";
 import axios from "axios";
 import qs from 'qs';
+import api_url_satuadmin from "../../api/axiosConfig";
 
-const apiurl=import.meta.env.VITE_API_URL;
+
 
 
 
@@ -32,7 +33,7 @@ function AppStatistik({bgcontentku}) {
   
   const getData_Images = async () => {
     try {
-      const response_image = await axios.get(`${apiurl}api/open-item/komponen`);
+      const response_image = await api_url_satuadmin.get(`api/open-item/komponen`);
       const data_image = response_image.data.data_satupeta_fitur;
       setImage1(data_image.presignedUrl_a);
       setImage2(data_image.presignedUrl_b);
@@ -47,7 +48,7 @@ function AppStatistik({bgcontentku}) {
   return (
     <section id="statistiks" className="block statistik-block margin-b1 mt-5 ">
        
-      <Container fluid className=' bg-white rad5 shaddow1 py-5'>
+      <Container fluid className=' bg-body rad5 shaddow4 py-5'>
        
         <Row className='px-5'>
           
@@ -63,18 +64,17 @@ function AppStatistik({bgcontentku}) {
                 {title}
               </p>
 
-              <table className="table table-borderless table-sm w-100">
-                <tbody>
-                  {contents.split('\n').map((item, index) => (
-                    <tr key={index}>
-                      <td className=' textsize14' style={{ verticalAlign: "top" }}>{index + 1}.</td>
-                      <td className="px-2 textsize14">
-                        {item.replace(/^\d+\.\s*/, '')}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div
+                className="textsize12 mt-3 mb-5 text-body"
+                dangerouslySetInnerHTML={{
+                  __html: contents
+                    ?.split(/\n+/)               // pisahkan berdasarkan enter
+                    .filter(line => line.trim()) // buang baris kosong
+                    .map(line => `<p>${line.trim()}</p>`) // bungkus dengan <p>
+                    .join('')                    // gabungkan kembali
+                }}
+              />
+              
             </Col>
 
         </Row>

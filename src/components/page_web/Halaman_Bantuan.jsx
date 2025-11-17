@@ -15,8 +15,9 @@ import FeedbackModal from "../page_sub/FeedbackModal";
 import Menu from '../navbar/Menu-Satupeta2';
 import { FcFeedback } from "react-icons/fc";
 import { Link } from 'react-router-dom';
+import api_url_satuadmin from "../../api/axiosConfig";
 
-const apiurl=import.meta.env.VITE_API_URL;
+
 const portal = "Portal Satu Peta";
 
 function Dashboard() {
@@ -44,7 +45,7 @@ function Dashboard() {
     try {
       
 
-      const response_image = await axios.get(apiurl + 'api/open-item/images_item', {
+      const response_image = await api_url_satuadmin.get( 'api/open-item/images_item', {
         params: {
           portal:portal
         }
@@ -52,7 +53,7 @@ function Dashboard() {
       const data_image = response_image.data.image_logo;
       setImage1(data_image.presignedUrl3);
 
-      const response_setting = await axios.get(`${apiurl}api/open-item/site_satupeta_setting`);
+      const response_setting = await api_url_satuadmin.get(`api/open-item/site_satupeta_setting`);
       const data_setting = response_setting.data;
       setSetting(data_setting);
 
@@ -109,7 +110,7 @@ function Dashboard() {
         </motion.div>
       )
       } */}
-      <div className={`App bg-body-${settings.bg_body}`}>
+      <div className={`App bg-body`}>
         <Menu bgku={settings.bg_header}/>
         <main className='mt-10'>
           

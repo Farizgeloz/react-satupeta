@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState,useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
 import axios from "axios";
 import qs from "qs";
-
+import { ThemeContext } from "../../ThemeContext";
 // ArcGIS modules
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
@@ -37,136 +37,139 @@ import leafIcon from "../../assets/images/marker_lingkungan.png";
 import buildingIcon from "../../assets/images/marker_infrastruktur.png";
 import moneyIcon from "../../assets/images/marker_ekonomi.png";
 import defaultIcon from "../../assets/images/marker_other.png";
+import api_url_satuadmin from "../../api/axiosConfig";
 
 const theme = createTheme({
   palette: {
     mode: 'light',
-    primary: {
-      main: '#4ade80', // Hijau cerah
-      contrastText: '#fff',
-    },
-    secondary: {
-      main: '#9caf88', // Sage
-      contrastText: '#fff',
-    },
-    background: {
-      default: '#f0f4ec', // Latar belakang halaman (lebih muda dari sage)
-      paper: '#9caf88',   // Warna dasar untuk elemen paper/card
-    },
-    text: {
-      primary: '#1b1b1b',
-      secondary: '#4b4b4b',
-    },
+    primary: { main: '#4ade80', contrastText: '#fff' },
+    secondary: { main: '#9caf88', contrastText: '#fff' },
+    background: { default: '#f0f4ec', paper: '#9caf88' },
+    text: { primary: '#1b1b1b', secondary: '#4b4b4b' },
   },
   typography: {
     fontSize: 12,
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   },
   components: {
+    // 🌿 Border luar tema
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: '#f0f4ec', // ⬅️ Global background
+          backgroundColor: '#f0f4ec',
+          border: '6px solid #9caf88',
+          borderRadius: '16px',
+          minHeight: '100vh',
+          margin: 0,
+          padding: 0,
+          boxSizing: 'border-box',
         },
       },
     },
+
+    // 🌿 Input umum
     MuiOutlinedInput: {
       styleOverrides: {
-        inputRoot: {
-          '& .MuiOutlinedInput-root': {
-            backgroundColor: '#9caf88',
-            padding: 0, // ✅ Ini yang kamu minta
-          },
-        },
         root: {
-          backgroundColor: '#ffffff',
-          borderRadius: 4,
-          padding:0,
-          alignItems: 'flex-start',
-          minHeight: '40px',
-          maxHeight: '40px',
-          border: 0,
-          overflowY: 'auto',
-          scrollbarWidth: 'none',
-          '&::-webkit-scrollbar': {
-            display: 'none',
+          backgroundColor: '#fff',
+          borderRadius: 8,
+          border: '1px solid #cdd5c1',
+          minHeight: '34px',
+          padding: '0 6px',
+          '&:hover': { borderColor: '#4ade80' },
+          '&.Mui-focused': {
+            borderColor: '#4ade80',
+            boxShadow: '0 0 0 2px rgba(74, 222, 128, 0.2)',
           },
-        },
-        notchedOutline: {
-          border: 0,
         },
         input: {
-          position: 'relative',
-          top: '-20px',               // ✅ Geser ke atas
-          paddingTop: 0,              // ❌ Jangan pakai padding negatif
-          paddingBottom: 0,
-          paddingLeft: '4px',
-          paddingRight: '4px',
-          fontSize: '11px',
-          lineHeight: 1.2,
-          '&::placeholder': {
-            fontSize: '12px',
-            color: 'rgba(0,0,0,0.6)',
-          },
+          padding: '4px 0 !important',
+          fontSize: '90%',
+          height: 'auto',
+          lineHeight: 1.3,
         },
+        notchedOutline: { border: 'none' },
       },
     },
+
+    // 🌿 Autocomplete lebih ramping
     MuiAutocomplete: {
       styleOverrides: {
-        inputRoot: {
+        root: {
           '& .MuiOutlinedInput-root': {
-            backgroundColor: '#9caf88',
+            minHeight: '50px !important',
+            padding: '5px 6px !important',
+            fontSize: '90%',
+            borderRadius: 8,
+            border: '1px solid #cdd5c1',
+            backgroundColor: '#fff',
+            '& .MuiInputBase-input': {
+              padding: '2px 0 !important',
+              fontSize: '100%',
+              height: 'auto',
+              lineHeight: 1.2,
+            },
+            '& .MuiAutocomplete-endAdornment': {
+              top: 'calc(50% - 10px)',
+              right: '4px',
+              transform: 'scale(0.8)',
+            },
+            '&:hover': { borderColor: '#4ade80' },
+            '&.Mui-focused': {
+              borderColor: '#4ade80',
+              boxShadow: '0 0 0 2px rgba(74, 222, 128, 0.2)',
+            },
           },
         },
         paper: {
-          fontSize: 11,
+          fontSize: 12,
+          border: '1px solid #cdd5c1',
+          borderRadius: 8,
+          marginTop: 2,
         },
-        tag: {
-          margin: 2,
+        listbox: {
+          padding: '4px 0',
+        },
+        option: {
+          minHeight: '28px',
+          fontSize: '12.5px',
+          padding: '2px 8px',
         },
       },
     },
+
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          fontSize: '18px',
-          top: '-10px',
-          left:'-10px',
+          fontSize: '13px',
           fontWeight: 'bold',
-          color: '#666666',
-          transition: 'color 0.3s ease',
-          '&:hover': {
-            color: '#666666', // saat hover
-          },
-          '&.Mui-focused': {
-            color: '#0d9488', // ✅ saat input fokus
-          },
+          color: '#4b4b4b',
+          '&.Mui-focused': { color: '#0d9488' },
         },
       },
     },
     MuiChip: {
       styleOverrides: {
         root: {
-          backgroundColor: '#4ade80',
+          backgroundColor: '#4ade80', // 🌿 warna chip
           color: '#fff',
           fontWeight: 500,
           fontSize: 11,
-          padding: '0 1px',
-          margin: '0px',
           height: 24,
-        },
-        label: {
-          paddingLeft: 6,
-          paddingRight: 6,
-        },
-        deleteIcon: {
-          color: '#fff',
-          marginLeft: 4,
+          margin: 2,
+          '& .MuiChip-deleteIcon': {
+            color: '#fff',
+            '&:hover': { color: '#e0e0e0' },
+          },
         },
       },
     },
   },
 });
+
+
+
+
 
 const Spinner = () => 
   <div className="height-map">
@@ -294,11 +297,13 @@ const CustomFullscreenButton = () => {
   );
 }; */
 
-const apiurl = import.meta.env.VITE_API_URL;
+
 const portal = "Portal Satu Peta";
 
 const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku3,colortitleku,colordateku }) => {
   //const { topik } = useParams();
+  
+  const { themeku } = useContext(ThemeContext);
   const [loading, setLoading] = useState(true);
   const mapDiv = useRef(null);
   const viewRef = useRef(null);
@@ -376,7 +381,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
       container: mapDiv.current,
       map,
       center: [113.283618,-7.843381],
-      zoom: 10,
+      zoom: 15,
       ui: {
         components: ["attribution"], 
         // default: ["attribution", "zoom", "compass", "navigation-toggle"]
@@ -466,7 +471,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
       // Geser peta ke lokasi tertentu
       view.goTo({
         center: [longitude, latitude],
-        zoom: 14,
+        zoom: 10,
       });
 
       // Tambah marker di lokasi tertentu
@@ -509,7 +514,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(apiurl + "api/satupeta/map_data", {
+        const res = await api_url_satuadmin.get( "api/satupeta/map_data", {
           params: {
             search_location: (location || []).map((loc) => loc.id_location),
             search_koleksi: (koleksi || []).map((loc) => loc.id_maplist),
@@ -584,7 +589,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
   // ambil data gambar
   const getData_Images = async () => {
     try {
-      const response_image = await axios.get(apiurl + "api/open-item/images_item", {
+      const response_image = await api_url_satuadmin.get( "api/open-item/images_item", {
         params: { portal: portal },
       });
       const data_image = response_image.data.image_logo;
@@ -602,7 +607,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
   // ambil data unsur
   const getMapsetUnsur = async () => {
     try {
-      const response = await axios.get(apiurl + "api/satupeta/map_item", {
+      const response = await api_url_satuadmin.get( "api/satupeta/map_item", {
         params: { search_kecamatan: kecamatan.map((loc) => loc.id_kecamatan) },
         paramsSerializer: (params) =>
           qs.stringify(params, { arrayFormat: "repeat" }),
@@ -625,7 +630,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
 
   const getMarker = async () => {
     try {
-      const res = await axios.get(apiurl + 'api/satupeta/map_data', {
+      const res = await api_url_satuadmin.get( 'api/satupeta/map_data', {
         params: {
           search_location: location.map(loc => loc.id_location),
           search_kecamatan: kecamatan.map(loc => loc.id_kecamatan),
@@ -688,7 +693,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
 
   const getDataGeo_Kecamatan = async () => {
     try {
-      const response = await axios.get(apiurl + 'api/satupeta/map_datageo_kecamatan', {
+      const response = await api_url_satuadmin.get( 'api/satupeta/map_datageo_kecamatan', {
         params: {
           search_kecamatan: kecamatan.value
         },
@@ -702,7 +707,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
   };
   const getDataGeo_Desa = async () => {
     try {
-      const response = await axios.get(apiurl + 'api/satupeta/map_datageo_desa', {
+      const response = await api_url_satuadmin.get( 'api/satupeta/map_datageo_desa', {
         params: {
           search_kecamatan: kecamatan.value,
           search_desa: desa.value
@@ -912,7 +917,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 100 }}
             transition={{ duration: 0.3 }}
-            className="position-fixed py-1 px-3 "
+            className="position-fixed py-1 px-3  bg-body"
             style={{
               width: "40vh",
               top: isMobile ? 170 : 240,
@@ -951,12 +956,11 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
             {/* 🔰 Header */}
             <Row className="d-flex justify-content-center">
               <Col md={12} 
-                className="d-flex justify-content-center p-1 rad15"
-                style={{backgroundColor:bgku}}
+                className="d-flex justify-content-center p-1 rad15 text-body"
               >
                 <FaFilter size={20} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
                 <div className="ms-2">
-                  <p className="text-white fw-bold mb-0 textsize14">Filter Peta</p>
+                  <p className=" fw-bold mb-0 textsize14">Filter Peta</p>
                 </div>
               </Col>
             </Row>
@@ -965,13 +969,14 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
 
             {/* 🎯 Koleksi */}
             <ThemeProvider theme={theme}>
+              <p className="text-white p-2 font_weight600" style={{backgroundColor:bgtitleku,borderRadius:'10px 10px 0px 0px'}}>Pilih Koleksi</p>
               <Autocomplete
                 multiple
                 disableCloseOnSelect
                 options={koleksiku}
                 getOptionLabel={(option) => option.title}
                 value={koleksi}
-                style={{marginTop:"30px"}}
+                style={{marginTop:"0px"}}
                 onChange={(event, newValue) => {
                   setKoleksi(newValue);
                   
@@ -984,7 +989,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                     {...props}
                     style={{
                       backgroundColor: selected ? "#dcfce7" : "#fff",
-                      padding: "6px 12px",
+                      padding: "3px 5px",
                       fontSize: "1.2rem", // lebih besar
                     }}
                   >
@@ -1000,7 +1005,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Pilih Koleksi"
+                    label=""
                     placeholder="Ketik Cari..."
                     variant="outlined"
                     InputLabelProps={{
@@ -1008,12 +1013,12 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                     }}
                     InputProps={{
                       ...params.InputProps,
-                      sx: { fontSize: "1.2rem", padding: "10px" }, // isi input lebih besar
+                      sx: { fontSize: "1.2rem", padding: "2px" }, // isi input lebih besar
                     }}
                   />
 
                 )}
-                sx={{ marginTop: "20px", fontSize: "1.2rem" }}
+                sx={{ marginTop: "0px", fontSize: "1.2rem" }}
               />
             </ThemeProvider>
             {/* Debug tampilkan value */}
@@ -1026,13 +1031,14 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
 
             {/*//KECAMATAN//*/}
             <ThemeProvider theme={theme}>
+              <p className="text-white p-2 mt-3 font_weight600" style={{backgroundColor:bgtitleku,borderRadius:'10px 10px 0px 0px'}}>Pilih Kecamatan</p>
               <Autocomplete
                 multiple
                 disableCloseOnSelect
                 options={kecamatanku}
                 getOptionLabel={(option) => option.nama_kecamatan}
                 value={kecamatan}
-                style={{marginTop:"30px"}}
+                style={{marginTop:"0px"}}
                 onChange={(event, newValue) => {
                   setkecamatan(newValue);
                 }}
@@ -1060,7 +1066,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Pilih Kecamatan"
+                    label=""
                     placeholder="Ketik Cari..."
                     variant="outlined"
                     InputLabelProps={{
@@ -1084,13 +1090,14 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
 
             {/*//DESA//*/}
             <ThemeProvider theme={theme}>
+              <p className="text-white p-2 mt-3 font_weight600" style={{backgroundColor:bgtitleku,borderRadius:'10px 10px 0px 0px'}}>Pilih Desa</p>
               <Autocomplete
                 multiple
                 disableCloseOnSelect
                 options={desaku}
                 getOptionLabel={(option) => option.nama_desa}
                 value={desa}
-                style={{marginTop:"30px"}}
+                style={{marginTop:"0px"}}
                 onChange={(event, newValue) => {
                   setdesa(newValue);
                 }}
@@ -1118,7 +1125,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Pilih Desa"
+                    label=""
                     placeholder="Ketik Cari..."
                     variant="outlined"
                     InputLabelProps={{
@@ -1137,7 +1144,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
 
 
             {/* Debug tampilkan value */}
-            <Typography variant="body2" sx={{ mt: 0,fontSize:'90%',color:'#30bb57' }}>
+            <Typography variant="body2" sx={{ mt: 0,mb: 3,fontSize:'90%',color:'#30bb57' }}>
               <strong>Dipilih:</strong>{' '}
               {desa.map((item) => item.nama_desa).join(', ') || 'Belum ada'}
             </Typography>
@@ -1156,7 +1163,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 100 }}
             transition={{ duration: 0.3 }}
-            className="position-fixed py-1 px-3"
+            className="position-fixed py-1 px-3 bg-body"
             style={{
               width: "40vh",
               top: isMobile ? 170 : 100, // ⬅️ otomatis ganti top sesuai layar
@@ -1190,7 +1197,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
             <Row className="d-flex justify-content-center">
               <Col md={12} 
                 className="d-flex justify-content-center p-1 rad15"
-                style={{backgroundColor:bgku}}
+                style={{backgroundColor:bgtitleku}}
               >
                 <FaInfoCircle size={25} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
                 <div className="ms-2">
@@ -1220,8 +1227,8 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                   <p className="mb-1">
                     <strong>Total Marker:</strong>
                   </p>
-                  <p className="mb-1 bg-border2 bg-white rad10 p-2">
-                    <span className="font_weight800" style={{color:colortitleku}}>
+                  <p className="mb-1 font_weight800 bg-border2 bg-body rad10 p-2 text-body">
+                    <span>
                       {markers.length > 0 && (
                       markers.length
                       )}
@@ -1232,7 +1239,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                     <strong>Koleksi:</strong>{' '}
                   
                   </p>
-                  <p className="mb-1 font_weight800  bg-border2 bg-white rad10 p-2" style={{color:colortitleku}}>
+                  <p className="mb-1 font_weight800  bg-border2 bg-body rad10 p-2 text-body">
                     {
                       detailkoleksiku.map((data, index) => (
                         <span key={index}>
@@ -1246,7 +1253,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                     <strong>Sektor:</strong>{' '}
                     
                   </p>
-                  <p className="mb-1 font_weight800 bg-border2 bg-white rad10 p-2" style={{color:colortitleku}}>
+                  <p className="mb-1 font_weight800 bg-border2 bg-body rad10 p-2 text-body">
                     {
                       detailbidangku.map((data, index) => (
                         <span key={index}>
@@ -1259,7 +1266,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                   <p className="mb-1">
                     <strong>OPD:</strong>{' '}
                   </p>
-                  <p className="mb-1 font_weight800 bg-border2 bg-white rad10 p-2" style={{color:colortitleku}}>
+                  <p className="mb-1 font_weight800 bg-border2 bg-body rad10 p-2 text-body">
                     {
                       detailsatkerku.map((data, index) => (
                         <span key={index}>
@@ -1272,7 +1279,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                   <p className="mb-1">
                     <strong>Kecamatan:</strong>{' '}
                   </p>
-                  <p className="mb-1 font_weight800 bg-border2 bg-white rad10 p-2" style={{color:colortitleku}}>
+                  <p className="mb-1 font_weight800 bg-border2 bg-body rad10 p-2 text-body">
                     {
                       detailkecamatanku.map((data, index) => (
                         <span key={index}>
@@ -1285,7 +1292,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                   <p className="mb-1">
                     <strong>Desa:</strong>{' '}
                   </p>
-                  <p className="mb-1 font_weight800 bg-border2 bg-white rad10 p-2" style={{color:colortitleku}}>
+                  <p className="mb-1 font_weight800 bg-border2 bg-body rad10 p-2 text-body">
                     {
                       detaildesaku.map((data, index) => (
                         <span key={index}>
@@ -1314,7 +1321,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 100 }}
             transition={{ duration: 0.3 }}
-            className="position-fixed py-1 px-3"
+            className="position-fixed py-1 px-3 bg-body"
             style={{
               width: "230px",
               top: isMobile ? 150 : 220, // ⬅️ otomatis ganti top sesuai layar
@@ -1349,7 +1356,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
             <Row className="d-flex justify-content-center">
               <Col md={12} 
                 className="d-flex justify-content-center p-1 rad15"
-                style={{backgroundColor:bgku}}
+                style={{backgroundColor:bgtitleku}}
               >
                 <FaLayerGroup size={25} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
                 <div className="ms-2">
@@ -1365,16 +1372,27 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                 width: "220px"
               }}
             >
-              <select
-                className="form-select form-select-sm mb-3"
-                value={selectedBasemap}
-                onChange={(e) => setSelectedBasemap(e.target.value)}
-              >
-                <option value="streets">🌍 streets</option>
-                <option value="satellite">🛰️ Satelit</option>
-                <option value="gray">🖤 Hitam Putih</option>
-                <option value="dark-gray">🌒 Gelap</option>
-              </select>
+              <div className="d-flex flex-wrap gap-2 mb-3">
+                {[
+                  { value: "streets", icon: "🛣️", label: "Streets" },
+                  { value: "hybrid", icon: "🛰️", label: "Hybrid" },
+                  { value: "topo", icon: "🏔️", label: "Topo" },
+                  { value: "osm", icon: "🧭", label: "OSM" },
+                  { value: "satellite", icon: "🌌", label: "Satellite" },
+                  { value: "gray", icon: "🪶", label: "Gray" },
+                  { value: "dark-gray", icon: "🌑", label: "Dark" },
+                ].map((item) => (
+                  <button
+                    key={item.value}
+                    className={`btn btn-sm ${
+                      selectedBasemap === item.value ? "btn-success" : "btn-outline-secondary"
+                    }`}
+                    onClick={() => setSelectedBasemap(item.value)}
+                  >
+                    {item.icon} {item.label}
+                  </button>
+                ))}
+              </div>
 
               {/* <div className="form-check mb-2">
                 <input
@@ -1428,7 +1446,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
               overflow:"hidden",
               borderRadius: 16,
               backdropFilter: "blur(10px)",
-              backgroundColor: "hsla(0,0%,100%,.7)",
+              backgroundColor: bgku,
               boxShadow: "0 5px 20px 0 rgba(0, 0, 0, .1)",
               cursor: "grab" // 👈 opsional untuk visual feedback
             }}
@@ -1460,12 +1478,12 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
             >
               <Row className="mb-2">
               
-                <Col className="d-flex"><img src={schoolIcon} style={{width:"25px",height:"25px"}} /> <p className="mt-0 mb-0">Pendidikan</p></Col>
-                <Col className="d-flex"><img src={moneyIcon} style={{width:"25px",height:"25px"}} /> <p className="mt-0 mb-0">Ekonomi</p></Col>
-                <Col className="d-flex"><img src={leafIcon} style={{width:"25px",height:"25px"}} /> <p className="mt-0 mb-0">Lingkungan</p></Col>
-                <Col className="d-flex"><img src={hospitalIcon} style={{width:"25px",height:"25px"}} /> <p className="mt-0 mb-0">Kesehatan</p></Col>
-                <Col className="d-flex"><img src={buildingIcon} style={{width:"25px",height:"25px"}} /> <p className="mt-0 mb-0">Infrastruktur</p></Col>
-                <Col className="d-flex"><img src={chartIcon} style={{width:"25px",height:"25px"}} /> <p className="mt-0 mb-0">Kemiskinan</p></Col>
+                <Col className="d-flex"><img src={schoolIcon} style={{width:"25px",height:"25px"}} /> <p className="mt-0 mb-0 text-white">Pendidikan</p></Col>
+                <Col className="d-flex"><img src={moneyIcon} style={{width:"25px",height:"25px"}} /> <p className="mt-0 mb-0 text-white">Ekonomi</p></Col>
+                <Col className="d-flex"><img src={leafIcon} style={{width:"25px",height:"25px"}} /> <p className="mt-0 mb-0 text-white">Lingkungan</p></Col>
+                <Col className="d-flex"><img src={hospitalIcon} style={{width:"25px",height:"25px"}} /> <p className="mt-0 mb-0 text-white">Kesehatan</p></Col>
+                <Col className="d-flex"><img src={buildingIcon} style={{width:"25px",height:"25px"}} /> <p className="mt-0 mb-0 text-white">Infrastruktur</p></Col>
+                <Col className="d-flex"><img src={chartIcon} style={{width:"25px",height:"25px"}} /> <p className="mt-0 mb-0 text-white">Kemiskinan</p></Col>
               </Row>
 
              

@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
+import api_url_satuadmin from "../../api/axiosConfig";
 
-const apiurl = import.meta.env.VITE_API_URL;
+
 
 const PopupIklan = () => {
   const [show, setShow] = useState(false);
@@ -47,7 +48,7 @@ const PopupIklan = () => {
  
   const getData = async () => {
     try {
-      const response = await axios.get(apiurl + 'api/open-item/satupeta-iklan');
+      const response = await api_url_satuadmin.get( 'api/open-item/satupeta-iklan');
       const data = response.data.resultWithUrls;
       if (Array.isArray(data) && data.length > 0) {
         const item = data[0]; // Ambil item pertama

@@ -11,8 +11,9 @@ import AppFooter from '../page_sub/footer';
 import Menu from '../navbar/Menu-Opendata';
 import React from "react";
 import {Row,Col,Image} from 'react-bootstrap';
+import api_url_satuadmin from "../../api/axiosConfig";
 
-const apiurl=import.meta.env.VITE_API_URL;
+
 
 function DatasetPengelolah() {
   const [totalVisitors, setTotalVisitors] = useState(null);
@@ -22,10 +23,10 @@ function DatasetPengelolah() {
     const increaseVisitor = async () => {
       try {
         // Increment visitor di backend
-        await axios.post(`${apiurl}api/satupeta_visitor/visitor`);
+        await api_url_satuadmin.post(`api/satupeta_visitor/visitor`);
 
         // Ambil total
-        const response = await axios.get(`${apiurl}api/satupeta_visitor/count`);
+        const response = await api_url_satuadmin.get(`api/satupeta_visitor/count`);
         setTotalVisitors(response.data);
       } catch (error) {
         console.error('Gagal ambil data pengunjung:', error);

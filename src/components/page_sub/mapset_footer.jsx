@@ -3,8 +3,9 @@ import {Container, Row,Col,Table, Image} from 'react-bootstrap';
 import axios from "axios";
 import { FaCalendar, FaCalendarDay, FaCalendarWeek } from 'react-icons/fa6';
 import { Link } from "react-router-dom";
+import api_url_satuadmin from "../../api/axiosConfig";
 
-const apiurl=import.meta.env.VITE_API_URL;
+
 const portal = "Portal Satu Peta";
 
 function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, visitor_all }) {
@@ -43,7 +44,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
 
   const getStatistik = async () => {
     try {
-      const response = await axios.get(apiurl + 'api/open-item/ekosistem-bioinfo');
+      const response = await api_url_satuadmin.get( 'api/open-item/ekosistem-bioinfo');
       const data = response.data;
       
       setAlamat(data.alamat);
@@ -52,7 +53,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
       setLinkedin(data.linkedin);
       setTwitter(data.twitter);
 
-      const response_image = await axios.get(apiurl + 'api/open-item/images_item', {
+      const response_image = await api_url_satuadmin.get( 'api/open-item/images_item', {
         params: {
           portal:portal
         }
@@ -70,7 +71,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
 
   const getData = async () => {
     try {
-      const response = await axios.get(apiurl + `api/open-item/komponen`);
+      const response = await api_url_satuadmin.get( `api/open-item/komponen`);
       const data = response.data;
       // Cek apakah response.data itu array atau object
       //const payload = Array.isArray(response.data) ? response.data : response.data.datas;
@@ -85,11 +86,11 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
 
   return (
     <Container fluid className=" p-3 mb-0" style={{backgroundColor:bgfooterku}}>
-      <Row className='px-5'>
+      <Row className='px-5 justify-content-center py-5'>
         <Col sm={12}>
           
         </Col>
-        <Col sm={12} xs={12} md={6}>
+        <Col sm={12} xs={12} md={4}>
           
           <div className='content py-3'>
             <div className="d-flex">
@@ -197,7 +198,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
       </Row>  
       <Row>
         <Col  sm={8} xs={12} md={6} className="bg-blue-dark2">
-          <div className="copyright float-start text-white px-5 py-2">&copy; 2025 Open Data Kab. Probolinggo</div>
+          <div className="copyright float-start text-white px-5 py-2">&copy; 2025 Satu Peta Kab. Probolinggo</div>
         </Col>
          <Col   sm={4} xs={12} md={6} className="bg-blue-dark2" >
           <div className="copyright float-end  text-white px-5 italicku textsize8 py-2">V 1.0.1</div>

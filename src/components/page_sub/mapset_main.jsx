@@ -26,6 +26,7 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Link } from "react-router-dom";
+import api_url_satuadmin from "../../api/axiosConfig";
 
 
 
@@ -37,7 +38,7 @@ const Spinner = () =>
       <p className="margin-auto text-center text-silver">Dalam Proses...</p>
     </div>;
 
-const apiurl = import.meta.env.VITE_API_URL;
+
 
 
 
@@ -115,7 +116,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getMapsetUnsur = async () => {
     try {
-      const response = await axios.get(apiurl + 'api/satupeta/map_item');
+      const response = await api_url_satuadmin.get( 'api/satupeta/map_item');
 
       const data = response.data;
 
@@ -128,7 +129,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getData_Images = async () => {
     try {
-      const response_image = await axios.get(`${apiurl}api/open-item/komponen`);
+      const response_image = await api_url_satuadmin.get(`api/open-item/komponen`);
       const data_image = response_image.data.data_satupeta_motto;
       setImage1(data_image.presignedUrl_a);
       setImage2(data_image.presignedUrl_b);
@@ -144,14 +145,14 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getData = async (page = 1) => {
     try {
-      const response = await axios.get(apiurl + 'api/satupeta/map_list2', {
+      const response = await api_url_satuadmin.get( 'api/satupeta/map_list2', {
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' })
       });
 
       const res = response.data;
       setdata(res.data);
 
-      const response_artikel = await axios.get(apiurl + 'api/satupeta/map_artikel', {
+      const response_artikel = await api_url_satuadmin.get( 'api/satupeta/map_artikel', {
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' })
       });
 
@@ -199,9 +200,9 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
       .toString()
       .toLowerCase()
       .trim()
-      .replace(/\s+/g, '-')        // Ganti spasi dengan strip (-)
-      .replace(/[^\w\-]+/g, '')    // Hapus karakter non-kata
-      .replace(/\-\-+/g, '-');     // Hapus strip ganda
+      .replace(/\s+/g, '-');        // Ganti spasi dengan strip (-)
+      //.replace(/[^\w\-]+/g, '')    // Hapus karakter non-kata
+      //.replace(/\-\-+/g, '-');     // Hapus strip ganda
   };
   
 
@@ -333,7 +334,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               viewport={{ once: true }}
             >
               
-              <Container fluid className={`block bg-brown-light py-1 rad15 text-center justify-content-center`}>
+              <Container fluid className={`block bg-silver-light py-1 rad15 text-center justify-content-center`}>
                 <p 
                   className={`rad15 textsize20 text-white px-2 shaddow3 text-center mt-3`} 
                   style={{ maxWidth: "350px", margin: "0 auto",backgroundColor: bgtitleku
@@ -396,7 +397,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                     onMouseLeave={() => {
                       const swiper = swiperRef.current;
                       if (swiper && swiper.autoplay && !swiper.autoplay.running) {
-                        swiper.autoplay.start();
+                        //swiper.autoplay.start();
                       }
                     }}
                     onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
@@ -405,7 +406,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                       let link = `/Tematik/Mapset/${slugify(data.title)}`;
 
                       const isi = (
-                        <Row key={index} className="justify-content-center  d-flex" style={{ cursor: "pointer" }}>
+                        <Row key={index} className="justify-content-center bg-body  d-flex rad10" style={{ cursor: "pointer" }}>
                           <Col sm={12} className="py-2">
                             <Image
                               src={data.presignedUrl}
@@ -422,21 +423,19 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                             >
                               {data.koleksi_data}
                             </p>
-                            <p className={`textsize14 mx-1 ${activeIndex === index ? 'text-teal-dark' : 'text-white'}`}>{data.title}</p>
+                            <p className={`textsize14 mx-1 ${activeIndex === index ? 'text-body' : 'text-body'}`}>{data.title}</p>
                           </Col>
                         </Row>
                       );
 
                       return (
                         <SwiperSlide key={data.id_maplist}>
-                          <div className={`portfolio-wrapper rad15 px-2 ${activeIndex === index ? `bg-white` : ''}`}>
-                            {data.koleksi_data === "Peta Layout" ? (
-                              <div onClick={() => handleShowModal(data)}>{isi}</div>
-                            ) : (
+                          <div className={`portfolio-wrapper rad15 px-2 ${activeIndex === index ? `bg-body` : ''}`}>
+                            
                               <Link to={link} rel="noopener noreferrer">
                                 {isi}
                               </Link>
-                            )}
+                            
                           </div>
                         </SwiperSlide>
                       );
@@ -445,7 +444,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                 </div>
 
                 {/* Modal */}
-                <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered style={{ zIndex: 9999 }}>
+                {/* <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered style={{ zIndex: 9999 }}>
                   <Modal.Header closeButton>
                     <Modal.Title>{modalData.title}</Modal.Title>
                   </Modal.Header>
@@ -472,7 +471,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                       Tutup
                     </Button>
                   </Modal.Footer>
-                </Modal>
+                </Modal> */}
               </Container>
   
             </motion.div>
@@ -492,24 +491,24 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               viewport={{ once: true }}
             >
               
-              <Container fluid className={`rad15 text-center justify-content-center bg-silver`}> 
+              <Container fluid className={`rad15 text-center justify-content-center bg-body bg-border2`}> 
                  
                 <Row className='portfoliolist justify-content-center p-2'>
                   
-                  <Col sm={10} xs={8} className='py-2'>
+                  <Col md={10} sm={7} className='py-2'>
                     <p 
-                      className={`rad15 textsize20 text-white shaddow3 text-center py-2`} 
+                      className={`rad15 textsize16 text-white shaddow3 text-center py-2`} 
                       style={{maxWidth:"45vh",backgroundColor:bgtitleku}}>Peta Tematik Interaktif</p>  
                    </Col>
-                   <Col sm={2} xs={4} className='py-3'>
+                   <Col md={2} sm={5} className='py-3'>
                     <Link 
                       to="/Tematik/Koleksi/Peta Interaktif"
                       className="bg-orange rad15 textsize10 text-white-a shaddow3 text-center d-flex justify-content-center" 
                       style={{maxWidth:"300px"}}
                       cursor="pointer"
                     >
-                      <span className="px-2 py-2" style={{maxWidth:"40vh",cursor:"pointer"}} >Lihat Semua</span> 
-                      <FaExternalLinkAlt className="mt-1" />
+                      <span className="px-2 py-2" style={{maxWidth:"40vh",cursor:"pointer"}} >Lihat Lebih Banyak</span> 
+                      <FaExternalLinkAlt className="mt-3" />
                     </Link>  
                     
                    </Col>
@@ -524,7 +523,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
                         return (
                           <Col sm={6} md={3} lg={3} xs={6} key={data.id_maplist} className="py-2 col-6">
-                            <div className="portfolio-wrapper rad15 bg-white shaddow4">
+                            <div className="portfolio-wrapper rad15 bg-body shaddow4 bg-border2">
                               <Link
                                 to={link}
                                 rel="noopener noreferrer"
@@ -554,7 +553,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                   >
                                     {data.koleksi_data}
                                   </p>
-                                  <p className="text-black textsize14 mt-2" style={{height:"70px"}}>{data.title}</p>
+                                  <p className="text-body textsize14 mt-2" style={{height:"70px"}}>{data.title}</p>
                                  
                                  
                                  
@@ -566,35 +565,6 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                       })
                       
                     }
-                    {/* Modal */}
-                    <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered style={{zIndex:9999}}>
-                      <Modal.Header closeButton>
-                        <Modal.Title>{modalData.title}</Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body className="text-center">
-                        <Image 
-                          src={modalData.image} 
-                          fluid 
-                          className="rad10"
-                          onContextMenu={(e) => e.preventDefault()}
-                          draggable={false} 
-                        />
-                      </Modal.Body>
-                      <Modal.Footer>
-                        <Link
-                          to={modalData.image}
-                          download
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-success"
-                        >
-                          <FaDownload /> Download Gambar
-                        </Link>
-                        <Button variant="secondary" onClick={() => setShowModal(false)}>
-                          Tutup
-                        </Button>
-                      </Modal.Footer>
-                    </Modal>
                     
                     </>
                   ) : (
@@ -625,23 +595,23 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               viewport={{ once: true }}
             >
               
-              <Container fluid className={`text-center justify-content-center  bg-white rad15`}> 
+              <Container fluid className={`text-center justify-content-center rad15  bg-body bg-border2`}> 
                  
                 <Row className='portfoliolist justify-content-md-center p-2'>
                   
-                   <Col sm={10} xs={8} className='py-2'>
+                   <Col md={10} sm={7} className='py-2'>
                     <p 
                       className={`rad15 textsize16 text-white shaddow3 text-center py-2`} 
                       style={{maxWidth:"45vh",backgroundColor:bgtitleku}}>Peta Tematik Layout</p>  
                    </Col>
-                   <Col sm={2} xs={4} className='py-2'>
+                   <Col md={2} sm={5} className='py-2'>
                     <Link 
                       to="/Tematik/Koleksi/Peta Layout"
                       className="bg-orange rad15 textsize10 text-white-a shaddow3 text-center d-flex justify-content-center" 
                       style={{maxWidth:"300px"}}
                       cursor="pointer"
                     >
-                      <span className="px-2 py-2" style={{maxWidth:"40vh",cursor:"pointer"}} >Lihat Semua</span> 
+                      <span className="px-2 py-2" style={{maxWidth:"40vh",cursor:"pointer"}} >Lihat Lebih Banyak</span> 
                       <FaExternalLinkAlt className="mt-1" />
                     </Link>  
                     
@@ -654,13 +624,14 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                       .filter((data) => data.koleksi_data === 'Peta Layout')
                       .slice(0, 4)
                       .map((data) => {
+                        let link = `/Tematik/Mapset/${slugify(data.title)}`;
                         return (
                           <Col sm={6} md={3} lg={3} xs={6} key={data.id_maplist} className="py-2 col-6">
-                            <div className='portfolio-wrapper rad15 bg-white shaddow4'>
-                                <div
-                                  className='justify-content-center'
-                                  onClick={() => handleShowModal(data)}
-                                  style={{ cursor: 'pointer' }}
+                            <div className='portfolio-wrapper rad15 bg-body shaddow4 bg-border2'>
+                                <Link
+                                  to={link}
+                                  rel="noopener noreferrer"
+                                  className="justify-content-center"
                                 >
                                   <Image
                                     src={data.presignedUrl}
@@ -684,10 +655,10 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                     >
                                       {data.koleksi_data}
                                     </p>
-                                    <p className="text-black textsize14 mt-2" style={{height:"70px"}}>{data.title}</p>
+                                    <p className="text-body textsize14 mt-2" style={{height:"70px"}}>{data.title}</p>
                                     
                                   </div>
-                                </div>
+                                </Link>
                             </div>
                           </Col>
                         );
@@ -695,35 +666,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
                       
                     }
-                    {/* Modal */}
-                    <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered style={{zIndex:9999}}>
-                      <Modal.Header closeButton>
-                        <Modal.Title>{modalData.title}</Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body className="text-center">
-                        <Image 
-                          src={modalData.image} 
-                          fluid 
-                          className="rad10"
-                          onContextMenu={(e) => e.preventDefault()}
-                          draggable={false} 
-                        />
-                      </Modal.Body>
-                      <Modal.Footer>
-                        <Link
-                          to={modalData.image}
-                          download
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-success"
-                        >
-                          <FaDownload /> Download Gambar
-                        </Link>
-                        <Button variant="secondary" onClick={() => setShowModal(false)}>
-                          Tutup
-                        </Button>
-                      </Modal.Footer>
-                    </Modal>
+                    
                     
                     </>
                   ) : (
@@ -754,22 +697,22 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               viewport={{ once: true }}
             >
               
-              <Container fluid className={`rad15 text-center justify-content-center  bg-silver`} style={{marginBottom:"5%"}}> 
+              <Container fluid className={`rad15 text-center justify-content-center  bg-silver-light`} style={{marginBottom:"5%"}}> 
                  
                 <Row className='portfoliolist justify-content-md-center p-2'>
-                   <Col sm={10} xs={7} className='py-2'>
+                   <Col md={10} sm={7} className='py-2'>
                     <p 
-                      className={`rad15 textsize20 text-white shaddow3 text-center py-2`} 
+                      className={`rad15 textsize16 text-white shaddow3 text-center py-2`} 
                       style={{maxWidth:"45vh",backgroundColor:bgtitleku}}>Artikel Seputar Peta</p>  
                    </Col>
-                   <Col sm={2} xs={5} className='py-2'>
+                   <Col md={2} sm={5} className='py-2'>
                     <Link 
                       to="/Artikel"
                       className="bg-orange rad15 textsize10 text-white-a shaddow3 text-center d-flex justify-content-center" 
                       style={{maxWidth:"100%"}}
                       cursor="pointer"
                     >
-                      <span className="px-2 py-2" style={{maxWidth:"100%",cursor:"pointer"}} >Lihat Semua</span> 
+                      <span className="px-2 py-2" style={{maxWidth:"100%",cursor:"pointer"}} >Lihat Lebih Banyak</span> 
                       <FaExternalLinkAlt className="mt-1" />
                     </Link>  
                     
@@ -782,13 +725,13 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                       .slice(0, 3)
                       .map((data,index) => {
                         return (
-                          <Col sm={12} md={4} lg={4} xs={12} key={index} className='py-2 col-6'>
-                            <div className='rad15 shaddow4 bg-white'>
+                          <Col sm={12} md={3} lg={3} xs={12} key={index} className='py-2 col-6'>
+                            <div className='rad15 shaddow4 bg-body'>
                                 <div
                                   className='justify-content-center'
                                 >
                                   <div 
-                                    className='label text-left py-2'
+                                    className='label text-left py-2 px-2'
                                     style={{ maxHeight: '260px',cursor: 'pointer' }}
                                   >
                                     <Image
@@ -803,7 +746,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                   <div className='label text-left py-2 mt-2 px-3' style={{minHeight:"300px"}}>
                                    <div style={{minHeight:"250px"}}>
                                       <p
-                                        className="text-black textsize14 font_weight600 mb-2"
+                                        className="text-body textsize14 font_weight600 mb-2"
                                         style={{ lineHeight: '1.2' }}
                                       >
                                         {data.title}
@@ -811,7 +754,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                        <p className='text-red textsize10 mb-1'>{convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
                                     
                                       <p
-                                        className="text-black textsize12 font_weight400 mb-2"
+                                        className="text-body textsize12 font_weight400 mb-2"
                                         style={{ lineHeight: '1.2' }}
                                       >
                                         {data.content_a.length > 120 ? data.content_a.slice(0, 120) + '...' : data.content_a}

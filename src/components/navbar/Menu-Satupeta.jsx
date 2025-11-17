@@ -3,8 +3,10 @@ import axios from "axios";
 import {Container ,Nav,Navbar,NavDropdown, NavLink} from 'react-bootstrap';
 import '../styles/style_font.css';
 import { Link } from "react-router-dom";
+import Toogle_Mode from "../page_web/Themes_Mode";
+import api_url_satuadmin from "../../api/axiosConfig";
 
-const apiurl=import.meta.env.VITE_API_URL;
+
 const portal = "Portal Satu Peta";
 
 function MenuItem({title,submenu,linked}){
@@ -29,13 +31,12 @@ function MenuItem({title,submenu,linked}){
     
     const getMenu = async () => {
       try {
+        const response = await api_url_satuadmin.get("api/open-item/menu-satupeta2", {
+          params: title ? { categoryku: title } : {}
+        });
 
-        const query = title ? `?categoryku=${encodeURIComponent(title)}` : '';
-        const response = await fetch(apiurl + `api/open-item/menu-satupeta2${query}`);
-        const result = await response.json();
-        setMenu2(result);
+        setMenu2(response.data);
 
-       
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
@@ -83,14 +84,14 @@ function Menu({ bgku }) {
 
   const getMenu = async () => {
     try {
-      const response = await axios.get(apiurl + `api/open-item/menu-satupeta`);
+      const response = await api_url_satuadmin.get(`api/open-item/menu-satupeta`);
 
       // Cek apakah response.data itu array atau object
       const payload = Array.isArray(response.data) ? response.data : response.data.datas;
 
       setMenu(payload);
 
-      const response_image = await axios.get(apiurl + 'api/open-item/images_item', {
+      const response_image = await api_url_satuadmin.get('api/open-item/images_item', {
         params: {
           portal:portal
         }
@@ -169,6 +170,7 @@ function Menu({ bgku }) {
                 })
               
               }
+              <Toogle_Mode />
               
             </Nav>
           </Navbar.Collapse>

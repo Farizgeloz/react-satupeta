@@ -45,6 +45,7 @@ import leafIcon from "../../assets/images/marker_lingkungan.png";
 import buildingIcon from "../../assets/images/marker_infrastruktur.png";
 import moneyIcon from "../../assets/images/marker_ekonomi.png";
 import defaultIcon from "../../assets/images/marker_other.png";
+import api_url_satuadmin from "../../api/axiosConfig";
 
 const theme = createTheme({
   palette: {
@@ -276,7 +277,7 @@ const reloadGeoJSONLayer = (view, geoData, layerRef, id, color, popupTemplate, v
 
 
 
-const apiurl = import.meta.env.VITE_API_URL;
+
 const portal = "Portal Satu Peta";
 
 const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku3,colortitleku,colordateku }) => {
@@ -517,8 +518,8 @@ useEffect(() => {
     // 🔹 fetch geo data
     const getDataGeo_Kecamatan = async () => {
       try {
-        const response = await axios.get(
-          apiurl + "api/satupeta/map_datageo_kecamatan",
+        const response = await api_url_satuadmin.get(
+           "api/satupeta/map_datageo_kecamatan",
           {
             params: { search_kecamatan: selectedKecamatanIds },
             paramsSerializer: (params) =>
@@ -534,8 +535,8 @@ useEffect(() => {
 
     const getDataGeo_Desa = async () => {
       try {
-        const response = await axios.get(
-          apiurl + "api/satupeta/map_datageo_desa",
+        const response = await api_url_satuadmin.get(
+           "api/satupeta/map_datageo_desa",
           {
             params: { search_kecamatan: selectedKecamatanIds,search_desa: selectedDesaIds },
             paramsSerializer: (params) =>
@@ -615,7 +616,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(apiurl + "api/satupeta/map_data", {
+        const res = await api_url_satuadmin.get( "api/satupeta/map_data", {
           params: {
             search_location: (location || []).map((loc) => loc.id_location),
             search_koleksi: (koleksi || []).map((loc) => loc.id_maplist),
@@ -690,7 +691,7 @@ useEffect(() => {
   // ambil data gambar
   const getData_Images = async () => {
     try {
-      const response_image = await axios.get(apiurl + "api/open-item/images_item", {
+      const response_image = await api_url_satuadmin.get( "api/open-item/images_item", {
         params: { portal: portal },
       });
       const data_image = response_image.data.image_logo;
@@ -708,7 +709,7 @@ useEffect(() => {
   // ambil data unsur
   const getMapsetUnsur = async () => {
     try {
-      const response = await axios.get(apiurl + "api/satupeta/map_item", {
+      const response = await api_url_satuadmin.get( "api/satupeta/map_item", {
         params: { search_kecamatan: kecamatan.map((loc) => loc.id_kecamatan) },
         paramsSerializer: (params) =>
           qs.stringify(params, { arrayFormat: "repeat" }),
@@ -731,7 +732,7 @@ useEffect(() => {
 
   const getMarker = async () => {
     try {
-      const res = await axios.get(apiurl + 'api/satupeta/map_data', {
+      const res = await api_url_satuadmin.get( 'api/satupeta/map_data', {
         params: {
           search_location: location.map(loc => loc.id_location),
           search_kecamatan: kecamatan.map(loc => loc.id_kecamatan),
@@ -794,7 +795,7 @@ useEffect(() => {
 
   /* const getDataGeo_Kecamatan = async () => {
     try {
-      const response = await axios.get(apiurl + 'api/satupeta/map_datageo_kecamatan', {
+      const response = await api_url_satuadmin.get( 'api/satupeta/map_datageo_kecamatan', {
         params: {
           search_kecamatan: kecamatan.value
         },
@@ -808,7 +809,7 @@ useEffect(() => {
   };
   const getDataGeo_Desa = async () => {
     try {
-      const response = await axios.get(apiurl + 'api/satupeta/map_datageo_desa', {
+      const response = await api_url_satuadmin.get( 'api/satupeta/map_datageo_desa', {
         params: {
           search_kecamatan: kecamatan.value,
           search_desa: desa.value
@@ -989,7 +990,7 @@ useEffect(() => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 100 }}
             transition={{ duration: 0.3 }}
-            className="position-fixed py-1 px-3 "
+            className="position-fixed py-1 px-3 bg-body"
             style={{
               width: "40vh",
               top: isMobile ? 150 : 220,

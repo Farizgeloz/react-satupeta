@@ -17,6 +17,7 @@ import AppCount from './mapset_count';
 import { FaDownload } from "react-icons/fa6";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { MdHomeFilled, MdInfoOutline, MdOutlineFeaturedPlayList, MdOutlineFeed, MdOutlineListAlt } from 'react-icons/md';
+import api_url_satuadmin from "../../api/axiosConfig";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectCoverflow } from 'swiper/modules'
@@ -44,7 +45,7 @@ const Spinner = () =>
   </div>;
 
 
-const apiurl = import.meta.env.VITE_API_URL;
+
 
 
 
@@ -83,7 +84,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getDataById = async () => {
     try {
-      const response = await axios.get(apiurl +`api/satupeta/map_artikel/detail/${id}`);
+      const response = await api_url_satuadmin.get(`api/satupeta/map_artikel/detail/${id}`);
 
       if (response?.data) {
         setdataku(response.data); // langsung ambil objek plainItem
@@ -102,7 +103,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   const getData = async (page = 1) => {
     try {
       
-      const response_artikel = await axios.get(apiurl + 'api/satupeta/map_artikel', {
+      const response_artikel = await api_url_satuadmin.get( 'api/satupeta/map_artikel', {
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' })
       });
 
@@ -270,11 +271,11 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
             viewport={{ once: true }}
           >
             <p 
-              className="textsize24 font_weight600 uppercaseku" style={{lineHeight:"1.2",marginTop:"30px",color:colortitleku}}
+              className="textsize24 font_weight600 uppercaseku text-body" style={{lineHeight:"1.2",marginTop:"30px"}}
             >{dataku.title}</p>
             <div className="d-flex mb-4">
-              <p className="mb-0 textsize14 text-silver font_weight600 italicku">Admin {dataku.nick_admin}  <FaMinus className="mx-2" />  </p>
-              <p className="mb-0 textsize14 text-silver font_weight600 italicku">{convertDate(dataku.updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, ''))}</p>
+              <p className="mb-0 textsize14 text-body font_weight600 italicku">Admin {dataku.nick_admin}  <FaMinus className="mx-2" />  </p>
+              <p className="mb-0 textsize14 text-body font_weight600 italicku">{convertDate(dataku.updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, ''))}</p>
             </div>
             {dataku.presignedUrl_a && (
               <motion.img
@@ -296,10 +297,8 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               />
             )}
             {dataku && typeof dataku.content_a === 'string' ? (
-              <div className="textsize12">
-                {dataku.content_a.split('\n').map((line, index) => (
-                  <p className="mb-0" key={index}>{line}</p>
-                ))}
+              <div className="textsize12 mt-3 mb-5 text-body">
+                <div className='text-body' dangerouslySetInnerHTML={{ __html: dataku.content_a }} />
               </div>
             ) : ("")}
             {dataku.presignedUrl_b && (
@@ -322,10 +321,8 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               />
             )}
             {typeof dataku?.content_b === "string" && dataku.content_b ? (
-              <div className="textsize12">
-                {dataku.content_b.split('\n').map((line, index) => (
-                  <p className="mb-0" key={index}>{line}</p>
-                ))}
+              <div className="textsize12 mt-3 mb-5 text-body">
+                <div className='text-body' dangerouslySetInnerHTML={{ __html: dataku.content_b }} />
               </div>
             ) : ("")}
             {dataku.presignedUrl_c && (
@@ -348,30 +345,28 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               />
             )}
             {dataku && typeof dataku.content_c === 'string' ? (
-              <div className="textsize12">
-                {dataku.content_c.split('\n').map((line, index) => (
-                  <p className="mb-0" key={index}>{line}</p>
-                ))}
+              <div className="textsize12 mt-3 mb-5 text-body">
+                <div className='text-body' dangerouslySetInnerHTML={{ __html: dataku.content_c }} />
               </div>
             ) : ("")}
             {typeof dataku?.sumber === "string" && dataku.sumber ? (
-              <p className="mt-5 mb-0 textsize12 font_weight600">Sumber: <span className="font_weight400">{dataku.sumber}</span></p>
+              <p className="mt-5 mb-0 textsize12 font_weight600 text-body">Sumber: <span className="font_weight400">{dataku.sumber}</span></p>
             ) : ("")}
             {dataku.download_file && dataku.download_file.length >= 3 ? (
               <Link
                 to={dataku.presignedUrl_download}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-success"
+                className="btn btn-success mt-5"
               >
-                <FaDownload /> Download File
+                <FaDownload /> Unduh Berkas
               </Link>
             ) : null}
           </motion.div>
         )}  
       </Col>
       <Col md={3}>
-        <p className="textsize12 text-center mt-5">Bagikan :</p>
+        <p className="textsize12 text-center mt-5 text-body">Bagikan :</p>
         <ShareButtons url={`/Artikel/${dataku.id}`} title={dataku.judul} className="mb-5" />
 
         <Row className='portfoliolist justify-content-md-center p-2 mt-5'>
@@ -386,7 +381,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                 return (
                     <div className=' px-4' key={index}>
                         <div
-                          className='justify-content-center rad15 bg-white mb-2 p-2'
+                          className='justify-content-center rad15 bg-body mb-2 p-2'
                         >
                           <div 
                             className='label text-left py-2'
@@ -402,9 +397,9 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                             />
                           </div>
                           <div className='label text-left py-2 mt-0 mb-2'>
-                            <p className='text-black textsize12 mb-1'>{convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
+                            <p className='text-body textsize12 mb-1'>{convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
                             <p
-                              className="text-black textsize14 font_weight600 mb-2"
+                              className="text-body textsize14 font_weight600 mb-2"
                               style={{ lineHeight: '1.2' }}
                             >
                               {data.title.length > 70 ? data.title.slice(0, 70) + '...' : data.title}

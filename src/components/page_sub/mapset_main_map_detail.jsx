@@ -26,6 +26,7 @@ import { Autoplay, EffectCoverflow } from 'swiper/modules'
 import { MdHomeFilled,MdOutlineFeaturedPlayList, MdOutlineListAlt,MdOutlineCollectionsBookmark,MdGridOn,
         MdAssuredWorkload,MdLocationPin,MdOutlinePersonOutline,MdOutlineDownloadForOffline,MdOutlineScale,MdOutlineUpdate,MdDateRange 
         } from 'react-icons/md';
+import api_url_satuadmin from "../../api/axiosConfig";
 
 import schoolIcon from "../../assets/images/marker_pendidikan.png";
 import hospitalIcon from "../../assets/images/marker_kesehatan.png";
@@ -54,7 +55,7 @@ const Spinner = () =>
     <p className='text-center italicku'>Proses ...</p>
   </div>;
 
-const apiurl = import.meta.env.VITE_API_URL;
+
 
 const theme = createTheme({
   components: {
@@ -90,17 +91,18 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   const [created_at, setcreated_at] = useState("");
   const [updated_at, setupdated_at] = useState("");
   const [images, setimages] = useState("");
+  const [images_tumb, setimages_Tumb] = useState("");
 
   const [showModal, setShowModal] = useState(false);
   const [showModalArtikel, setShowModalArtikel] = useState(false);
-  const [modalData, setModalData] = useState({ title: '', image: '' });
+  const [modalData, setModalData] = useState({ image: '' });
   const [modalDataArtikel, setModalDataArtikel] = useState({ title: '', image: '' });
 
   const { id } = useParams();
 
   
-  const handleShowModal = (data) => {
-    setModalData({ title: data.title, image: data.presignedUrl });
+  const handleShowModal = (title,data) => {
+    setModalData({ title: title, image: data });
     setShowModal(true);
   };
   const handleShowModalArtikel = (data) => {
@@ -127,8 +129,8 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
     (async () => {
       try {
         //console.log("increaseVisitor fire, id =", id);
-        await axios.post(
-          `${apiurl}api/satupeta/locationmaplist_visitor`,
+        await api_url_satuadmin.post(
+          `api/satupeta/locationmaplist_visitor`,
           { id_maplist: String(id) },                           // kirim JSON
           { headers: { "Content-Type": "application/json" } }
         );
@@ -136,12 +138,11 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
         console.error("Gagal tambah visitor:", error?.response?.data || error.message);
       }
     })();
-  }, [id, apiurl]);
+  }, [id, api_url_satuadmin]);
 
 
   const setDownloadvisitor = async () => {
-    await axios.post(
-      `${apiurl}api/satupeta/locationmaplist_download`,
+    await api_url_satuadmin.post(`api/satupeta/locationmaplist_download`,
       { id_maplist: String(id) },                           // kirim JSON
       { headers: { "Content-Type": "application/json" } }
     );
@@ -149,7 +150,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   }
   const getDataById = async () => {
     try {
-      const response = await axios.get(apiurl + `api/satupeta/Koleksi-Peta/detail/${id}`);
+      const response = await api_url_satuadmin.get( `api/satupeta/Koleksi-Peta/detail/${id}`);
 
       // Ambil data utama
       setkoleksi_data(response.data.data.koleksi_data);
@@ -158,6 +159,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
       settahun(response.data.data.tahun_rilis);
       settipe(response.data.data.tipe);
       setimages(response.data.data.presignedUrl);
+      setimages_Tumb(response.data.data.presignedUrl_Tumb);
       setvisibilitas(response.data.data.visibilitas);
       setlocation(response.data.data.nama_location);
       setsatker(response.data.data.nama_opd);
@@ -212,7 +214,17 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
             headerClassName: "custom-header",
             flex: key.toLowerCase() === "id" ? 0 : 1,
             minWidth: 100,
-            align: "center"
+            align: "center",
+            renderCell: (params) => {
+              const row = params.row;
+              return (
+                <div className="">
+                    
+                      <p className="textsize10 text-body">{`${row[key]}`}</p>
+                </div>
+                
+              );
+            }
           }))
       ];
 
@@ -459,9 +471,8 @@ const convertDate2 = (value) => {
               <div className="d-flex">
                 {getCustomSymbolBySektor(sektorid)}
                 <p 
-                  className="textsize24 font_weight700 bg-white bg-border2 rad10 py-2 px-3  shaddow3"
+                  className="textsize24 font_weight700 bg-body text-body bg-border2 rad10 py-2 px-3  shaddow3"
                   style={{
-                    color:colortitleku,
                     maxWidth: 'calc(100% - 6%)', // lebar 100% minus 250px
                     flex: 1,               // ambil sisa ruang
                     whiteSpace: "nowrap",  // biar tetap satu baris
@@ -473,21 +484,21 @@ const convertDate2 = (value) => {
               </div>
               <Row className="mb-4">
                 <Col md={3} xs={6} className="px-3">
-                  <p className="mb-0 textsize11 font_weight600"><MdOutlineCollectionsBookmark  style={{color:"#1E88E5"}} /> Koleksi Data</p>
+                  <p className="mb-0 textsize11 font_weight600 text-body"><MdOutlineCollectionsBookmark  style={{color:"#1E88E5"}} /> Koleksi Data</p>
                   <p className="mb-0 textsize12 font_weight600 px-2 py-2 text-white rad10 shaddow3" style={{backgroundColor:"#5C6BC0"}}>{koleksi_data}</p>
                 </Col>
                 <Col md={3} xs={6} className="px-3">
-                  <p className="mb-0 textsize11 font_weight600"><MdGridOn  style={{color:"#7CB342"}}/>Sektor</p>
+                  <p className="mb-0 textsize11 font_weight600 text-body"><MdGridOn  style={{color:"#7CB342"}}/>Sektor</p>
                   <p className="mb-0 textsize12 font_weight600 px-2 py-2 text-white rad10 shaddow3" style={{backgroundColor:"#54b089"}}>{sektor}</p>
                 </Col>
                 
                 <Col md={3} xs={6} className="px-3">
-                  <p className="mb-0 textsize11 font_weight600"><MdOutlineCollectionsBookmark  style={{color:"#00897B"}}/> Tipe Peta</p>
+                  <p className="mb-0 textsize11 font_weight600 text-body"><MdOutlineCollectionsBookmark  style={{color:"#00897B"}}/> Tipe Peta</p>
                   <p className="mb-0 textsize12 font_weight600 px-2 py-2 text-white rad10 shaddow3" style={{backgroundColor:"#64b7c9"}}>{tipe}</p>
                 </Col>
                 <Col md={3} xs={6} className="px-3">
-                  <p className="mb-0 textsize12 font_weight600">⏰ Tanggal Update</p>
-                  <p className="mb-0 textsize12 font_weight600 px-2 py-1 text-silver-dark rad10">{convertDate(updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, ''))}</p>
+                  <p className="mb-0 textsize12 font_weight600 text-body">⏰ Tanggal Update</p>
+                  <p className="mb-0 textsize12 font_weight600 px-2 py-1  text-body rad10">{convertDate(updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, ''))}</p>
                 </Col>
                 
                 
@@ -499,26 +510,50 @@ const convertDate2 = (value) => {
               <Row className="bg-white rad15">
                   <Col md={12}>
                   <Image
-                    src={images}
+                    src={images_tumb}
+                    onClick={() => handleShowModal(title,images)}
                     className="rad10 w-100 "
                     style={{
                       width: 'auto', // agar tidak terlalu lebar
                       maxHeight: '15vh',
                     }}
-                    onContextMenu={(e) => e.preventDefault()}
+                    
                     draggable={false}
                   />
-                  <Link
+
+                  {/* Modal */}
+                  <Modal show={showModal} onHide={() => setShowModal(false)} size="xl" centered style={{zIndex:9999}}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>{modalData.title}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="text-center">
+                      <Image src={modalData.image} fluid className="rad10" />
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Link
+                        to={modalData.image}
+                        download
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-success textsize12"
+                      >
+                        <FaDownload /> Download Gambar
+                      </Link>
+                      <Button variant="secondary" onClick={() => setShowModal(false)} className="textsize12">
+                        Tutup
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+
+                  {koleksi_data === "Peta Interaktif" && (
+                    <Link
                       className="bg-orange rad15 textsize12 text-white-a shaddow3 text-center d-flex justify-content-center mt-2"
                       style={{ cursor: "pointer" }}
-                      to={
-                        tipe === "Marker"
-                          ? `/Tematik/Mapset/Map-Interaktif/${tipe}/${title}`
-                          : `/Tematik/Mapset/Map-Interaktif/${tipe}/${title}`
-                      }
+                      to={`/Tematik/Mapset/Map-Interaktif/${tipe}/${title}`}
                     >
-                      <span className="px-2 py-1">Pertinjau Peta</span> 
+                      <span className="px-2 py-1">Pertinjau Peta</span>
                     </Link>
+                  )}
                   </Col>
                 
               </Row>
@@ -530,11 +565,10 @@ const convertDate2 = (value) => {
             <Col md={5} className="px-4">
             
                 <Row className=" mt-3">
-                  <Col md={12} className="bg-border2 bg-white p-3 rad10" style={{height:"50vh",boxSizing: "border-box"}}>
+                  <Col md={12} className="bg-border2 bg-body p-3 rad10" style={{height:"50vh",boxSizing: "border-box"}}>
                     <p
-                      className="mb-3 textsize16 font_weight600 rad10"
+                      className="mb-3 textsize16 font_weight600 rad10 text-body"
                       style={{
-                        color: colortitleku,
                         width: "fit-content", // biar selebar teks
                         display: "inline-block" // supaya tidak full col
                       }}
@@ -542,14 +576,14 @@ const convertDate2 = (value) => {
                       Deksripsi Mapset
                     </p>
                     <div className="overflow-scroll-y-auto" style={{height:"35vh",boxSizing: "border-box"}}>
-                      {deskripsi && deskripsi.length >=5
-                        ? deskripsi.toString().split('\n').map((line, index) => (
-                            <p className="mb-0 textsize12" style={{lineHeight:"1.6"}} key={index}>{line}</p>
-                          ))
-                        : (
-                            <p className="mt-5 mb-0 textsize16 text-center text-silver italicku py-5 rad10" style={{backgroundColor:"#e8e8e8"}}>Tidak Ada Deskripsi</p>
-                          )
-                      }
+                      {deskripsi && deskripsi.length >= 5 ? (
+                        <div className='text-body' dangerouslySetInnerHTML={{ __html: deskripsi }} />
+                      ) : (
+                        <p className="mt-5 mb-0 textsize16 text-center text-body italicku py-5 rad10 bg-body">
+                          Tidak Ada Deskripsi
+                        </p>
+                      )}
+                      
                     </div>
                   </Col>
                 </Row>
@@ -568,55 +602,55 @@ const convertDate2 = (value) => {
                       Metadata
                     </p>
                   </Col> 
-                  <Col md={12} className="bg-border2 bg-white px-3 py-2  rad10">
+                  <Col md={12} className="bg-border2 bg-body px-3 py-2  rad10">
                     <Row className="">
-                      <Col md={4} xs={4} className="bg-white">
-                        <p className="mb-0 textsize12 py-2 text-silver" ><MdAssuredWorkload  style={{color:colortitleku}} /> Opd / Walidata</p>
+                      <Col md={4} xs={4} className="bg-body">
+                        <p className="mb-0 textsize12 py-2 text-body" ><MdAssuredWorkload  style={{color:colortitleku}} /> Opd / Walidata</p>
                       </Col>
-                      <Col md={8} xs={8} className="bg-white">
-                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku">{satker}</p>
+                      <Col md={8} xs={8} className="bg-body">
+                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku text-body">{satker}</p>
                       </Col>
-                      <Col md={4} xs={4} className="bg-silver">
-                        <p className="mb-0 textsize12 py-2" ><MdLocationPin  style={{color:colortitleku}} /> Jenis Lokasi</p>
+                      <Col md={4} xs={4} style={{backgroundColor:'#99999987'}}>
+                        <p className="mb-0 textsize12 py-2 text-body" ><MdLocationPin  style={{color:colortitleku}} /> Jenis Lokasi</p>
                       </Col>
-                      <Col md={8} xs={8} className="bg-silver">
-                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku">{location}</p>
+                      <Col md={8} xs={8} style={{backgroundColor:'#99999987'}}>
+                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku text-body">{location}</p>
                       </Col>
-                      <Col md={4} xs={4} className="bg-white">
-                        <p className="mb-0 textsize12 py-2 text-silver" ><MdDateRange  style={{color:colortitleku}}  /> Tahun Rilis</p>
+                      <Col md={4} xs={4} className="bg-body">
+                        <p className="mb-0 textsize12 py-2 text-body" ><MdDateRange  style={{color:colortitleku}}  /> Tahun Rilis</p>
                       </Col>
-                      <Col md={8} xs={8} className="bg-white">
-                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku">{tahun}</p>
+                      <Col md={8} xs={8} className="bg-body">
+                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku text-body">{tahun}</p>
                       </Col>
-                      <Col md={4} xs={4} className="bg-silver">
-                        <p className="mb-0 textsize12 py-2 text-silver" ><MdOutlinePersonOutline  style={{color:colortitleku}} /> Visitor</p>
+                      <Col md={4} xs={4} style={{backgroundColor:'#99999987'}}>
+                        <p className="mb-0 textsize12 py-2 text-body" ><MdOutlinePersonOutline  style={{color:colortitleku}} /> Visitor</p>
                       </Col>
-                      <Col md={8} xs={8} className="bg-silver">
-                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku">{datacount}</p>
+                      <Col md={8} xs={8} style={{backgroundColor:'#99999987'}}>
+                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku text-body">{datacount}</p>
                       </Col>
-                      <Col md={4} xs={4} className="bg-white">
-                        <p className="mb-0 textsize12 py-2 text-silver" ><MdOutlineDownloadForOffline  style={{color:colortitleku}} /> Unduhan</p>
+                      <Col md={4} xs={4} className="bg-body">
+                        <p className="mb-0 textsize12 py-2 text-body" ><MdOutlineDownloadForOffline  style={{color:colortitleku}} /> Unduhan</p>
                       </Col>
-                      <Col md={8} xs={8} className="bg-white">
-                        <p className="mb-0 textsize12 py-2v uppercaseku">{datacountdownload}</p>
+                      <Col md={8} xs={8} className="bg-body">
+                        <p className="mb-0 textsize12 py-2v uppercaseku text-body">{datacountdownload}</p>
                       </Col>
-                      <Col md={4} xs={4} className="bg-silver">
-                        <p className="mb-0 textsize12 py-2 text-silver" ><MdOutlineScale  style={{color:colortitleku}} /> Pengukuran</p>
+                      <Col md={4} xs={4} style={{backgroundColor:'#99999987'}}>
+                        <p className="mb-0 textsize12 py-2 text-body" ><MdOutlineScale  style={{color:colortitleku}} /> Pengukuran</p>
                       </Col>
-                      <Col md={8} xs={8} className="bg-silver">
-                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku">{pengukuran}</p>
+                      <Col md={8} xs={8} style={{backgroundColor:'#99999987'}}>
+                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku text-body">{pengukuran}</p>
                       </Col>
-                      <Col md={4} xs={4} className="bg-white">
-                        <p className="mb-0 textsize12 py-2 text-silver" ><MdOutlineUpdate  style={{color:colortitleku}} /> Mapset Dibuat</p>
+                      <Col md={4} xs={4} className="bg-body">
+                        <p className="mb-0 textsize12 py-2 text-body" ><MdOutlineUpdate  style={{color:colortitleku}} /> Mapset Dibuat</p>
                       </Col>
-                      <Col md={8} xs={8} className="bg-white py-2">
-                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku">{convertDate(created_at)}</p>
+                      <Col md={8} xs={8} className="bg-body py-2">
+                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku text-body">{convertDate(created_at)}</p>
                       </Col>
-                      <Col md={4} xs={4} className="bg-silver">
-                        <p className="mb-0 textsize12 py-2 text-silver" ><MdOutlineUpdate  style={{color:colortitleku}} /> Mapset Update</p>
+                      <Col md={4} xs={4} style={{backgroundColor:'#99999987'}}>
+                        <p className="mb-0 textsize12 py-2 text-body" ><MdOutlineUpdate  style={{color:colortitleku}} /> Mapset Update</p>
                       </Col>
-                      <Col md={8} xs={8} className="bg-silver">
-                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku">{convertDate(updated_at)}</p>
+                      <Col md={8} xs={8} style={{backgroundColor:'#99999987'}}>
+                        <p className="mb-0 textsize12 py-2 font_weight600 uppercaseku text-body">{convertDate(updated_at)}</p>
                       </Col>
                     </Row>
                   </Col>
@@ -688,6 +722,25 @@ const convertDate2 = (value) => {
                   getRowHeight={() => 'auto'}
                   
                   sx={{
+                    "--DataGrid-color-background-base": "transparent",
+                      backgroundColor: "transparent !important", // paksa transparan table
+                      border: "none", // hilangkan border utama,
+                      marginBottom:"50px",
+                    "& .MuiDataGrid-root": {
+                      backgroundColor: "transparent", // ⬅ background utama transparan
+                      marginBottom:"50px"
+                    },
+                    "& .MuiDataGrid-row": {
+                      marginTop: "8px",
+                      paddingTop:"10px",
+                      paddingBottom:"10px",
+                      paddingLeft:"5px",
+                      paddingRight:"5px",
+                      borderRadius: "6px",
+                      boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+                      fontSize: "1rem", // bisa diatur juga di row
+                      fontWeight: 500
+                    },
                     "& .custom-header": {
                       backgroundColor:bgku,
                       color: "white",
@@ -713,11 +766,8 @@ const convertDate2 = (value) => {
                       textAlign: "left",
                       lineHeight: "1.5rem",
                       padding: "15px 10px",
-                      fontSize: "1.2rem" // ukuran font row
-                    },
-                    "& .MuiDataGrid-row": {
-                      fontSize: "1rem", // bisa diatur juga di row
-                      fontWeight: 500
+                      fontSize: "1.2rem", // ukuran font row
+                      backgroundColor:"transparent !important", // paksa transparan table
                     },
                     "& .MuiTablePagination-select option:not([value='5']):not([value='10']):not([value='20'])": {
                       display: "none" // sembunyikan opsi default MUI yang tidak diinginkan
@@ -736,6 +786,12 @@ const convertDate2 = (value) => {
                       fontWeight: "600",
                       backgroundColor: "#dbdbdb",
                       borderRadius: "6px"
+                    },
+                    "& .MuiDataGrid-row:hover": {
+                      backgroundColor: theme === "dark" ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.05)",
+                      cursor: "pointer",
+                      boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+                      transition: "all 0.2s ease-in-out"
                     }
                   }}
                 />

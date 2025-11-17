@@ -30,7 +30,7 @@ const Spinner = () =>
       <p className="margin-auto text-center text-silver">Dalam Proses...</p>
     </div>;
 
-const apiurl = import.meta.env.VITE_API_URL;
+
 
 
 const FullscreenControl = () => {
@@ -208,7 +208,7 @@ function AppTeams() {
 
   const getData_Images = async () => {
     try {
-      const response_image = await axios.get(`${apiurl}api/open-item/images_item`);
+      const response_image = await api_url_satuadmin.get(`api/open-item/images_item`);
       const data_image = response_image.data.image_satupeta;
       setImage1(data_image.presignedUrl1);
       setImage2(data_image.presignedUrl2);
@@ -222,7 +222,7 @@ function AppTeams() {
 
   const getMapsetUnsur = async () => {
     try {
-      const response = await axios.get(apiurl + 'satupeta/map_item', {
+      const response = await api_url_satuadmin.get( 'satupeta/map_item', {
         params: {
           search_kecamatan: kecamatan.value
         }
@@ -242,7 +242,7 @@ function AppTeams() {
 
   const getMarker = async () => {
     try {
-      const res = await axios.get(apiurl + 'satupeta/map_data', {
+      const res = await api_url_satuadmin.get( 'satupeta/map_data', {
         params: {
           search_location: topik,
           search_kecamatan: kecamatan?.value || '',
@@ -298,7 +298,7 @@ function AppTeams() {
 
   const getDataGeo_Kecamatan = async () => {
     try {
-      const response = await axios.get(apiurl + 'satupeta/map_datageo_kecamatan');
+      const response = await api_url_satuadmin.get( 'satupeta/map_datageo_kecamatan');
       const data = response.data; // FeatureCollection
       //console.log('DATA DARI BACKEND:', data);
       setGeoDataKecamatan(data);
@@ -308,7 +308,7 @@ function AppTeams() {
   };
   const getDataGeo_Desa = async () => {
     try {
-      const response = await axios.get(apiurl + 'satupeta/map_datageo_desa');
+      const response = await api_url_satuadmin.get( 'satupeta/map_datageo_desa');
       const data = response.data; // FeatureCollection
       //console.log('DATA DARI BACKEND:', data);
       setGeoDataDesa(data);

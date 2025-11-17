@@ -12,8 +12,9 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { MdOutlineErrorOutline, MdOutlineListAlt } from "react-icons/md";
 import { MdHomeFilled, MdInfoOutline, MdOutlineFeaturedPlayList, MdOutlineFeed } from 'react-icons/md';
 import { FaDownload } from "react-icons/fa";
+import api_url_satuadmin from "../../api/axiosConfig";
 
-const apiurl = import.meta.env.VITE_API_URL;
+
 
 const Spinner = () => 
   <div className='text-center justify-content-center' style={{height:"110px"}}>
@@ -74,7 +75,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getMapsetUnsur = async () => {
     try {
-      const response = await axios.get(apiurl + 'api/satupeta/map_item');
+      const response = await api_url_satuadmin.get( 'api/satupeta/map_item');
       setsektorku(response.data.resultsektor);
     } catch (error) {
       console.error('Failed to fetch data:', error);
@@ -83,7 +84,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getData = async (page = 1) => {
     try {
-      const response = await axios.get(apiurl + 'api/satupeta/map_list2', {
+      const response = await api_url_satuadmin.get( 'api/satupeta/map_list2', {
         params: {
           search_sektor: sektor,
           search_koleksipeta: koleksipeta,
@@ -144,10 +145,9 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
           </div>
         </Col>
       </Row>
-      <Col md={10} className="px-4 mb-2 py-4 rad10 shaddow3" style={{backgroundColor:"#ECEFF1"}}>
+      <Col md={10} className="px-4 mb-2 py-4 rad10 shaddow3 bg-body" style={{backgroundColor:"#ECEFF1"}}>
         <p 
-          className={`font_weight700 textsize24 mt-3`}
-          style={{color:colortitleku}}
+          className={`font_weight700 textsize24 mt-3 text-body`}
         >Pencarian Visual Peta untuk kebutuhanmu</p>
         <p 
           className={`block py-1 text-white px-5 py-2 rad10 textsize14`}
@@ -479,7 +479,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               <Container fluid className=''>   
                 <Row className="mb-3 pb-2" style={{borderBottom:"1px solid #c5c3c3"}}>
                   <Col className="text-start">
-                    <p className="mb-0 text-muted textsize12 italicku">
+                    <p className="mb-0 text-muted textsize12 italicku text-body">
                       Ditemukan <strong>{sortedData.length}</strong> Map Lokasi
                     </p>
                   </Col>
@@ -503,78 +503,100 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                        let link = `/Tematik/Mapset/${slugify(data.title)}`;
                         return (
                           <Col sm={4} md={4} lg={4} key={data.id_maplist} className='py-2 col-6'>
-                            <div className='portfolio-wrapper rad15  bg-white shaddow1 p-2'>
+                            <div className='portfolio-wrapper rad15  bg-body shaddow1 p-2'>
                               {data.koleksi_data === 'Peta Layout' ? (
                                 <div
                                   className='justify-content-center'
-                                  onClick={() => handleShowModal(data)}
                                   style={{ cursor: 'pointer' }}
                                 >
                                   <div 
                                     className='d-flex justify-content-center'
                                     style={{ height: '200px',cursor: 'pointer',overflow:"hidden" }}
                                   >
+                                    
                                     <Image
-                                      src={data.presignedUrl}
+                                      onClick={() => handleShowModal(data)}
+                                      src={data.presignedUrl_Tumb}
                                       className='shaddow3 rad10'
                                       style={{ width: '100%' }}
                                     />
                                   </div>
-                                  <div className='label text-center py-2'>
-                                    <p 
-                                      className={`text-white textsize10 mb-0 shaddow3 p-1 mx-1 rad10`}
-                                      style={{backgroundColor:bgcontentku}}
-                                    >
-                                      {data.koleksi_data}
-                                    </p>
-                                    <p
-                                      className={`textsize12 font_weight600 mb-2 mt-2`}
-                                      style={{ lineHeight: '1.2',minHeight:"50px",color:colortitleku }}
-                                    >
-                                      {data.title.length > 70 ? data.title.slice(0, 70) + '...' : data.title}
-                                    </p>
-                                  </div>
+                                  <Link
+                                    to={link}
+                                    rel='noopener noreferrer'
+                                    className='justify-content-center'
+                                  >
+                                    <div className='label text-center py-2'>
+                                      <Row className="px-3">
+                                        <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
+                                          <p className="text-white textsize10  bg-indigo-light rad15">Gambar</p>
+                                        </Col>
+                                        <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
+                                          <p className="text-white textsize10 bg-tosca rad15">{data.tahun_rilis}</p>
+                                        </Col>
+                                      </Row>
+                                      <p 
+                                        className={`text-white textsize10 mb-0 shaddow3 p-1 mx-1 rad10`}
+                                        style={{backgroundColor:bgcontentku}}
+                                      >
+                                        {data.koleksi_data}
+                                      </p>
+                                      <p
+                                        className={`textsize12 font_weight600 mb-2 mt-2 text-body`}
+                                        style={{ lineHeight: '1.2',minHeight:"50px" }}
+                                      >
+                                        {data.title.length > 70 ? data.title.slice(0, 70) + '...' : data.title}
+                                      </p>
+                                    </div>
+                                  </Link>
                                 </div>
                               ) : (
-                                <Link
-                                  to={link}
-                                  rel='noopener noreferrer'
+                                <div
                                   className='justify-content-center'
+                                  style={{ cursor: 'pointer' }}
                                 >
+                                
                                   <div 
                                     className='d-flex justify-content-center'
                                     style={{ height: '200px',cursor: 'pointer',overflow:"hidden" }}
                                   >
                                     <Image
-                                      src={data.presignedUrl}
+                                      onClick={() => handleShowModal(data)}
+                                      src={data.presignedUrl_Tumb}
                                       className='shaddow3 rad10'
                                       style={{ width: '100%' }}
                                     />
                                   </div>
-                                  <div className='label text-center py-2'>
-                                    <Row className="px-3">
-                                      <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
-                                        <p className="text-white textsize10  bg-indigo-light rad15">{data.tipe}</p>
-                                      </Col>
-                                      <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
-                                        <p className="text-white textsize10 bg-tosca rad15">{data.tahun_rilis}</p>
-                                      </Col>
-                                    </Row>
-                                    <p 
-                                      className={`text-white textsize10 mb-0 shaddow3 p-1 mx-1 rad10`}
-                                      style={{backgroundColor:bgcontentku}}
-                                    >
-                                      {data.koleksi_data}
-                                    </p>
-                                    <p
-                                      className={`textsize12 font_weight600 mb-2 mt-2`}
-                                      style={{ lineHeight: '1.2',minHeight:"50px",color:colortitleku }}
-                                    >
-                                      {data.title.length > 70 ? data.title.slice(0, 70) + '...' : data.title}
-                                    </p>
-                                    
-                                  </div>
-                                </Link>
+                                  <Link
+                                    to={link}
+                                    rel='noopener noreferrer'
+                                    className='justify-content-center'
+                                  >
+                                    <div className='label text-center py-2'>
+                                      <Row className="px-3">
+                                        <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
+                                          <p className="text-white textsize10  bg-indigo-light rad15">{data.tipe}</p>
+                                        </Col>
+                                        <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
+                                          <p className="text-white textsize10 bg-tosca rad15">{data.tahun_rilis}</p>
+                                        </Col>
+                                      </Row>
+                                      <p 
+                                        className={`text-white textsize10 mb-0 shaddow3 p-1 mx-1 rad10`}
+                                        style={{backgroundColor:bgcontentku}}
+                                      >
+                                        {data.koleksi_data}
+                                      </p>
+                                      <p
+                                        className={`textsize12 font_weight600 mb-2 mt-2 text-body`}
+                                        style={{ lineHeight: '1.2',minHeight:"50px" }}
+                                      >
+                                        {data.title.length > 70 ? data.title.slice(0, 70) + '...' : data.title}
+                                      </p>
+                                      
+                                    </div>
+                                  </Link>
+                                </div>
                               )}
                             </div>
                           </Col>

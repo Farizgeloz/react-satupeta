@@ -4,7 +4,7 @@ import axios from "axios";
 import {Container,Row,Col,Image} from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
-const apiurl=import.meta.env.VITE_API_URL;
+
 
 function AppTeams() {
   const [artikelku, setArtikel] = useState([]);
@@ -14,7 +14,7 @@ function AppTeams() {
   }, []);
 
   const getArtikel = async () => {
-    const response = await axios.get(
+    const response = await api_url_satuadmin.get(
       apiurl+`backend_artikel`
     );
     setArtikel(response.data.result);

@@ -20,6 +20,7 @@ import { FaChartPie, FaHospital, FaLayerGroup, FaLeaf, FaLocationCrosshairs, FaL
 import { IoSchoolOutline } from "react-icons/io5";
 
 import { FaFilter, FaInfoCircle, FaMapMarkedAlt, FaMapMarkerAlt } from 'react-icons/fa';
+import api_url_satuadmin from "../../api/axiosConfig";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // wajib
@@ -189,7 +190,7 @@ const Spinner = () =>
       <p className="margin-auto text-center text-silver">Dalam Proses...</p>
     </div>;
 
-const apiurl = import.meta.env.VITE_API_URL;
+
 const portal = "Portal Satu Peta";
 
 
@@ -498,7 +499,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getData_Images = async () => {
     try {
-      const response_image = await axios.get(apiurl + 'api/open-item/images_item', {
+      const response_image = await api_url_satuadmin.get( 'api/open-item/images_item', {
         params: {
           portal:portal
         }
@@ -516,7 +517,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getMapsetUnsur = async () => {
     try {
-      const response = await axios.get(apiurl + 'api/satupeta/map_item', {
+      const response = await api_url_satuadmin.get( 'api/satupeta/map_item', {
         params: {
           search_kecamatan: kecamatan.map(loc => loc.id_kecamatan)
         },
@@ -553,7 +554,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getMarker = async () => {
     try {
-      const res = await axios.get(apiurl + 'api/satupeta/map_data', {
+      const res = await api_url_satuadmin.get( 'api/satupeta/map_data', {
         params: {
           search_location: location.map(loc => loc.id_location),
           search_kecamatan: kecamatan.map(loc => loc.id_kecamatan),
@@ -617,7 +618,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getDataGeo_Kecamatan = async () => {
     try {
-      const response = await axios.get(apiurl + 'api/satupeta/map_datageo_kecamatan', {
+      const response = await api_url_satuadmin.get( 'api/satupeta/map_datageo_kecamatan', {
         params: {
           search_kecamatan: kecamatan.value
         },
@@ -631,7 +632,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   };
   const getDataGeo_Desa = async () => {
     try {
-      const response = await axios.get(apiurl + 'api/satupeta/map_datageo_desa', {
+      const response = await api_url_satuadmin.get( 'api/satupeta/map_datageo_desa', {
         params: {
           search_kecamatan: kecamatan.value,
           search_desa: desa.value
