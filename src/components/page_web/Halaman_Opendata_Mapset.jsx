@@ -49,13 +49,13 @@ function DatasetPengelolah() {
   }, []);
 
   useEffect(() => {
-    if (imageLoaded) {
+    //if (imageLoaded) {
       // Kasih sedikit delay agar transisi smooth
       const timer = setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 3000);
       return () => clearTimeout(timer);
-    }
+    // }
   }, [imageLoaded]);
 
   const getImages = async () => {
@@ -89,7 +89,7 @@ function DatasetPengelolah() {
   
   return (
     <>
-    {/* loading ? (
+    { loading ? (
       <div className="spinner-overlay justify-content-center">
         
         <div 
@@ -100,7 +100,7 @@ function DatasetPengelolah() {
         )}
         {image1 && (
            <motion.img
-              src={image1}
+              src={`./logo.png`}
               alt="Logo"
               className={`rad15 w-50 ${imageLoaded ? 'visible' : 'hidden'}`}
               onLoad={() => setImageLoaded(true)}
@@ -121,14 +121,14 @@ function DatasetPengelolah() {
         </div>
         </div>
       </div>
-    ) : ( */
+    ) : ( 
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
       </motion.div>
-    /* ) */
+    )
   }
     <div className={`App bg-body`} style={{ backgroundColor:`${settings.bg_body}`}}>
       <Menu bgku={settings.bg_header}/>
