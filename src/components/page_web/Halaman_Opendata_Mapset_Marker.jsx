@@ -41,13 +41,13 @@ function DatasetPengelolah() {
   }, []);
 
   useEffect(() => {
-    if (imageLoaded) {
+    //if (imageLoaded) {
       // Kasih sedikit delay agar transisi smooth
       const timer = setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 3000);
       return () => clearTimeout(timer);
-    }
+    // }
   }, [imageLoaded]);
 
   const getImages = async () => {
@@ -90,7 +90,7 @@ function DatasetPengelolah() {
           )}
           {image1 && (
             <motion.img
-              src={image1}
+              src={`/logo.png`}
               alt="Logo"
               className={`rad15 w-50 ${imageLoaded ? 'visible' : 'hidden'}`}
               onLoad={() => setImageLoaded(true)}
