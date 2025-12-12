@@ -15,7 +15,7 @@ import FeedbackModal from "../page_sub/FeedbackModal";
 import Menu from '../navbar/Menu-Satupeta2';
 import { FcFeedback } from "react-icons/fc";
 import { Link } from 'react-router-dom';
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 
 const portal = "Portal Satu Peta";

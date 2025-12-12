@@ -6,7 +6,7 @@ import { useNavigate} from "react-router-dom";
 
 import Swal from 'sweetalert2';
 import { MdErrorOutline } from "react-icons/md";
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 
 const portal = "Portal Satu Peta";

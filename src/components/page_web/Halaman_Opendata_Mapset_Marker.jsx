@@ -9,7 +9,7 @@ import AppData from '../page_sub/mapset_marker2';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 
 const portal = "Portal Satu Peta";
@@ -90,7 +90,7 @@ function DatasetPengelolah() {
           )}
           {image1 && (
             <motion.img
-              src={`/logo.png`}
+              src={`./logo.png`}
               alt="Logo"
               className={`rad15 w-50 ${imageLoaded ? 'visible' : 'hidden'}`}
               onLoad={() => setImageLoaded(true)}

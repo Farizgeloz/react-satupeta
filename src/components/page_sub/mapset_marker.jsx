@@ -20,7 +20,7 @@ import { FaChartPie, FaHospital, FaLayerGroup, FaLeaf, FaLocationCrosshairs, FaL
 import { IoSchoolOutline } from "react-icons/io5";
 
 import { FaFilter, FaInfoCircle, FaMapMarkedAlt, FaMapMarkerAlt } from 'react-icons/fa';
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // wajib

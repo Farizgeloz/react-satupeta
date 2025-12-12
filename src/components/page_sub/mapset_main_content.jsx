@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import { useState, useEffect,useRef  } from "react";
 import axios from "axios";
 import qs from 'qs';
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 
 

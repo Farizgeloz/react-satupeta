@@ -6,7 +6,7 @@ import axios from "axios";
 import { MdCategory, MdMap } from "react-icons/md";
 import { FaBuildingColumns, FaDatabase, FaMapLocationDot, FaRectangleList } from 'react-icons/fa6';
 import { MdOutlineCategory } from "react-icons/md";
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 
 const portal = "Portal Satu Peta";

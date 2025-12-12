@@ -17,7 +17,7 @@ import AppCount from './mapset_count';
 import { FaDownload } from "react-icons/fa6";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { MdHomeFilled, MdInfoOutline, MdOutlineFeaturedPlayList, MdOutlineFeed, MdOutlineListAlt } from 'react-icons/md';
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectCoverflow } from 'swiper/modules'

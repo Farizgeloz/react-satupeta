@@ -16,7 +16,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Col, Row } from "react-bootstrap";
 import { FaFilter, FaInfoCircle, FaMapMarkerAlt } from 'react-icons/fa';
 import { FaExpand } from "react-icons/fa";
-import { FaMapPin, FaLayerGroup } from "react-icons/fa6";
+import { FaMapPin, FaLayerGroup, FaLocationDot, FaRectangleList, FaBuildingColumns, FaBuildingFlag } from "react-icons/fa6";
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import {
@@ -37,7 +37,8 @@ import leafIcon from "../../assets/images/marker_lingkungan.png";
 import buildingIcon from "../../assets/images/marker_infrastruktur.png";
 import moneyIcon from "../../assets/images/marker_ekonomi.png";
 import defaultIcon from "../../assets/images/marker_other.png";
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
+import { MdGridOn, MdOutlineCollectionsBookmark } from "react-icons/md";
 
 const theme = createTheme({
   palette: {
@@ -566,14 +567,23 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
 
         
         const lokasiDatakoleksi = res.data?.resultkoleksi || [];
+        console.log("📌 hasil resultkoleksi:", lokasiDatakoleksi);
         setDetailkoleksi(lokasiDatakoleksi);
+
         const lokasiDatabidang = res.data?.resultbidang || [];
+        console.log("📌 hasil resultbidang:", lokasiDatabidang);
         setDetailbidang(lokasiDatabidang);
+
         const lokasiDatasatker = res.data?.resultsatker || [];
+        console.log("📌 hasil resultsatker:", lokasiDatasatker);
         setDetailsatker(lokasiDatasatker);
+
         const lokasiDatakecamatan = res.data?.resultkecamatan || [];
+        console.log("📌 hasil resultkecamatan:", lokasiDatakecamatan);
         setDetailkecamatan(lokasiDatakecamatan);
+
         const lokasiDatadesa = res.data?.resultdesa || [];
+        console.log("📌 hasil resultdesa:", lokasiDatadesa);
         setDetaildesa(lokasiDatadesa);
       } catch (err) {
         console.error("Gagal ambil data marker:", err);
@@ -969,7 +979,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
 
             {/* 🎯 Koleksi */}
             <ThemeProvider theme={theme}>
-              <p className="text-white p-2 font_weight600" style={{backgroundColor:bgtitleku,borderRadius:'10px 10px 0px 0px'}}>Pilih Koleksi</p>
+              <p className="text-white p-2 font_weight600" style={{backgroundColor:bgtitleku,borderRadius:'10px 10px 0px 0px'}}><MdOutlineCollectionsBookmark size={23} />Pilih Koleksi</p>
               <Autocomplete
                 multiple
                 disableCloseOnSelect
@@ -1031,7 +1041,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
 
             {/*//KECAMATAN//*/}
             <ThemeProvider theme={theme}>
-              <p className="text-white p-2 mt-3 font_weight600" style={{backgroundColor:bgtitleku,borderRadius:'10px 10px 0px 0px'}}>Pilih Kecamatan</p>
+              <p className="text-white p-2 mt-3 font_weight600" style={{backgroundColor:bgtitleku,borderRadius:'10px 10px 0px 0px'}}><FaBuildingFlag size={23} />Pilih Kecamatan</p>
               <Autocomplete
                 multiple
                 disableCloseOnSelect
@@ -1090,7 +1100,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
 
             {/*//DESA//*/}
             <ThemeProvider theme={theme}>
-              <p className="text-white p-2 mt-3 font_weight600" style={{backgroundColor:bgtitleku,borderRadius:'10px 10px 0px 0px'}}>Pilih Desa</p>
+              <p className="text-white p-2 mt-3 font_weight600" style={{backgroundColor:bgtitleku,borderRadius:'10px 10px 0px 0px'}}><FaBuildingFlag size={23} />Pilih Desa</p>
               <Autocomplete
                 multiple
                 disableCloseOnSelect
@@ -1211,7 +1221,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
               <Spinner animation="border" />
             ) : (
               <>
-                <img src={image3} className='img-motto px-5' alt="logo kab"  />
+                
                 <div 
                   className="text-muted rounded p-2 textsize10 mb-1"
                   style={{
@@ -1220,14 +1230,14 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                   '&::-webkit-scrollbar': {
                     display: 'none',
                   },
-                  maxHeight: isMobile ? "35vh" : "45vh", // ⬅️ otomatis ganti top sesuai layar
+                  maxHeight: isMobile ? "55vh" : "70vh", // ⬅️ otomatis ganti top sesuai layar
                 }}
                 >
                 
-                  <p className="mb-1">
-                    <strong>Total Marker:</strong>
+                  <p className="mb-1 font_weight800">
+                    <FaLocationDot size={23} />Total Marker:
                   </p>
-                  <p className="mb-1 font_weight800 bg-border2 bg-body rad10 p-2 text-body">
+                  <p className="mb-3 bg-border2 bg-body rad10 p-2 text-body">
                     <span>
                       {markers.length > 0 && (
                       markers.length
@@ -1235,11 +1245,11 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                     </span>
                   </p>
                  
-                   <p className="mb-1">
-                    <strong>Koleksi:</strong>{' '}
+                   <p className="mb-1 font_weight800">
+                    <MdOutlineCollectionsBookmark size={23} />Koleksi:{' '}
                   
                   </p>
-                  <p className="mb-1 font_weight800  bg-border2 bg-body rad10 p-2 text-body">
+                  <p className="mb-3 bg-border2 bg-body rad10 p-2 text-body">
                     {
                       detailkoleksiku.map((data, index) => (
                         <span key={index}>
@@ -1249,11 +1259,11 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                       ))
                     }
                   </p>
-                  <p className="mb-1">
-                    <strong>Sektor:</strong>{' '}
+                  <p className="mb-1 font_weight800">
+                    <MdGridOn size={23} />Sektor:{' '}
                     
                   </p>
-                  <p className="mb-1 font_weight800 bg-border2 bg-body rad10 p-2 text-body">
+                  <p className="mb-3 bg-border2 bg-body rad10 p-2 text-body">
                     {
                       detailbidangku.map((data, index) => (
                         <span key={index}>
@@ -1263,10 +1273,10 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                       ))
                     }
                   </p>
-                  <p className="mb-1">
-                    <strong>OPD:</strong>{' '}
+                  <p className="mb-1 font_weight800">
+                    <FaBuildingColumns size={23} />OPD:{' '}
                   </p>
-                  <p className="mb-1 font_weight800 bg-border2 bg-body rad10 p-2 text-body">
+                  <p className="mb-3 bg-border2 bg-body rad10 p-2 text-body">
                     {
                       detailsatkerku.map((data, index) => (
                         <span key={index}>
@@ -1276,10 +1286,10 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                       ))
                     }
                   </p>
-                  <p className="mb-1">
-                    <strong>Kecamatan:</strong>{' '}
+                  <p className="mb-1 font_weight800">
+                    <FaBuildingFlag size={23} />Kecamatan:{' '}
                   </p>
-                  <p className="mb-1 font_weight800 bg-border2 bg-body rad10 p-2 text-body">
+                  <p className="mb-1 bg-border2 bg-body rad10 p-2 text-body">
                     {
                       detailkecamatanku.map((data, index) => (
                         <span key={index}>
@@ -1289,10 +1299,10 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
                       ))
                     }
                   </p>
-                  <p className="mb-1">
-                    <strong>Desa:</strong>{' '}
+                  <p className="mb-1 font_weight800">
+                    <FaBuildingFlag size={23} />Desa:{' '}
                   </p>
-                  <p className="mb-1 font_weight800 bg-border2 bg-body rad10 p-2 text-body">
+                  <p className="mb-1 bg-border2 bg-body rad10 p-2 text-body">
                     {
                       detaildesaku.map((data, index) => (
                         <span key={index}>
@@ -1360,7 +1370,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
               >
                 <FaLayerGroup size={25} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
                 <div className="ms-2">
-                  <p className="text-white fw-bold mb-0 textsize14">Basemap</p>
+                  <p className="text-white fw-bold mb-0 textsize14">Tipe Layar</p>
                 </div>
               </Col>
             </Row>

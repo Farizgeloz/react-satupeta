@@ -12,7 +12,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { MdHomeFilled, MdInfoOutline, MdOutlineFeaturedPlayList, MdOutlineFeed } from 'react-icons/md';
 import { FaDownload } from "react-icons/fa6";
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 
 

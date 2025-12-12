@@ -14,7 +14,7 @@ import AppFooter from '../page_sub/mapset_footer';
 
 import Menu from '../navbar/Menu-Satupeta2';
 import { ThemeContext } from "../../ThemeContext";
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 
 const portal = "Portal Satu Peta";

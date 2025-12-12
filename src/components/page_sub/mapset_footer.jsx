@@ -3,7 +3,7 @@ import {Container, Row,Col,Table, Image} from 'react-bootstrap';
 import axios from "axios";
 import { FaCalendar, FaCalendarDay, FaCalendarWeek } from 'react-icons/fa6';
 import { Link } from "react-router-dom";
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 
 const portal = "Portal Satu Peta";

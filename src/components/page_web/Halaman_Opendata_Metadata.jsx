@@ -11,7 +11,7 @@ import AppFooter from '../page_sub/footer';
 import Menu from '../navbar/Menu-Opendata';
 import React from "react";
 import {Row,Col,Image} from 'react-bootstrap';
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 
 

@@ -18,7 +18,7 @@ import { MdInfoOutline } from 'react-icons/md';
 import { FcFeedback } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 import { ThemeContext } from "../../ThemeContext";
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 
 const portal = "Portal Satu Peta";

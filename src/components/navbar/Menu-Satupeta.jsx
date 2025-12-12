@@ -4,7 +4,7 @@ import {Container ,Nav,Navbar,NavDropdown, NavLink} from 'react-bootstrap';
 import '../styles/style_font.css';
 import { Link } from "react-router-dom";
 import Toogle_Mode from "../page_web/Themes_Mode";
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 
 const portal = "Portal Satu Peta";

@@ -26,7 +26,7 @@ import { Autoplay, EffectCoverflow } from 'swiper/modules'
 import { MdHomeFilled,MdOutlineFeaturedPlayList, MdOutlineListAlt,MdOutlineCollectionsBookmark,MdGridOn,
         MdAssuredWorkload,MdLocationPin,MdOutlinePersonOutline,MdOutlineDownloadForOffline,MdOutlineScale,MdOutlineUpdate,MdDateRange 
         } from 'react-icons/md';
-import api_url_satuadmin from "../../api/axiosConfig";
+import { api_url_satuadmin } from "../../api/axiosConfig";
 
 import schoolIcon from "../../assets/images/marker_pendidikan.png";
 import hospitalIcon from "../../assets/images/marker_kesehatan.png";
