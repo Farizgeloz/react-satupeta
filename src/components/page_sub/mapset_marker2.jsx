@@ -567,23 +567,23 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
 
         
         const lokasiDatakoleksi = res.data?.resultkoleksi || [];
-        console.log("📌 hasil resultkoleksi:", lokasiDatakoleksi);
+        //console.log("📌 hasil resultkoleksi:", lokasiDatakoleksi);
         setDetailkoleksi(lokasiDatakoleksi);
 
         const lokasiDatabidang = res.data?.resultbidang || [];
-        console.log("📌 hasil resultbidang:", lokasiDatabidang);
+        //console.log("📌 hasil resultbidang:", lokasiDatabidang);
         setDetailbidang(lokasiDatabidang);
 
         const lokasiDatasatker = res.data?.resultsatker || [];
-        console.log("📌 hasil resultsatker:", lokasiDatasatker);
+        //console.log("📌 hasil resultsatker:", lokasiDatasatker);
         setDetailsatker(lokasiDatasatker);
 
         const lokasiDatakecamatan = res.data?.resultkecamatan || [];
-        console.log("📌 hasil resultkecamatan:", lokasiDatakecamatan);
+        //console.log("📌 hasil resultkecamatan:", lokasiDatakecamatan);
         setDetailkecamatan(lokasiDatakecamatan);
 
         const lokasiDatadesa = res.data?.resultdesa || [];
-        console.log("📌 hasil resultdesa:", lokasiDatadesa);
+        //console.log("📌 hasil resultdesa:", lokasiDatadesa);
         setDetaildesa(lokasiDatadesa);
       } catch (err) {
         console.error("Gagal ambil data marker:", err);

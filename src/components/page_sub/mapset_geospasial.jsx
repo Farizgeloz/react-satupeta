@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
 import axios from "axios";
 import qs from "qs";
@@ -18,13 +18,16 @@ import { union } from "@arcgis/core/geometry/geometryEngine";
 import WebTileLayer from "@arcgis/core/layers/WebTileLayer";
 import Basemap from "@arcgis/core/Basemap";
 
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Col, Row } from "react-bootstrap";
 import { FaFilter, FaInfoCircle, FaMapMarkerAlt } from 'react-icons/fa';
 import { FaExpand } from "react-icons/fa";
 import { FaMap, FaLayerGroup, FaBuildingFlag,FaPeopleGroup, FaPerson, FaPersonDress,FaPeopleRoof,FaPeopleArrows,FaRegMap  } from "react-icons/fa6";
-import { MdOutlineLightMode } from "react-icons/md";
+import { MdOutlineLightMode,MdOutlineCollectionsBookmark,MdOutlineUpdate,MdOutlineDateRange,MdTitle  } from "react-icons/md";
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import { FormControlLabel } from "@mui/material";
@@ -288,14 +291,17 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
   const [markers, setMarkers] = useState([]);
   const [locationku, setlocationku] = useState([]);
   const [koleksiku, setkoleksiku] = useState([]);
+  const [jenisku, setjenisku] = useState([]);
   const [kecamatanku, setkecamatanku] = useState([]);
   const [desaku, setdesaku] = useState([]);
   const [location, setLocation] = useState([]);
   const [koleksi, setKoleksi] = useState([]);
+  const [jenis, setJenis] = useState([]);
   const [kecamatan, setkecamatan] = useState([]);
   const [desa, setdesa] = useState([]);
   const [kunci, setkunci] = useState("");
   const { locationParam } = useParams(); // ?locationParam=1,2,3
+  const navigate = useNavigate();
   const [userLocation, setUserLocation] = useState(null);
 
   const [image1, setImage1] = useState(null);
@@ -333,6 +339,8 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
   const [isOpen_Info, setIsOpen_Info] = useState(true);
   const [isOpen_Infomarker, setIsOpen_Infomarker] = useState(true);
 
+  const [isOpenGeo, setIsOpenGeo] = useState(true);
+
   useEffect(() => {
     if (window.innerWidth < 768) {
       setIsOpen_Filter(false);
@@ -345,8 +353,8 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
   // 🔹 State & Ref
 const [geoDataKecamatan, setGeoDataKecamatan] = useState(null);
 const [geoDataDesa, setGeoDataDesa] = useState(null);
-const [showDesa, setShowDesa] = useState(false);
-const [showKecamatan, setShowKecamatan] = useState(true);
+const [showDesa, setShowDesa] = useState(true);
+const [showKecamatan, setShowKecamatan] = useState(false);
 const [selectedBasemap, setSelectedBasemap] = useState("streets");
 
 const viewRef = useRef(null);
@@ -359,10 +367,10 @@ const [infoData, setInfoData] = useState(null);
 // Ambil data GeoJSON
 // Ambil GeoJSON kecamatan
 useEffect(() => {
-  getDataGeo_Kecamatan();
+  getDataGeo_Desa();
   
    
-}, [selectedBasemap,kecamatan,desa]); // jalankan saat pilihan kecamatan berubah
+}, [koleksi,selectedBasemap,kecamatan,desa]); // jalankan saat pilihan kecamatan berubah
 
 // Ambil GeoJSON desa setelah kecamatan selesai
 
@@ -395,141 +403,268 @@ useEffect(() => {
 
 
 
-  const safeAddGeoJSONLayer = async (
-    view,
-    geoData,
-    ref,
-    id,
-    color,
-    popupTemplate,
-    visible = true
-  ) => {
-    if (!view || !geoData?.features?.length) return;
+ const safeAddGeoJSONLayer = async (
+  view,
+  geoData,
+  ref,
+  id,
+  color,
+  popupTemplate,
+  visible = true
+) => {
+  if (!view) return;
 
-    let mergedGeoData = geoData;
-
-    try {
-      // Tentukan tipe data: kecamatan atau desa
-      const isKecamatan = geoData.features[0]?.properties?.id_kecamatan !== undefined;
-      const isDesa = geoData.features[0]?.properties?.id_desa !== undefined;
-
-      // Hanya fetch jika detail belum ada
-      const needsDetail = geoData.features.some(
-        (f) => isKecamatan ? !f.properties.profil_kecamatan : !f.properties.profil_desa
-      );
-
-      if (needsDetail) {
-        const detailPromises = geoData.features.map((feat) => {
-          if (isKecamatan) {
-            return api_url_satudata.get(`profil-daerah/kecamatan/${feat.properties.id_kecamatan}`);
-          } else if (isDesa) {
-            return api_url_satudata.get(`profil-daerah/desa/${feat.properties.id_desa}`);
-          } else {
-            return Promise.resolve({ data: {} });
-          }
-        });
-
-        
-
-        const detailResponses = await Promise.all(detailPromises);
-        const details = detailResponses.map((res) => res.data);
-
-        mergedGeoData = {
-          ...geoData,
-          features: geoData.features.map((feat) => {
-            const matched = details.find((d) =>
-              isKecamatan ? d.id_kecamatan === feat.properties.id_kecamatan
-                          : d.id_desa === feat.properties.id_desa
-            );
-
-            const profil = isKecamatan ? matched?.profil_kecamatan || {} : matched?.profil_desa || {};
-            const kepala = matched?.kepala_desa || {};
-            const jenis_wilayah = matched?.jenis_wilayah || {};
-
-            return {
-              ...feat,
-              properties: {
-                ...feat.properties,
-                // Data wilayah
-                luas_wilayah: profil.luas_wilayah ?? "N/A",
-                penduduk_lk: profil.penduduk_lk ?? "N/A",
-                penduduk_pr: profil.penduduk_pr ?? "N/A",
-                total_penduduk: profil.total_penduduk ?? "N/A",
-                kampung_kb: profil.is_kampung_kb ?? "N/A",
-                desa_inklusi: profil.is_desa_inklusi ?? "N/A",
-                desa_bersinar: profil.is_desa_bersinar ?? "N/A",
-                jenis_idm: matched?.jenis_idm?.nama ?? "N/A",
-                // Flatten kepala desa
-                kepala_desa_nama: kepala?.nama_lengkap ?? "N/A",
-                kepala_desa_no_hp: kepala?.no_hp ?? "N/A",
-                kepala_desa_foto: kepala?.foto ?? "",
-                kepala_desa_tempatlahir: kepala?.tempat_lahir ?? "Kosong",
-                kepala_desa_tgllahir: kepala?.tanggal_lahir ?? "Kosong",
-                kepala_desa_kelamin: kepala?.jenis_kelamin ?? "Kosong",
-                jenis_wilayah_nama: jenis_wilayah?.nama ?? "Kosong",
-              }
-            };
-          })
-        };
+  // =========================
+  // JIKA GEODATA NULL / KOSONG → CLEAR MAP
+  // =========================
+  if (!geoData || !geoData.features || geoData.features.length === 0) {
+    // hapus semua GeoJSONLayer
+    view.map.layers.forEach((layer) => {
+      if (layer.type === "geojson") {
+        view.map.remove(layer);
       }
+    });
 
-    } catch (err) {
-      console.error("❌ Gagal fetch detail wilayah:", err);
-    }
-
-    // Hapus layer lama jika ada
-    if (ref.current) {
-      try { view.map.remove(ref.current); } catch(e){}
+    // reset ref
+    if (ref?.current) {
       ref.current = null;
     }
 
-    // Buat layer baru
-    const blob = new Blob([JSON.stringify(mergedGeoData)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
+    //console.log("🧹 GeoData kosong → map dibersihkan");
+    return;
+  }
 
-    // --- di dalam safeAddGeoJSONLayer ---
-    const layer = new GeoJSONLayer({
-      url,
-      id,
-      renderer: {
-        type: "simple",
-        symbol: { type: "simple-fill", color, outline: { color: [0,0,0], width: 1 } }
-      },
-      visible
-    });
+  // =========================
+  // NORMAL FLOW (ADA DATA)
+  // =========================
 
-    layer.load().catch(() => {});
-    view.map.add(layer);
-    ref.current = layer;
-
-    // Tambahkan klik layer → set infoData
-    view.on("click", async (event) => {
-      setLoading(true);
-      if (!desaLayerRef.current && !kecLayerRef.current) return;
-
-      const viewPoint = event.mapPoint;
-
-      const layers = [desaLayerRef.current, kecLayerRef.current].filter(Boolean);
-
-      for (const layer of layers) {
-        const results = await layer.queryFeatures({
-          geometry: viewPoint,
-          spatialRelationship: "intersects",
-          returnGeometry: false
-        });
-
-        if (results.features.length > 0) {
-          setInfoData(results.features[0].attributes);
-          setLoading(false);
-          break; // berhenti setelah menemukan feature pertama
-        }
-      }
-    });
-
-    
-
-    // console.log(`✅ Layer ${isKecamatan ? "kecamatan" : isDesa ? "desa" : "unknown"} siap`, mergedGeoData.features);
+  const normalizeColor = (c) => {
+    if (!c) return null;
+    if (typeof c === "string" && !c.startsWith("#")) {
+      return `#${c}`;
+    }
+    return c;
   };
+
+  let mergedGeoData = geoData;
+  //console.log("🔹 Memproses GeoData:", mergedGeoData);
+  
+
+  try {
+    const isKecamatan = geoData.features[0]?.properties?.id_kecamatan !== undefined;
+    const isDesa = geoData.features[0]?.properties?.id_desa !== undefined;
+
+    const needsDetail = geoData.features.some(
+      (f) => (isKecamatan ? !f.properties.profil_kecamatan : !f.properties.profil_desa)
+    );
+
+    if (needsDetail) {
+      const detailResponses = await Promise.all(
+        geoData.features.map((feat) => {
+          if (isKecamatan) {
+            return api_url_satudata.get(
+              `profil-daerah/kecamatan/${feat.properties.id_kecamatan}`
+            );
+          } else if (isDesa) {
+            return api_url_satudata.get(
+              `profil-daerah/desa/${feat.properties.id_desa}`
+            );
+          }
+          return Promise.resolve({ data: {} });
+        })
+      );
+
+      const details = detailResponses.map((res) => res.data);
+      
+      mergedGeoData = {
+        ...geoData,
+        features: geoData.features.map((feat) => {
+          const matched = details.find((d) =>
+            isKecamatan
+              ? d.id_kecamatan === feat.properties.id_kecamatan
+              : d.id_desa === feat.properties.id_desa
+          );
+
+          const profil = isKecamatan
+            ? matched?.profil_kecamatan || {}
+            : matched?.profil_desa || {};
+          const kepala = matched?.kepala_desa || {};
+          const jenis_wilayah = matched?.jenis_wilayah || {};
+
+          return {
+            ...feat,
+            properties: {
+              ...feat.properties,
+              map_color: normalizeColor(feat.properties.map_color),
+              luas_area: feat.properties.luas_area ?? "N/A",
+              nama_geospasial: feat.properties.nama_geospasial ?? "N/A",
+              satuan: feat.properties.satuan ?? "N/A",
+              nama_maplist: feat.properties.nama_maplist ?? "N/A",
+              periode: feat.properties.periode ?? "N/A",
+              tahun_rilis: feat.properties.tahun_rilis ?? "N/A",
+              luas_wilayah: profil.luas_wilayah ?? "N/A",
+              penduduk_lk: profil.penduduk_lk ?? "N/A",
+              penduduk_pr: profil.penduduk_pr ?? "N/A",
+              total_penduduk: profil.total_penduduk ?? "N/A",
+              kampung_kb: profil.is_kampung_kb ?? "N/A",
+              desa_inklusi: profil.is_desa_inklusi ?? "N/A",
+              desa_bersinar: profil.is_desa_bersinar ?? "N/A",
+              jenis_idm: matched?.jenis_idm?.nama ?? "N/A",
+
+              kepala_desa_nama: kepala?.nama_lengkap ?? "N/A",
+              kepala_desa_no_hp: kepala?.no_hp ?? "N/A",
+              kepala_desa_foto: kepala?.foto ?? "",
+              kepala_desa_tempatlahir: kepala?.tempat_lahir ?? "Kosong",
+              kepala_desa_tgllahir: kepala?.tanggal_lahir ?? "Kosong",
+              kepala_desa_kelamin: kepala?.jenis_kelamin ?? "Kosong",
+              jenis_wilayah_nama: jenis_wilayah?.nama ?? "Kosong"
+            }
+          };
+        })
+      };
+    }
+  } catch (err) {
+    console.error("❌ Gagal fetch detail wilayah:", err);
+  }
+
+  // =========================
+  // HAPUS LAYER SEBELUMNYA
+  // =========================
+  if (ref.current) {
+    try {
+      view.map.remove(ref.current);
+    } catch (e) {}
+    ref.current = null;
+  }
+
+  // =========================
+  // BUAT LAYER BARU
+  // =========================
+  const blob = new Blob([JSON.stringify(mergedGeoData)], {
+    type: "application/json"
+  });
+  const url = URL.createObjectURL(blob);
+
+  const colors = [
+    ...new Set(
+      mergedGeoData.features
+        .map((f) => normalizeColor(f.properties?.map_color))
+        .filter(Boolean)
+    )
+  ];
+
+  /* const renderer =
+    colors.length > 1
+      ? {
+          type: "unique-value",
+          field: "map_color",
+          uniqueValueInfos: colors.map((c) => ({
+            value: c,
+            symbol: {
+              type: "simple-fill",
+              color: c,
+              outline: { color: [0, 0, 0], width: 1 }
+            }
+          }))
+        }
+      : {
+          type: "simple",
+          symbol: {
+            type: "simple-fill",
+            color: colors[0] || color,
+            outline: { color: [0, 0, 0], width: 1 }
+          }
+        }; */
+
+  const hexToRgba = (hex, alpha = 0.6) => {
+    if (!hex) return [200, 200, 200, alpha];
+
+    const h = hex.replace("#", "");
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+
+    return [r, g, b, alpha];
+  };
+
+  // ambil warna dari feature pertama
+  const fillColor = hexToRgba(
+    mergedGeoData.features[0]?.properties?.map_color || color,
+    0.6
+  );
+
+  const renderer =
+    colors.length > 1
+      ? {
+          type: "unique-value",
+          field: "map_color",
+          uniqueValueInfos: colors.map((c) => ({
+            value: c,
+            symbol: {
+              type: "simple-fill",
+              color: hexToRgba(c, 0.6),
+              outline: { color: [0, 0, 0], width: 1 }
+            }
+          }))
+        }
+      : {
+          type: "simple",
+          symbol: {
+            type: "simple-fill",
+            color: colors[0] || color,
+            outline: { color: [0, 0, 0, 1], width: 1 }
+          }
+        };
+
+  /* const renderer = {
+    type: "simple",
+    symbol: {
+      type: "simple-fill",
+      color: fillColor,
+      outline: {
+        color: [0, 0, 0, 1],
+        width: 1
+      }
+    }
+  }; */
+
+  const layer = new GeoJSONLayer({
+    url,
+    id,
+    renderer,
+    visible
+  });
+
+  await layer.load().catch(() => {});
+  view.map.add(layer);
+  ref.current = layer;
+
+  // =========================
+  // CLICK → INFO
+  // =========================
+  view.on("click", async (event) => {
+    setLoading(true);
+    if (!desaLayerRef.current && !kecLayerRef.current) return;
+
+    const layers = [desaLayerRef.current, kecLayerRef.current].filter(Boolean);
+
+    for (const lyr of layers) {
+      const results = await lyr.queryFeatures({
+        geometry: event.mapPoint,
+        spatialRelationship: "intersects",
+        returnGeometry: false
+      });
+
+      if (results.features.length > 0) {
+        setInfoData(results.features[0].attributes);
+        setLoading(false);
+        break;
+      }
+    }
+  });
+};
+
+
 
 
 
@@ -649,7 +784,7 @@ useEffect(() => {
 
       // Ambil GeoJSON kecamatan
       const response = await api_url_satuadmin.get(
-        "api/satupeta/map_datageo_kecamatan",
+        "api/satupeta/map_datageospasial",
         {
           params: noSelection ? {} : { search_kecamatan: selectedKecamatanIds },
           paramsSerializer: (params) =>
@@ -659,6 +794,7 @@ useEffect(() => {
 
       // Simpan GeoJSON dasar saja
       setGeoDataKecamatan(response.data);
+      //console.log("🔹 setGeoDataKecamatan...",response.data);
 
 
       if (!geoDataKecamatan?.features?.length) return;
@@ -684,17 +820,19 @@ useEffect(() => {
     
     try {
       const noSelection = selectedDesaIds.length === 0;
-
+      
       const response = await api_url_satuadmin.get(
-          "api/satupeta/map_datageo_desa",
+          "api/satupeta/map_datageospasial",
         {
-          params: { search_kecamatan: selectedKecamatanIds,search_desa: selectedDesaIds },
+          params: { search_kecamatan: selectedKecamatanIds,search_desa: selectedDesaIds, search_koleksi: (koleksi || []).map((loc) => loc.id_maplist) },
           paramsSerializer: (params) =>
             qs.stringify(params, { arrayFormat: "repeat" }),
         }
       );
-
+      
       setGeoDataDesa(response.data);
+      //console.log("🔹 setGeoDataDesa...",response.data);
+      
 
       
 
@@ -793,7 +931,8 @@ useEffect(() => {
 
       setsektorku(response.data.resultsektor || []);
       setlocationku(response.data.resultlocation || []);
-      setkoleksiku(response.data.resultkoleksi || []);
+      setkoleksiku(response.data.resultkoleksiGeospasial || []);
+      setjenisku(response.data.resultjenisgeospasial || []);
       setkecamatanku(response.data.resultkecamatan || []);
       setdesaku(response.data.resultdesa || []);
     } catch (error) {
@@ -819,14 +958,91 @@ useEffect(() => {
       koleksiku.length > 0 &&
       koleksi.length === 0
     ) {
-      const idParams = locationParam.split(',').map(Number);
+      const idParams = locationParam.split(',');
       const selectedOptions = koleksiku.filter(loc =>
-        idParams.includes(loc.id_maplist)
+        idParams.includes(loc.title)
       );
       setKoleksi(selectedOptions);
       didSetFromParamsRef.current = true; // ✅ tandai sudah dijalankan
     }
   }, [locationParam, koleksiku, koleksi.length]);
+
+  useEffect(() => {
+    if (koleksi && koleksi.length > 0) {
+      const ids = koleksi.map((loc) => loc.title).join(",");
+      navigate(`/Tematik/Mapset/Map-Interaktif/Geomap/${ids}`);
+    }
+  }, [koleksi, navigate]);
+
+
+  const sortedGeoData = geoDataDesa?.features
+    ?.map(f => ({
+      nama: f.properties.nama_geospasial,
+      luas: Number(f.properties.luas_area),
+      satuan: f.properties.satuan,
+      color: f.properties.map_color
+    }))
+    ?.sort((a, b) => b.luas - a.luas);
+    //console.log("geoDataDesa",geoDataDesa);
+    
+
+  const groupedGeoData = geoDataDesa?.features?.reduce((acc, f) => {
+    const mapKey = f.properties.nama_maplist || "Lainnya";
+    const namaKey = f.properties.nama_geospasial || "Tanpa Nama";
+
+    if (!acc[mapKey]) acc[mapKey] = {};
+    if (!acc[mapKey][namaKey]) acc[mapKey][namaKey] = [];
+
+    acc[mapKey][namaKey].push({
+      nama: namaKey,
+      luas: Number(f.properties.luas_area),
+      satuan: f.properties.satuan,
+      color: f.properties.map_color,
+      nama_kecamatan: f.properties.nama_kecamatan,
+      nama_desa: f.properties.nama_desa,
+      nama_maplist: f.properties.nama_maplist,
+    });
+
+    return acc;
+  }, {});
+
+
+
+  
+
+  Object.values(groupedGeoData || {}).forEach(namaObj => {
+    Object.values(namaObj).forEach(dataArr => {
+      dataArr.sort((a, b) => {
+        const nameA = `${a.nama_kecamatan} ${a.nama_desa}`.toLowerCase();
+        const nameB = `${b.nama_kecamatan} ${b.nama_desa}`.toLowerCase();
+
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+
+        return b.luas - a.luas;
+      });
+    });
+  });
+
+
+
+
+
+  const formatArea = (value) => {
+    if (!value && value !== 0) return "-";
+
+    const num = Number(value);
+    if (isNaN(num)) return value;
+
+    if (num >= 1000) {
+      return `${(num / 1000).toFixed(num % 1000 === 0 ? 0 : 1)}K`;
+    }
+
+    return num;
+  };
+
+
+  
 
   return (
     <>
@@ -925,17 +1141,7 @@ useEffect(() => {
           <FaInfoCircle style={{ marginTop: "-2px", marginLeft: "-1px", color:"#ffffff" }} />
         </button>
        
-        {/* Toggle Infomarker */}
-        <button
-          className={`btn btn-${isOpen_Infomarker ? "yellow" : "silver"} rad15 shaddow2 mx-1 mb-1`}
-          style={{ width: "50px", height: "50px" }}
-          data-bs-toggle="tooltip"
-          data-bs-placement="left"
-          onClick={() => setIsOpen_Infomarker(!isOpen_Infomarker)}
-          title={isOpen_Infomarker ? "Sembunyikan Info Geojson" : "Tampilkan Info Geojson"}
-        >
-          <FaRegMap  style={{ marginTop: "-2px", marginLeft: "-1px", color:"#ffffff" }} />
-        </button>
+       
 
         <button
           className={`btn btn-${isOpen_LayerPanel ? "red" : "silver"} rad15 shaddow2 mx-1 mb-1`}
@@ -1049,7 +1255,65 @@ useEffect(() => {
               </Col>
             </Row>
 
-           
+           {/* 🎯 Koleksi */}
+            <ThemeProvider theme={theme}>
+              <p className="text-white p-2 font_weight600" style={{backgroundColor:bgtitleku,borderRadius:'10px 10px 0px 0px'}}><MdOutlineCollectionsBookmark size={23} />Pilih Koleksi</p>
+              <Autocomplete
+                multiple
+                disableCloseOnSelect
+                options={koleksiku}
+                getOptionLabel={(option) => option.title}
+                value={koleksi}
+                style={{marginTop:"0px"}}
+                onChange={(event, newValue) => {
+                  setKoleksi(newValue);
+                  
+                }}
+                isOptionEqualToValue={(option, value) =>
+                  option.title === value.title
+                }
+                renderOption={(props, option, { selected }) => (
+                  <li
+                    {...props}
+                    style={{
+                      backgroundColor: selected ? "#dcfce7" : "#fff",
+                      padding: "3px 5px",
+                      fontSize: "1.2rem", // lebih besar
+                    }}
+                  >
+                    <Checkbox
+                      icon={<CheckBoxOutlineBlankIcon fontSize="large" />}
+                      checkedIcon={<CheckBoxIcon fontSize="lage" />}
+                      checked={selected}
+                      sx={{ padding: 0, marginRight: 1 }}
+                    />
+                    {option.title}
+                  </li>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label=""
+                    placeholder="Ketik Cari..."
+                    variant="outlined"
+                    InputLabelProps={{
+                      sx: { fontSize: "1.2rem" }, // label lebih besar
+                    }}
+                    InputProps={{
+                      ...params.InputProps,
+                      sx: { fontSize: "1.2rem", padding: "2px" }, // isi input lebih besar
+                    }}
+                  />
+
+                )}
+                sx={{ marginTop: "0px", fontSize: "1.2rem" }}
+              />
+            </ThemeProvider>
+            {/* Debug tampilkan value */}
+            <Typography variant="" sx={{ mt: 0,fontSize:'90%',color:'#30bb57' }}>
+              <strong>Dipilih:</strong>{' '}
+              {koleksi.map((item) => item.title).join(', ') || 'Belum ada'}
+            </Typography>
             {/*//KECAMATAN//*/}
             <ThemeProvider theme={theme}>
               <p className="text-white p-2 mt-3 font_weight600" style={{backgroundColor:bgtitleku,borderRadius:'10px 10px 0px 0px'}}><FaBuildingFlag size={23} />Pilih Kecamatan</p>
@@ -1318,32 +1582,30 @@ useEffect(() => {
         {isOpen_Info && (
           <motion.div
             drag
-            dragConstraints={{ left: -270, right: 1100, top: -100, bottom: 480 }} // bisa diatur lebih bebas kalau mau
+            dragConstraints={{ left: -270, right: 1100, top: -100, bottom: 480 }}
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 100 }}
             transition={{ duration: 0.3 }}
             className="position-fixed py-1 px-3 bg-body"
             style={{
-              width: "45vh",
-              top: isMobile ? 170 : 100, // ⬅️ otomatis ganti top sesuai layar
+              width: isOpenGeo ? "85vh" : "45vh",
+              top: isMobile ? 170 : 100,
               left: isMobile ? 10 : 20,
-              
               zIndex: 701,
               borderRadius: 16,
               backdropFilter: "blur(10px)",
               backgroundColor: "hsla(0,0%,100%,.7)",
               boxShadow: "0 5px 20px 0 rgba(0, 0, 0, .1)",
-              cursor: "grab" // 👈 opsional untuk visual feedback
+              cursor: "grab",
+              transition: "width 0.3s ease"
             }}
           >
-            {/* 🔴 Tombol Close */}
-            <div className="position-absolute d-flex justify-content-end"
-              style={{
-                top: 10,
-                right: 10,
-                zIndex: 1
-              }}
+
+            {/* 🔴 Close */}
+            <div
+              className="position-absolute d-flex justify-content-end"
+              style={{ top: 10, right: 10, zIndex: 2 }}
             >
               <button
                 className="btn btn-sm btn-danger rad15"
@@ -1353,330 +1615,237 @@ useEffect(() => {
                 &times;
               </button>
             </div>
+
+            {/* ▶◀ Toggle Geo */}
+            <button
+              onClick={() => setIsOpenGeo(!isOpenGeo)}
+              className="position-absolute btn btn-sm btn-light shadow"
+              style={{
+                left: isOpenGeo ? "45%" : "-12px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                borderRadius: "50%",
+                zIndex: 3
+              }}
+            >
+              {isOpenGeo ? "❮" : "❯"}
+            </button>
+
             {/* 🔰 Header */}
             <Row className="d-flex justify-content-center">
-              <Col md={12} 
+              <Col
+                md={12}
                 className="d-flex justify-content-center p-1 rad15"
-                style={{backgroundColor:bgtitleku}}
+                style={{ backgroundColor: bgtitleku }}
               >
-                <FaInfoCircle size={25} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
+                <FaInfoCircle
+                  size={25}
+                  style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }}
+                />
                 <div className="ms-2">
-                  <p className="text-white fw-bold mb-0 textsize14">Informasi Peta</p>
+                  <p className="text-white fw-bold mb-0 textsize14">
+                    Informasi Peta
+                  </p>
                 </div>
               </Col>
             </Row>
 
-           
-                <div 
+            {/* ================= CONTENT ================= */}
+            <div className="d-flex gap-2">
+
+              {/* ================= GEO DATA DESA (HIGHCHART) ================= */}
+              <AnimatePresence>
+              {isOpenGeo && groupedGeoData && (
+                <motion.div
+                  initial={{ x: 100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: 100, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-scroll-y-auto"
+                  style={{
+                    width: "55%",
+                    borderLeft: "1px solid #e5e7eb",
+                    maxHeight: "55vh",      // ← tinggi maksimal panel
+                    overflowY: "auto",      // ← SCROLL AKTIF
+                    paddingRight: "6px"     // ← biar scroll nggak nutup konten
+                  }}
+                >
+                  {Object.entries(groupedGeoData).map(([maplist, namaObj]) => (
+                    <div key={maplist} className="mb-6">
+                      <p className="fw-bold textsize12 text-center mb-3" style={{color:bgtitleku}}>
+                        Geospasial – {maplist}
+                      </p>
+
+                      {Object.entries(namaObj).map(([nama, data]) => (
+                        <div key={nama} className="mb-4">
+                          <p className="fw-bold textsize12 text-center text-body mb-2">
+                            {nama}
+                          </p>
+
+                          <HighchartsReact
+                            highcharts={Highcharts}
+                            options={{
+                              chart: {
+                                type: "bar",
+                                height: 260,
+                                backgroundColor: "white"
+                              },
+                              title: { text: null },
+                              xAxis: {
+                                categories: data.map(
+                                  d => d.nama_kecamatan + " - " + d.nama_desa
+                                ),
+                                labels: {
+                                  style: { fontSize: "10px" },
+                                  className: "text-body",
+                                  formatter: function () {
+                                    return this.value.length > 20
+                                      ? this.value.substring(0, 20) + "…"
+                                      : this.value;
+                                  }
+                                }
+                              },
+                              yAxis: {
+                                title: {
+                                  text: `Luas (${data[0]?.satuan || ""})`
+                                }
+                              },
+                              tooltip: {
+                                useHTML: true,
+                                pointFormatter: function () {
+                                  return `
+                                    <b>${this.nama}</b><br/>
+                                    Luas: ${this.y} (${this.satuan})
+                                  `;
+                                }
+                              },
+                              legend: { enabled: false },
+                              series: [
+                                {
+                                  name: "Luas Area",
+                                  data: data.map(d => ({
+                                    y: d.luas,
+                                    color: d.color,
+                                    nama: d.nama,
+                                    satuan: d.satuan
+                                  }))
+                                }
+                              ],
+                              credits: { enabled: false }
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+
+
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+
+
+              {/* ================= INFO DATA ================= */}
+              <div
+                style={{
+                  width: isOpenGeo ? "65%" : "100%",
+                  transition: "width 0.3s ease"
+                }}
+              >
+                <div
                   className="text-muted rounded p-2 textsize10 mb-1 text-center"
                   style={{
-                  overflowY:"auto",
-                  scrollbarWidth: 'none',
-                  '&::-webkit-scrollbar': {
-                    display: 'none',
-                  },
-                  maxHeight: isMobile ? "35vh" : "70vh", // ⬅️ otomatis ganti top sesuai layar
-                }}
+                    overflowY: "auto",
+                    scrollbarWidth: "none",
+                    maxHeight: isMobile ? "35vh" : "70vh"
+                  }}
                 >
-                
-                 
-                 
                   {infoData ? (
                     infoData.id_desa ? (
-                      // === Ini DESA ===
                       <div>
-                        <p className="mb-0">
-                          <strong>Wilayah Desa</strong>
+                        <p className="mb-0"><strong>Wilayah Desa</strong></p>
+                        <p className="textsize14 font_weight800 mb-0">
+                          {infoData.nama_desa}
                         </p>
-                       
-                        <p className="textsize16 font_weight800 mb-0">{infoData.nama_desa}</p>
                         <p><strong>Kecamatan:</strong> {infoData.nama_kecamatan}</p>
+
                         <Row>
                           <Col md={12} className="p-1">
-                          <div className="d-flex bg-border2 px-2 py-4 rad15 bg-shaddow"> 
-                            <FaMap size={40} style={{color:bgku}} />
-                            <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Luas Wilayah</p>
-                                <p className="mx-2 textsize16 font_weight800 mb-0 ">{infoData.luas_wilayah} km²</p>
+                            <div className="d-flex bg-border2 p-2 rad15"> 
+                              <MdTitle size={40} className="text-orange" />
+                              <div className="px-2 text-left">
+                                <p className="textsize10 mb-0">Geospasial</p>
+                                  <p className="mx-2 textsize14 font_weight700 mb-0 ">{infoData.nama_geospasial}</p>
+                              </div>
                             </div>
-                          </div>
                           </Col>
                           <Col md={12} className="p-1">
-                          <div className="d-flex bg-border2 p-2 rad15"> 
-                            <FaPeopleGroup size={40} className="text-orange" />
-                            <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Total Penduduk</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.total_penduduk}</p>
+                            <div className="d-flex bg-border2 p-2 rad15"> 
+                              <MdOutlineUpdate size={40} style={{color:bgku}} />
+                              <div className="px-2 text-left">
+                                <p className="textsize10 mb-0">Periode</p>
+                                  <p className="mx-2 textsize14 font_weight700 mb-0 ">{infoData.periode}</p>
+                              </div>
                             </div>
-                          </div>
                           </Col>
-                          <Col md={6} className="p-1">
-                          <div className="d-flex bg-border2 p-2 rad15"> 
-                            <FaPerson size={30} className="text-orange" />
-                            <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Laki-laki</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.penduduk_lk}</p>
+                          <Col md={12} className="p-1">
+                            <div className="d-flex bg-border2 p-2 rad15"> 
+                              <MdOutlineDateRange  size={40} style={{color:bgku}} />
+                              <div className="px-2 text-left">
+                                <p className="textsize10 mb-0">Tahun Rilis</p>
+                                  <p className="mx-2 textsize14 font_weight700 mb-0 ">{infoData.tahun_rilis}</p>
+                              </div>
                             </div>
-                          </div>
                           </Col>
-                          <Col md={6} className="p-1">
-                          <div className="d-flex bg-border2 p-2 rad15"> 
-                            <FaPersonDress size={30} className="text-orange" />
-                            <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Perempuan</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.penduduk_pr}</p>
+                         
+                          <Col md={12} className="p-1">
+                            <div className="d-flex bg-border2 p-2 rad15"> 
+                              <MdOutlineCollectionsBookmark size={40} style={{color:bgku}} />
+                              <div className="px-2 text-left">
+                                <p className="textsize10 mb-0">Koleksi</p>
+                                  <p className="mx-2 textsize14 font_weight700 mb-0">{infoData.nama_maplist}</p>
+                              </div>
                             </div>
-                          </div>
                           </Col>
                           <Col md={12} className="p-1">
                             <div className="d-flex bg-border2 px-2 py-4 rad15 bg-shaddow"> 
-                              <FaMap size={30} style={{color:bgku}} />
+                              <FaMap size={40} style={{color:bgku}} />
                               <div className="px-2 text-left">
-                                <p className="textsize10 mb-0">Jenis Wilayah</p>
-                                  <p className="textsize14 font_weight800 mb-0 ">{infoData.jenis_wilayah_nama}</p>
+                                <p className="textsize10 mb-0">Luas Area</p>
+                                  <p className="mx-2 textsize14 font_weight700 mb-0 text-orange">{formatArea(infoData.luas_area)} ({infoData.satuan})</p>
                               </div>
                             </div>
                           </Col>
                           
-                          <Col md={8} className="p-1">
-                            <div
-                              className="d-flex py-1 px-2 rad15 bg-border"
-                              style={{
-                                backgroundColor:
-                                  infoData.jenis_idm === "Desa Mandiri" ? "#abffa570" :
-                                  infoData.jenis_idm === "Desa Berkembang" ? "#a5faff70" :
-                                  infoData.jenis_idm === "Desa Maju" ? "#fffaa570" :
-                                  "silver", // default jika tidak sesuai
-                              }}
-                            >
-                              <FaMap className="text-white" size={15} />
-                              <div className="px-2 text-left">
-                                <p className="textsize8 mb-0 text-body">{infoData.jenis_idm}</p>
-                              </div>
-                            </div>
-                          </Col>
-                          <Col className="p-1">
-                            <div
-                              className={`d-flex py-1 px-2 rad15 bg-border`}
-                              style={{
-                                backgroundColor: infoData.kampung_kb === 1 ? "green" : "silver",
-                              }}
-                            >
-                              <FaPeopleRoof className=" text-white" size={15} />
-                              <div className="px-2 text-left">
-                                <p className="textsize8 mb-0 text-white">Kampung Kb</p>
-                                
-                              </div>
-                            </div>
-                          </Col>
-
-                          <Col className="p-1">
-                            <div
-                              className={`d-flex py-1 px-2 rad15 bg-border`}
-                              style={{
-                                backgroundColor: infoData.desa_inklusi === 1 ? "green" : "silver",
-                              }}
-                            >
-                              <FaPeopleArrows className=" text-white" size={15} />
-                              <div className="px-2 text-left">
-                                <p className="textsize8 mb-0 text-white">Desa Inklusi</p>
-                               
-                              </div>
-                            </div>
-                          </Col>
-
-                          <Col className="p-1">
-                            <div
-                              className={`d-flex py-1 px-2 rad15 bg-border`}
-                              style={{
-                                backgroundColor: infoData.desa_bersinar === 1 ? "green" : "silver",
-                              }}
-                            >
-                              <MdOutlineLightMode className=" text-white" size={15} />
-                              <div className="px-2 text-left">
-                                <p className="textsize8 mb-0 text-white">Desa Bersinar</p>
-                               
-                              </div>
-                            </div>
-                          </Col>
-                          {infoData.kepala_desa_nama && (
-                            <>
-                            <Col md={12} className="p-1">
-                                <div className="d-flex  bg-border2 p-2 rad15 align-items-left"> 
-                                  <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-                                    <img
-                                      src={infoData.kepala_desa_foto}
-                                      onError={(e) => e.currentTarget.style.display = "none"}
-                                      style={{
-                                        width: 70,
-                                        height: 100,
-                                        objectFit: "cover",
-                                        borderRadius: 6,
-                                        border: "1px solid #ccc"
-                                      }}
-                                    />
-                                    <div className="text-left">
-                                      <p className="textsize12 text-orange font_weight600" style={{ margin: "3px 0 10px 0" }}> Kepala Desa</p>
-                                      <p className="mb-0">Nama</p>
-                                      <p className="font_weight600" style={{marginLeft:`5px`}}>{infoData.kepala_desa_nama}</p>
-                                      <p className="mb-0">Tempat Tanggal Lahir</p>
-                                      <p className="font_weight600" style={{marginLeft:`5px`}}>{infoData.kepala_desa_tempatlahir},{infoData.kepala_desa_tgl_lahir}</p>
-                                      <p className="mb-0">Jenis Kelamin</p>
-                                      <p className="font_weight600" style={{ marginLeft: '5px' }}>
-                                        {infoData.kepala_desa_kelamin === "L" ? "Laki-laki" :
-                                        infoData.kepala_desa_kelamin === "P" ? "Perempuan" :
-                                        "-"}
-                                      </p>
-                                    </div> 
-                                  </div>
-                                </div>
-                            </Col>
-                            </>
-                          )}
-                          
-
                           
                         </Row>
                       </div>
                     ) : (
-                      // === Ini KECAMATAN ===
-                       <div>
-                        <p className="mb-0">
-                          <strong>Wilayah Kecamatan</strong>
-                        </p>
-                       
-                        <p className="textsize16 font_weight800 mb-0">{infoData.nama_kecamatan}</p>
-                        <Row>
-                          <Col md={12} className="p-1">
-                          <div className="d-flex bg-border2 p-2 rad15"> 
-                            <FaMap size={40} />
-                            <div className="px-2 mb-0">
-                              <p className="textsize10 mb-0">Luas Wilayah</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.luas_wilayah} km²</p>
-                            </div>
-                          </div>
-                          </Col>
-                          <Col md={12} className="p-1">
-                          <div className="d-flex bg-border2 p-2 rad15"> 
-                            <FaPeopleGroup size={40} className="text-orange" />
-                            <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Total Penduduk</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.total_penduduk}</p>
-                            </div>
-                          </div>
-                          </Col>
-                          <Col md={6} className="p-1">
-                          <div className="d-flex bg-border2 p-2 rad15"> 
-                            <FaPerson size={30} className="text-orange" />
-                            <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Laki-laki</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.penduduk_lk}</p>
-                            </div>
-                          </div>
-                          </Col>
-                          <Col md={6} className="p-1">
-                          <div className="d-flex bg-border2 p-2 rad15"> 
-                            <FaPersonDress size={30} className="text-orange" />
-                            <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Perempuan</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.penduduk_pr}</p>
-                            </div>
-                          </div>
-                          </Col>
-                          
-                          
-
-                          
-                        </Row>
-                      </div>
+                      <p className="textsize16 font_weight800">
+                        Informasi Kecamatan
+                      </p>
                     )
                   ) : (
                     <>
-                       
-                      <p className="textsize16 font_weight800 mb-0">Informasi Belum Tersedia</p>
-                      <p>Klik wilayah di peta untuk melihat detail</p>
+                      <p className="textsize16 font_weight800 mb-0">
+                        Informasi Belum Tersedia
+                      </p>
+                      <p>Klik wilayah di peta</p>
                     </>
                   )}
-                  
-                 
                 </div>
-           
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* 📦 Floating info geo */}
-      <AnimatePresence>
-        {isOpen_Infomarker && (
-          <motion.div
-            drag
-            dragConstraints={{ left: -950, right: 360, top: -100, bottom: 350 }} // bisa diatur lebih bebas kalau mau
-            ref={filterRef}
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 100 }}
-            transition={{ duration: 0.3 }}
-            className="position-fixed py-1 px-5 bg-body bg-border2"
-            style={{
-              width: "auto",
-              bottom: isMobile ? 20 : 20, // ⬅️ otomatis ganti top sesuai layar
-              right: isMobile ? "30%" : "40%", // ⬅️ otomatis ganti right sesuai layar
-              zIndex: 701,
-              height:"auto",
-              maxHeight:isMobile ? "70vh" : "70vh",
-              overflow:"hidden",
-              borderRadius: 16,
-              backdropFilter: "blur(10px)",
-              boxShadow: "0 5px 20px 0 rgba(0, 0, 0, .1)",
-              cursor: "grab" // 👈 opsional untuk visual feedback
-            }}
-          >
-              {/* 🔴 Tombol Close */}
-            <div className="position-absolute d-flex justify-content-end"
-              style={{
-                top: 10,
-                right: 0,
-                zIndex: 1
-              }}
-            >
-              <button
-                className="btn btn-sm btn-danger rad15"
-                onClick={() => setIsOpen_Infomarker(!isOpen_Infomarker)}
-                style={{ lineHeight: 1, padding: "4px 8px", fontSize: "1rem" }}
-              >
-                &times;
-              </button>
-            </div>
-            
-            <div
-              className="p-2"
-              style={{
-                bottom: isMobile ? "80px" : "100px",
-                left: "20px",
-                width: "100%"
-              }}
-            >
-              <Row className="mb-0">
-              
-                 <div className="d-flex justify-content-start align-items-center">
-                    <p className="mb-1 text-body" style={{ textAlign: "justify" }}>
-                        Batas Kecamatan
-                        
-                      </p>
-                    <p className="mx-2" style={{ backgroundColor: `rgba(255, 0, 0, 0.3)`,width:`25px`,height:`25px` }}></p>
-                    <p className="mb-1 text-body" style={{ textAlign: "justify" }}>
-                        Batas Desa
-                        
-                      </p>
-                    <p className="mx-2" style={{ backgroundColor: `rgba(0, 200, 255, 0.9)`,width:`25px`,height:`25px` }}></p>
-                  </div>
-              </Row>
+              </div>
 
               
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+
+
+      
 
       
             

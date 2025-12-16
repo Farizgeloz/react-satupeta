@@ -3,6 +3,8 @@ import HalMapset from "./components/page_web/Halaman_Opendata_Mapset";
 import HalMapsetTematik from "./components/page_web/Halaman_Opendata_Mapset_Search";
 import HalMapsetTematik2 from "./components/page_web/Halaman_Opendata_Mapset_Search2";
 import HalMapsetBatasWilayah from "./components/page_web/Halaman_Opendata_Mapset_Batas";
+
+import HalMapsetGeospasial from "./components/page_web/Halaman_Opendata_Mapset_Geospasial";
 import HalMapsetMarker from "./components/page_web/Halaman_Opendata_Mapset_Detail";
 import HalMapsetMarkerDetail from "./components/page_web/Halaman_Opendata_Mapset_Marker";
 import HalBantuan from "./components/page_web/Halaman_Bantuan";
@@ -25,7 +27,7 @@ function App() {
           <Route path="/Tematik/Koleksi/:tema" element={<HalMapsetTematik2 />} />
           <Route path="/Tematik/Mapset/:id" element={<HalMapsetMarker />} />
           <Route path="/Tematik/Mapset/Map-Interaktif/Marker/:locationParam" element={<HalMapsetMarkerDetail />} />
-          <Route path="/Tematik/Mapset/Map-Interaktif/Geomap/:locationParam" element={<HalMapsetBatasWilayah />} />
+          <Route path="/Tematik/Mapset/Map-Interaktif/Geomap/:locationParam" element={<HalMapsetGeospasial />} />
           <Route path="/Topik/:topik" element={<HalMapset />} />
           <Route path="/Artikel" element={<HalMapsetArtikel />} />
            <Route path="/Artikel/Detail/:id" element={<HalMapsetArtikelDetail />} />
