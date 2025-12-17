@@ -339,7 +339,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
   const [isOpen_Info, setIsOpen_Info] = useState(true);
   const [isOpen_Infomarker, setIsOpen_Infomarker] = useState(true);
 
-  const [isOpenGeo, setIsOpenGeo] = useState(true);
+  const [isOpenGeo, setIsOpenGeo] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth < 768) {

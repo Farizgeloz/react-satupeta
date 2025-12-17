@@ -546,14 +546,25 @@ const convertDate2 = (value) => {
                   </Modal>
 
                   {koleksi_data === "Peta Interaktif" && (
-                    <Link
-                      className="bg-orange rad15 textsize12 text-white-a shaddow3 text-center d-flex justify-content-center mt-2"
-                      style={{ cursor: "pointer" }}
-                      to={`/Tematik/Mapset/Map-Interaktif/${tipe}/${title}`}
-                    >
-                      <span className="px-2 py-1">Pertinjau Peta</span>
-                    </Link>
+                    title === "Batas Wilayah" ? (
+                      <Link
+                        className="bg-orange rad15 textsize12 text-white-a shaddow3 text-center d-flex justify-content-center mt-2"
+                        style={{ cursor: "pointer" }}
+                        to={`/Tematik/Mapset/Map-Interaktif/Geomap-Batas/${title}`}
+                      >
+                        <span className="px-2 py-1">Pertinjau Peta</span>
+                      </Link>
+                    ) : (
+                      <Link
+                        className="bg-orange rad15 textsize12 text-white-a shaddow3 text-center d-flex justify-content-center mt-2"
+                        style={{ cursor: "pointer" }}
+                        to={`/Tematik/Mapset/Map-Interaktif/${tipe}/${title}`}
+                      >
+                        <span className="px-2 py-1">Pertinjau Peta</span>
+                      </Link>
+                    )
                   )}
+
                   </Col>
                 
               </Row>

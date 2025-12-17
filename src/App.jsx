@@ -28,6 +28,7 @@ function App() {
           <Route path="/Tematik/Mapset/:id" element={<HalMapsetMarker />} />
           <Route path="/Tematik/Mapset/Map-Interaktif/Marker/:locationParam" element={<HalMapsetMarkerDetail />} />
           <Route path="/Tematik/Mapset/Map-Interaktif/Geomap/:locationParam" element={<HalMapsetGeospasial />} />
+          <Route path="/Tematik/Mapset/Map-Interaktif/Geomap-Batas/:locationParam" element={<HalMapsetBatasWilayah />} />
           <Route path="/Topik/:topik" element={<HalMapset />} />
           <Route path="/Artikel" element={<HalMapsetArtikel />} />
            <Route path="/Artikel/Detail/:id" element={<HalMapsetArtikelDetail />} />
