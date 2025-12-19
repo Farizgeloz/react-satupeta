@@ -602,7 +602,7 @@ useEffect(() => {
             value: c,
             symbol: {
               type: "simple-fill",
-              color: hexToRgba(c, 0.6),
+              color: hexToRgba(c, 0.4),
               outline: { color: [0, 0, 0], width: 1 }
             }
           }))
@@ -1181,7 +1181,7 @@ useEffect(() => {
           type="text"
           value={kunci}
           onChange={(e) => setkunci(e.target.value)}
-          className="form-control shadow mx-1 textsize12"
+          className="form-control shadow mx-1 textsize10"
           placeholder="Cari Marker Dengan Kata Kunci"
           autoComplete="off"
           style={{
@@ -1250,7 +1250,7 @@ useEffect(() => {
               >
                 <FaFilter size={20} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
                 <div className="ms-2">
-                  <p className=" fw-bold mb-0 textsize14">Filter Peta</p>
+                  <p className=" fw-bold mb-0 textsize12">Filter Peta</p>
                 </div>
               </Col>
             </Row>
@@ -1490,7 +1490,7 @@ useEffect(() => {
               >
                 <FaLayerGroup size={25} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
                 <div className="ms-2">
-                  <p className="text-white fw-bold mb-0 textsize14">Tipe Layar</p>
+                  <p className="text-white fw-bold mb-0 textsize12">Tipe Layar</p>
                 </div>
               </Col>
             </Row>
@@ -1643,7 +1643,7 @@ useEffect(() => {
                   style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }}
                 />
                 <div className="ms-2">
-                  <p className="text-white fw-bold mb-0 textsize14">
+                  <p className="text-white fw-bold mb-0 textsize12">
                     Informasi Peta
                   </p>
                 </div>
@@ -1665,20 +1665,20 @@ useEffect(() => {
                   style={{
                     width: "55%",
                     borderLeft: "1px solid #e5e7eb",
-                    maxHeight: "55vh",      // ← tinggi maksimal panel
+                    maxHeight: "80vh",      // ← tinggi maksimal panel
                     overflowY: "auto",      // ← SCROLL AKTIF
                     paddingRight: "6px"     // ← biar scroll nggak nutup konten
                   }}
                 >
                   {Object.entries(groupedGeoData).map(([maplist, namaObj]) => (
                     <div key={maplist} className="mb-6">
-                      <p className="fw-bold textsize12 text-center mb-3" style={{color:bgtitleku}}>
+                      <p className="fw-bold textsize10 text-center mb-3" style={{color:bgtitleku}}>
                         Geospasial – {maplist}
                       </p>
 
                       {Object.entries(namaObj).map(([nama, data]) => (
                         <div key={nama} className="mb-4">
-                          <p className="fw-bold textsize12 text-center text-body mb-2">
+                          <p className="fw-bold textsize10 text-center text-body mb-2">
                             {nama}
                           </p>
 
@@ -1754,18 +1754,18 @@ useEffect(() => {
                 }}
               >
                 <div
-                  className="text-muted rounded p-2 textsize10 mb-1 text-center"
+                  className="text-muted rounded p-2 textsize8 mb-1 text-center"
                   style={{
                     overflowY: "auto",
                     scrollbarWidth: "none",
-                    maxHeight: isMobile ? "35vh" : "70vh"
+                    maxHeight: isMobile ? "35vh" : "80vh"
                   }}
                 >
                   {infoData ? (
                     infoData.id_desa ? (
                       <div>
                         <p className="mb-0"><strong>Wilayah Desa</strong></p>
-                        <p className="textsize14 font_weight800 mb-0">
+                        <p className="textsize12 font_weight800 mb-0">
                           {infoData.nama_desa}
                         </p>
                         <p><strong>Kecamatan:</strong> {infoData.nama_kecamatan}</p>
@@ -1775,8 +1775,8 @@ useEffect(() => {
                             <div className="d-flex bg-border2 p-2 rad15"> 
                               <MdTitle size={40} className="text-orange" />
                               <div className="px-2 text-left">
-                                <p className="textsize10 mb-0">Geospasial</p>
-                                  <p className="mx-2 textsize14 font_weight700 mb-0 ">{infoData.nama_geospasial}</p>
+                                <p className="textsize8 mb-0">Geospasial</p>
+                                  <p className="mx-2 textsize12 font_weight700 mb-0 ">{infoData.nama_geospasial}</p>
                               </div>
                             </div>
                           </Col>
@@ -1784,8 +1784,8 @@ useEffect(() => {
                             <div className="d-flex bg-border2 p-2 rad15"> 
                               <MdOutlineUpdate size={40} style={{color:bgku}} />
                               <div className="px-2 text-left">
-                                <p className="textsize10 mb-0">Periode</p>
-                                  <p className="mx-2 textsize14 font_weight700 mb-0 ">{infoData.periode}</p>
+                                <p className="textsize8 mb-0">Periode</p>
+                                  <p className="mx-2 textsize12 font_weight700 mb-0 ">{infoData.periode}</p>
                               </div>
                             </div>
                           </Col>
@@ -1793,8 +1793,8 @@ useEffect(() => {
                             <div className="d-flex bg-border2 p-2 rad15"> 
                               <MdOutlineDateRange  size={40} style={{color:bgku}} />
                               <div className="px-2 text-left">
-                                <p className="textsize10 mb-0">Tahun Rilis</p>
-                                  <p className="mx-2 textsize14 font_weight700 mb-0 ">{infoData.tahun_rilis}</p>
+                                <p className="textsize8 mb-0">Tahun Rilis</p>
+                                  <p className="mx-2 textsize12 font_weight700 mb-0 ">{infoData.tahun_rilis}</p>
                               </div>
                             </div>
                           </Col>
@@ -1803,8 +1803,8 @@ useEffect(() => {
                             <div className="d-flex bg-border2 p-2 rad15"> 
                               <MdOutlineCollectionsBookmark size={40} style={{color:bgku}} />
                               <div className="px-2 text-left">
-                                <p className="textsize10 mb-0">Koleksi</p>
-                                  <p className="mx-2 textsize14 font_weight700 mb-0">{infoData.nama_maplist}</p>
+                                <p className="textsize8 mb-0">Koleksi</p>
+                                  <p className="mx-2 textsize12 font_weight700 mb-0">{infoData.nama_maplist}</p>
                               </div>
                             </div>
                           </Col>
@@ -1812,8 +1812,8 @@ useEffect(() => {
                             <div className="d-flex bg-border2 px-2 py-4 rad15 bg-shaddow"> 
                               <FaMap size={40} style={{color:bgku}} />
                               <div className="px-2 text-left">
-                                <p className="textsize10 mb-0">Luas Area</p>
-                                  <p className="mx-2 textsize14 font_weight700 mb-0 text-orange">{formatArea(infoData.luas_area)} ({infoData.satuan})</p>
+                                <p className="textsize8 mb-0">Luas Area</p>
+                                  <p className="mx-2 textsize12 font_weight700 mb-0 text-orange">{formatArea(infoData.luas_area)} ({infoData.satuan})</p>
                               </div>
                             </div>
                           </Col>
@@ -1822,13 +1822,13 @@ useEffect(() => {
                         </Row>
                       </div>
                     ) : (
-                      <p className="textsize16 font_weight800">
+                      <p className="textsize14 font_weight800">
                         Informasi Kecamatan
                       </p>
                     )
                   ) : (
                     <>
-                      <p className="textsize16 font_weight800 mb-0">
+                      <p className="textsize14 font_weight800 mb-0">
                         Informasi Belum Tersedia
                       </p>
                       <p>Klik wilayah di peta</p>

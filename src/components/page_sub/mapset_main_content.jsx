@@ -58,14 +58,14 @@ function AppStatistik({bgcontentku}) {
             </Col>
             <Col sm={12} xs={12} md={7}  className='rad15 p-3'>
               <p 
-                className={`rad15 textsize20 text-white shaddow1 text-center py-2`}
+                className={`rad15 textsize16 text-white shaddow1 text-center py-2`}
                 style={{ backgroundColor: bgcontentku }}
               >
                 {title}
               </p>
 
               <div
-                className="textsize12 mt-3 mb-5 text-body"
+                className="textsize10 mt-3 mb-5 text-body"
                 dangerouslySetInnerHTML={{
                   __html: contents
                     ?.split(/\n+/)               // pisahkan berdasarkan enter

@@ -21,7 +21,6 @@ function MenuItem({title,submenu,linked,backgroundd}){
         color: '#ffffff',
         padding: '8px 16px',
         margin: '0 0.25rem',
-        fontSize: '1.275rem',
         textDecoration: 'none',
         display: 'inline-block',
         transition: 'background-color 0.2s ease-in-out, box-shadow 0.2s',
@@ -31,6 +30,7 @@ function MenuItem({title,submenu,linked,backgroundd}){
       return (
         <Link
           to={linked}
+          className="textsize10"
           style={buttonStyle}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
@@ -76,8 +76,8 @@ function MenuItem({title,submenu,linked,backgroundd}){
 
     if (menuku2 !== null && !semuaKosong) {
       return(
-        <div className="nav-link textsize14 font_weight600 text-black nav-item dropdown">
-          <Link aria-expanded="false" role="button" className={color2 ? 'dropdown-toggle nav-link textsize14 font_weight600 text-black-a2' : 'dropdown-toggle nav-link textsize12 font_weight600 text-light'} to="#">{title}</Link>
+        <div className="nav-link textsize10 font_weight600 text-black nav-item dropdown">
+          <Link aria-expanded="false" role="button" className={color2 ? 'dropdown-toggle nav-link textsize10 font_weight600 text-black-a2' : 'dropdown-toggle nav-link textsize10 font_weight600 text-light'} to="#">{title}</Link>
           <div data-bs-popper="static" className="dropdown-menu" aria-labelledby="">
             {
               menuku2.map((item,index)=>(
@@ -90,7 +90,7 @@ function MenuItem({title,submenu,linked,backgroundd}){
       );
     }else{
       return(
-        <LinkButton className='text-white-a mx-1 textsize14 px-4 bg-border4 btn-overlay-white' linked={linkedFinal} title={title} />
+        <LinkButton className='text-white-a mx-1 textsize10 px-4 bg-border4 btn-overlay-white' linked={linkedFinal} title={title} />
       );
     }
 }

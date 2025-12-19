@@ -68,14 +68,14 @@ const MultiImageZoomBackground = ({ images = [], title, contents,margintopconten
           top: margintopcontent,
         }}
       >
-        <p className="text-center textsize30 glow-move font_weight700 uppercaseku mb-0 px-2">
+        <p className="text-center textsize24 glow-move font_weight700 uppercaseku mb-0 px-2">
           {title}
         </p>
-        <p className="text-center textsize26 glow-move font_weight700 uppercaseku px-2">
+        <p className="text-center textsize24 glow-move font_weight700 uppercaseku px-2">
           Kabupaten Probolinggo
         </p>
 
-        <p className="text-center textsize20 px-5 text-silver-light text-shaddow">
+        <p className="text-center textsize18 px-5 text-silver-light text-shaddow">
           {contents}
         </p>
       </div>

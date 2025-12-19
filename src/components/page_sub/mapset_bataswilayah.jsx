@@ -975,7 +975,7 @@ useEffect(() => {
           type="text"
           value={kunci}
           onChange={(e) => setkunci(e.target.value)}
-          className="form-control shadow mx-1 textsize12"
+          className="form-control shadow mx-1 textsize10"
           placeholder="Cari Marker Dengan Kata Kunci"
           autoComplete="off"
           style={{
@@ -1044,7 +1044,7 @@ useEffect(() => {
               >
                 <FaFilter size={20} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
                 <div className="ms-2">
-                  <p className=" fw-bold mb-0 textsize14">Filter Peta</p>
+                  <p className=" fw-bold mb-0 textsize12">Filter Peta</p>
                 </div>
               </Col>
             </Row>
@@ -1226,7 +1226,7 @@ useEffect(() => {
               >
                 <FaLayerGroup size={25} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
                 <div className="ms-2">
-                  <p className="text-white fw-bold mb-0 textsize14">Tipe Layar</p>
+                  <p className="text-white fw-bold mb-0 textsize12">Tipe Layar</p>
                 </div>
               </Col>
             </Row>
@@ -1361,14 +1361,14 @@ useEffect(() => {
               >
                 <FaInfoCircle size={25} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
                 <div className="ms-2">
-                  <p className="text-white fw-bold mb-0 textsize14">Informasi Peta</p>
+                  <p className="text-white fw-bold mb-0 textsize12">Informasi Peta</p>
                 </div>
               </Col>
             </Row>
 
            
                 <div 
-                  className="text-muted rounded p-2 textsize10 mb-1 text-center"
+                  className="text-muted rounded p-2 textsize8 mb-1 text-center"
                   style={{
                   overflowY:"auto",
                   scrollbarWidth: 'none',
@@ -1389,15 +1389,15 @@ useEffect(() => {
                           <strong>Wilayah Desa</strong>
                         </p>
                        
-                        <p className="textsize16 font_weight800 mb-0">{infoData.nama_desa}</p>
+                        <p className="textsize14 font_weight800 mb-0">{infoData.nama_desa}</p>
                         <p><strong>Kecamatan:</strong> {infoData.nama_kecamatan}</p>
                         <Row>
                           <Col md={12} className="p-1">
                           <div className="d-flex bg-border2 px-2 py-4 rad15 bg-shaddow"> 
                             <FaMap size={40} style={{color:bgku}} />
                             <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Luas Wilayah</p>
-                                <p className="mx-2 textsize16 font_weight800 mb-0 ">{infoData.luas_wilayah} km²</p>
+                              <p className="textsize8 mb-0">Luas Wilayah</p>
+                                <p className="mx-2 textsize14 font_weight800 mb-0 ">{infoData.luas_wilayah} km²</p>
                             </div>
                           </div>
                           </Col>
@@ -1405,8 +1405,8 @@ useEffect(() => {
                           <div className="d-flex bg-border2 p-2 rad15"> 
                             <FaPeopleGroup size={40} className="text-orange" />
                             <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Total Penduduk</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.total_penduduk}</p>
+                              <p className="textsize8 mb-0">Total Penduduk</p>
+                                <p className="textsize12 font_weight600 mb-0 ">{infoData.total_penduduk}</p>
                             </div>
                           </div>
                           </Col>
@@ -1414,8 +1414,8 @@ useEffect(() => {
                           <div className="d-flex bg-border2 p-2 rad15"> 
                             <FaPerson size={30} className="text-orange" />
                             <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Laki-laki</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.penduduk_lk}</p>
+                              <p className="textsize8 mb-0">Laki-laki</p>
+                                <p className="textsize12 font_weight600 mb-0 ">{infoData.penduduk_lk}</p>
                             </div>
                           </div>
                           </Col>
@@ -1423,8 +1423,8 @@ useEffect(() => {
                           <div className="d-flex bg-border2 p-2 rad15"> 
                             <FaPersonDress size={30} className="text-orange" />
                             <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Perempuan</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.penduduk_pr}</p>
+                              <p className="textsize8 mb-0">Perempuan</p>
+                                <p className="textsize12 font_weight600 mb-0 ">{infoData.penduduk_pr}</p>
                             </div>
                           </div>
                           </Col>
@@ -1432,8 +1432,8 @@ useEffect(() => {
                             <div className="d-flex bg-border2 px-2 py-4 rad15 bg-shaddow"> 
                               <FaMap size={30} style={{color:bgku}} />
                               <div className="px-2 text-left">
-                                <p className="textsize10 mb-0">Jenis Wilayah</p>
-                                  <p className="textsize14 font_weight800 mb-0 ">{infoData.jenis_wilayah_nama}</p>
+                                <p className="textsize8 mb-0">Jenis Wilayah</p>
+                                  <p className="textsize12 font_weight800 mb-0 ">{infoData.jenis_wilayah_nama}</p>
                               </div>
                             </div>
                           </Col>
@@ -1516,7 +1516,7 @@ useEffect(() => {
                                       }}
                                     />
                                     <div className="text-left">
-                                      <p className="textsize12 text-orange font_weight600" style={{ margin: "3px 0 10px 0" }}> Kepala Desa</p>
+                                      <p className="textsize10 text-orange font_weight600" style={{ margin: "3px 0 10px 0" }}> Kepala Desa</p>
                                       <p className="mb-0">Nama</p>
                                       <p className="font_weight600" style={{marginLeft:`5px`}}>{infoData.kepala_desa_nama}</p>
                                       <p className="mb-0">Tempat Tanggal Lahir</p>
@@ -1545,14 +1545,14 @@ useEffect(() => {
                           <strong>Wilayah Kecamatan</strong>
                         </p>
                        
-                        <p className="textsize16 font_weight800 mb-0">{infoData.nama_kecamatan}</p>
+                        <p className="textsize14 font_weight800 mb-0">{infoData.nama_kecamatan}</p>
                         <Row>
                           <Col md={12} className="p-1">
                           <div className="d-flex bg-border2 p-2 rad15"> 
                             <FaMap size={40} />
                             <div className="px-2 mb-0">
-                              <p className="textsize10 mb-0">Luas Wilayah</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.luas_wilayah} km²</p>
+                              <p className="textsize8 mb-0">Luas Wilayah</p>
+                                <p className="textsize12 font_weight600 mb-0 ">{infoData.luas_wilayah} km²</p>
                             </div>
                           </div>
                           </Col>
@@ -1560,8 +1560,8 @@ useEffect(() => {
                           <div className="d-flex bg-border2 p-2 rad15"> 
                             <FaPeopleGroup size={40} className="text-orange" />
                             <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Total Penduduk</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.total_penduduk}</p>
+                              <p className="textsize8 mb-0">Total Penduduk</p>
+                                <p className="textsize12 font_weight600 mb-0 ">{infoData.total_penduduk}</p>
                             </div>
                           </div>
                           </Col>
@@ -1569,8 +1569,8 @@ useEffect(() => {
                           <div className="d-flex bg-border2 p-2 rad15"> 
                             <FaPerson size={30} className="text-orange" />
                             <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Laki-laki</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.penduduk_lk}</p>
+                              <p className="textsize8 mb-0">Laki-laki</p>
+                                <p className="textsize12 font_weight600 mb-0 ">{infoData.penduduk_lk}</p>
                             </div>
                           </div>
                           </Col>
@@ -1578,8 +1578,8 @@ useEffect(() => {
                           <div className="d-flex bg-border2 p-2 rad15"> 
                             <FaPersonDress size={30} className="text-orange" />
                             <div className="px-2 text-left">
-                              <p className="textsize10 mb-0">Perempuan</p>
-                                <p className="textsize14 font_weight600 mb-0 ">{infoData.penduduk_pr}</p>
+                              <p className="textsize8 mb-0">Perempuan</p>
+                                <p className="textsize12 font_weight600 mb-0 ">{infoData.penduduk_pr}</p>
                             </div>
                           </div>
                           </Col>
@@ -1593,7 +1593,7 @@ useEffect(() => {
                   ) : (
                     <>
                        
-                      <p className="textsize16 font_weight800 mb-0">Informasi Belum Tersedia</p>
+                      <p className="textsize14 font_weight800 mb-0">Informasi Belum Tersedia</p>
                       <p>Klik wilayah di peta untuk melihat detail</p>
                     </>
                   )}

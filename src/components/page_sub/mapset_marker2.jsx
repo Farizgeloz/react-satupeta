@@ -901,7 +901,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
           type="text"
           value={kunci}
           onChange={(e) => setkunci(e.target.value)}
-          className="form-control shadow mx-1 textsize14"
+          className="form-control shadow mx-1 textsize12"
           placeholder="Cari Marker Dengan Kata Kunci"
           autoComplete="off"
           style={{
@@ -970,7 +970,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
               >
                 <FaFilter size={20} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
                 <div className="ms-2">
-                  <p className=" fw-bold mb-0 textsize14">Filter Peta</p>
+                  <p className=" fw-bold mb-0 textsize12">Filter Peta</p>
                 </div>
               </Col>
             </Row>
@@ -1211,7 +1211,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
               >
                 <FaInfoCircle size={25} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
                 <div className="ms-2">
-                  <p className="text-white fw-bold mb-0 textsize14">Informasi Peta</p>
+                  <p className="text-white fw-bold mb-0 textsize12">Informasi Peta</p>
                 </div>
               </Col>
             </Row>
@@ -1223,7 +1223,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
               <>
                 
                 <div 
-                  className="text-muted rounded p-2 textsize10 mb-1"
+                  className="text-muted rounded p-2 textsize8 mb-1"
                   style={{
                   overflowY:"auto",
                   scrollbarWidth: 'none',
@@ -1370,7 +1370,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
               >
                 <FaLayerGroup size={25} style={{ marginTop: "2px", marginLeft: "-9%", color: "#ffffff" }} />
                 <div className="ms-2">
-                  <p className="text-white fw-bold mb-0 textsize14">Tipe Layar</p>
+                  <p className="text-white fw-bold mb-0 textsize12">Tipe Layar</p>
                 </div>
               </Col>
             </Row>

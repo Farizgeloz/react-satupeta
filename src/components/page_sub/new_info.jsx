@@ -39,12 +39,12 @@ function AppTeams() {
                                   <Image className="img-first" src={'../../assetku/images/'+artikel.images} />
                                  
                                 </div>
-                                <p className="category textsize12">{artikel.tag} </p>
+                                <p className="category textsize10">{artikel.tag} </p>
                                 <div className=''>
                                   <p className="textsize text-silver">{artikel.tanggal_update}</p>
                                 
                                     
-                                  <Link className="textsize14 font_weight600  height-10 text-black" to="">
+                                  <Link className="textsize12 font_weight600  height-10 text-black" to="">
           
           
                                   {
@@ -69,7 +69,7 @@ function AppTeams() {
                                   
                                 </div>
                               </Link>
-                              <p className="textsize12 text-silver">
+                              <p className="textsize10 text-silver">
                                 {
                                     (() => {
                                         if((artikel.contents).length >=100) {
@@ -117,12 +117,12 @@ function AppTeams() {
                                       <div className="overflow-hidden border-rad5">
                                         <Image className="img-item" src={'../../assetku/images/'+artikel2.images} />
                                       </div>
-                                      <p className="category textsize10">{artikel2.tag} </p>
+                                      <p className="category textsize8">{artikel2.tag} </p>
                                       <div className=''>
                                         <p className="textsize6 text-silver">{artikel2.tanggal_update}</p>
                                       
                                           
-                                        <Link className="textsize12 font_weight600  height-10 text-black" to="">
+                                        <Link className="textsize10 font_weight600  height-10 text-black" to="">
                 
                 
                                         {

@@ -440,14 +440,14 @@ function AppTeams() {
               <img src={image1} className='img-header'  />
                 
                 <div className="header-logo margin--t1">
-                  <p className="textsize12 text-green-dark font_weight600">{title}</p>
+                  <p className="textsize10 text-green-dark font_weight600">{title}</p>
                   <p className="textsize8 text-silver">{contents}</p>
                 </div>
             </Col>
 
             
             
-            <p className="font_weight600 textsize12 px-3 mt-2 mb-0">Filter Lokasi</p>
+            <p className="font_weight600 textsize10 px-3 mt-2 mb-0">Filter Lokasi</p>
             <Col md={12} className="px-4 mt-0">
              
               <Row>
@@ -617,7 +617,7 @@ function AppTeams() {
                 
               </Row>
             </Col>
-            <p className="font_weight600 textsize12 px-3 mt-0 mb-0">Info Peta</p>
+            <p className="font_weight600 textsize10 px-3 mt-0 mb-0">Info Peta</p>
             {loading ? (
               <Spinner />
             ) : (

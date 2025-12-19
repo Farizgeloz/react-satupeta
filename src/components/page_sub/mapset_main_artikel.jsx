@@ -169,25 +169,25 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                     
           {/* Breadcrumb */}
           <div className="px-3 d-flex rad10 italicku" style={{ paddingTop:"5px", paddingBottom:"5px", width:"fit-content"}}>
-            <Link to="/" className="textsize12 text-white-a d-flex"> <MdHomeFilled className='mt-1'/> <span className='px-2'> Beranda</span></Link><span className="mx-3 text-white">/</span>
-            <Link to="/Artikel" className="textsize12 text-white-a d-flex"><MdOutlineFeaturedPlayList className='mt-1'/> <span className='px-2'> Artikel Seputar Peta</span></Link>
+            <Link to="/" className="textsize10 text-white-a d-flex"> <MdHomeFilled className='mt-1'/> <span className='px-2'> Beranda</span></Link><span className="mx-3 text-white">/</span>
+            <Link to="/Artikel" className="textsize10 text-white-a d-flex"><MdOutlineFeaturedPlayList className='mt-1'/> <span className='px-2'> Artikel Seputar Peta</span></Link>
             
           </div>
         </Col>
       </Row>
       <Col md={10} className="px-4 mb-2 py-4 rad10 shaddow3 bg-body" style={{backgroundColor:"#ECEFF1"}}>
         <p 
-          className="font_weight700 textsize24 mt-5 text-body"
+          className="font_weight700 textsize18 mt-3 text-body"
         >Artikel Tentang Geospasial dan Mapset</p>
         <p 
-          className={`block py-1 text-white px-5 py-2 rad10 textsize14`}
+          className={`block py-1 text-white px-5 py-2 rad10 textsize12`}
           style={{backgroundColor:bgtitleku}}
-        >Gunakan fitur pencarian kami untuk menemukan artikel terkini seputar Geospasial dan Mapset dengan mudah dan cepat.</p>
+        >Jelajahi insight terbaru seputar Geospasial dan Mapset dengan fitur pencarian cerdas kami — cepat, mudah, dan langsung ke informasi yang Anda butuhkan.</p>
         
           <Row className="">
             <Col md={12} className="">
               <TextField
-                className="textsize14"
+                className="textsize12"
                 placeholder="Cari Artikel..."
                 variant="standard"
                 value={kunci}
@@ -227,7 +227,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                     paddingBottom: '10px',
                     height: '40px',
                     border: '1px solid #b2dfdb',
-                    fontSize: '1.5rem',
+                    fontSize: '1.2rem',
                     transition: 'border 0.25s ease, box-shadow 0.25s ease',
 
                     // ✅ Placeholder style
@@ -277,13 +277,13 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               <Container fluid className='rad15'>  
                 <Row className="mb-3 pb-2" style={{borderBottom:"1px solid #c5c3c3"}}>
                   <Col className="text-start">
-                    <p className="mb-0 text-muted textsize12 italicku text-body">
+                    <p className="mb-0 text-muted textsize10 italicku text-body">
                       Ditemukan <strong>{sortedData.length}</strong> Artikel
                     </p>
                   </Col>
                   <Col className="d-flex justify-content-end">
                     <select
-                      className="form-select form-select-sm w-auto textsize12"
+                      className="form-select form-select-sm w-auto textsize10"
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
                     >
@@ -322,17 +322,17 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                   </div>
                                   <div className='label text-left py-2'>
                                     <p 
-                                      className={` textsize10 mb-1`}
+                                      className={` textsize8 mb-1`}
                                       style={{color:colordateku}}
                                     >{convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
                                     <p
-                                      className={` textsize14 font_weight600 mb-2 text-body`}
+                                      className={` textsize10 font_weight600 mb-2 text-body`}
                                       style={{ lineHeight: '1.2',minHeight:"70px" }}
                                     >
                                       {data.title.length > 70 ? data.title.slice(0, 70) + '...' : data.title}
                                     </p>
                                     <Link to={`/Artikel/Detail/${slugify(data.title)}`} 
-                                      className={`text-white-a textsize10 p-2 rad10`}
+                                      className={`text-white-a textsize8 p-2 rad10`}
                                       style={{backgroundColor:bgcontentku}}
                                     >Baca Selengkapnya </Link>
                                   </div>
@@ -435,7 +435,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                     </>
                   ) : (
                     <Col xs={12} className="text-center py-5 bg-white rad10">
-                      <p className="textsize16 text-silver italicku"><MdOutlineErrorOutline className="text-orange"/> Data Tidak Ditemukan.</p>
+                      <p className="textsize14 text-silver italicku"><MdOutlineErrorOutline className="text-orange"/> Data Tidak Ditemukan.</p>
                     </Col>
                   )}
 

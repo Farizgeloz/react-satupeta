@@ -1351,7 +1351,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                     {loading ? (
                       <Spinner animation="border" />
                     ) : (
-                      <div className="text-muted rounded p-2 textsize10 mb-1">
+                      <div className="text-muted rounded p-2 textsize8 mb-1">
                         <p className="mb-1">
                           <strong>Topik:</strong>{' '}
                           {

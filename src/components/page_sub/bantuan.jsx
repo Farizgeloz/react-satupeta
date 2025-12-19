@@ -143,7 +143,7 @@ function AppKategori({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgconten
                   className='textsize20 font_weight600  margin-t15s text-body'
                 ><FaBookOpen style={{marginTop:"-5px"}} /> {datas.title}</p>
               </div>
-              <div className='textsize12 text-body' dangerouslySetInnerHTML={{ __html: datas.content }} />
+              <div className='textsize10 text-body' dangerouslySetInnerHTML={{ __html: datas.content }} />
             </section>
           ))}
         
@@ -161,7 +161,7 @@ function AppKategori({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgconten
                             <a
                               href={`#${datas.seksi}`}
                               rel="noopener noreferrer"
-                              className="text-green-a textsize12"
+                              className="text-green-a textsize10"
                             >
                               {datas.title}
                             </a>
@@ -183,7 +183,7 @@ function AppKategori({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgconten
                             <a
                               href={`#${datas.seksi}`}
                               rel="noopener noreferrer"
-                              className="text-green-a textsize12"
+                              className="text-green-a textsize10"
                             >
                               {datas.title}
                             </a>

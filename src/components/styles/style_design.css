@@ -1002,3 +1002,32 @@ filter: progid:DXImageTransform.Microsoft.gradient(
   display: block;
 }
 
+/* LIGHT MODE TOOLTIP */
+.tooltip-light.bs-tooltip-top .tooltip-inner,
+.tooltip-light.bs-tooltip-bottom .tooltip-inner,
+.tooltip-light.bs-tooltip-start .tooltip-inner,
+.tooltip-light.bs-tooltip-end .tooltip-inner {
+  background-color: #ffffff;
+  color: #212529;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-size: 12px;
+}
+
+/* DARK MODE TOOLTIP */
+.tooltip-dark.bs-tooltip-top .tooltip-inner,
+.tooltip-dark.bs-tooltip-bottom .tooltip-inner,
+.tooltip-dark.bs-tooltip-start .tooltip-inner,
+.tooltip-dark.bs-tooltip-end .tooltip-inner {
+  background-color: #1f1f1f;
+  color: #f1f1f1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  font-size: 12px;
+}
+
+/* Arrow ikut warna */
+.tooltip-dark .tooltip-arrow::before {
+  border-top-color: #1f1f1f !important;
+}
+.tooltip-light .tooltip-arrow::before {
+  border-top-color: #ffffff !important;
+}

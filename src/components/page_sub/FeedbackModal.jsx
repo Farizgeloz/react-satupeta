@@ -126,7 +126,7 @@ const FeedbackModal = () => {
       {/* FAB Rotated */}
       <div className="shadow rotated-text-feedback textsize8 d-flex py-3" title="Kirim Feedback" onClick={handleShow}>
         <div className="icon-wrapper"><FcFeedback size={20} /></div>
-        <p className="text-wrapper textsize12">Feedback</p>
+        <p className="text-wrapper textsize10">Feedback</p>
       </div>
 
       {/* Modal */}
@@ -146,13 +146,13 @@ const FeedbackModal = () => {
 
         </Modal.Header>
         <Form onSubmit={handleSubmit} className="px-2">
-            <p className="text-center textsize12">Bantu kami meningkatkan layanan dengan feedback Anda.</p>
+            <p className="text-center textsize10">Bantu kami meningkatkan layanan dengan feedback Anda.</p>
             <Modal.Body>
                 <Form.Group controlId="formPurpose" className="mt-3">
-                    <Form.Label className="font_weight600 textsize12">Tujuan mengunjungi situs Satu Peta? <span className="text-red">*</span></Form.Label>
+                    <Form.Label className="font_weight600 textsize10">Tujuan mengunjungi situs Satu Peta? <span className="text-red">*</span></Form.Label>
                     <Form.Control
                         list="tujuanOptions"
-                        className="bg-input textsize12"
+                        className="bg-input textsize10"
                         value={tujuan}
                         onChange={(e) => setTujuan(e.target.value)}
                         placeholder="Contoh: Mencari data untuk riset..."
@@ -168,10 +168,10 @@ const FeedbackModal = () => {
                     {validasi_tujuan && <p className="transisi mb-0 textsize8 text-red d-flex italicku"><MdErrorOutline  className="mt-1 mx-2" />Pertanyaan belum dijawab.</p>}
                 </Form.Group>
                 <Form.Group controlId="formPurpose" className="mt-3">
-                    <Form.Label className="font_weight600 textsize12">Posisi Anda sebagai apa? <span className="text-red">*</span></Form.Label>
+                    <Form.Label className="font_weight600 textsize10">Posisi Anda sebagai apa? <span className="text-red">*</span></Form.Label>
                     <Form.Control
                         list="posisiOptions"
-                        className="bg-input textsize12"
+                        className="bg-input textsize10"
                         value={posisi}
                         onChange={(e) => setPosisi(e.target.value)}
                         placeholder="Contoh: Peneliti/Akademisi..."
@@ -187,10 +187,10 @@ const FeedbackModal = () => {
                     {validasi_posisi && <p className="transisi mb-0 textsize8 text-red d-flex italicku"><MdErrorOutline  className="mt-1 mx-2" />Pertanyaan belum dijawab.</p>}
                 </Form.Group>
                 <Form.Group controlId="formPurpose" className="mt-3">
-                    <Form.Label className="font_weight600 textsize12">Apakah Anda menemukan data yang dicari? <span className="text-red">*</span></Form.Label>
+                    <Form.Label className="font_weight600 textsize10">Apakah Anda menemukan data yang dicari? <span className="text-red">*</span></Form.Label>
                     <Form.Control
                         list="temuOptions"
-                        className="bg-input textsize12"
+                        className="bg-input textsize10"
                         value={temu}
                         onChange={(e) => setTemu(e.target.value)}
                         placeholder="Contoh: Peneliti/Akademisi..."
@@ -204,10 +204,10 @@ const FeedbackModal = () => {
                     {validasi_temu && <p className="transisi mb-0 textsize8 text-red d-flex italicku"><MdErrorOutline  className="mt-1 mx-2" />Pertanyaan belum dijawab.</p>}
                 </Form.Group>
                 <Form.Group controlId="formFeedbackText" className="mt-3">
-                    <Form.Label className="font_weight600 textsize12">Berikan saran dan masukan Anda untuk Satu Peta agar kami dapat memberikan layanan lebih baik lagi</Form.Label>
+                    <Form.Label className="font_weight600 textsize10">Berikan saran dan masukan Anda untuk Satu Peta agar kami dapat memberikan layanan lebih baik lagi</Form.Label>
                     <Form.Control
                         as="textarea"
-                        className="bg-input textsize12"
+                        className="bg-input textsize10"
                         rows={4}
                         value={feedback}
                         onChange={(e) => setFeedback(e.target.value)}

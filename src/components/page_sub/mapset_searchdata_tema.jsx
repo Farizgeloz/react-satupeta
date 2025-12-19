@@ -138,9 +138,9 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                     
           {/* Breadcrumb */}
           <div className="px-3 d-flex rad10 italicku" style={{ paddingTop:"5px", paddingBottom:"5px", width:"fit-content"}}>
-            <Link to="/" className="textsize12 text-white-a d-flex"> <MdHomeFilled className='mt-1'/> <span className='px-2'> Beranda</span></Link><span className="mx-3 text-white">/</span>
-            <Link to="/Tematik" className="textsize12 text-white-a d-flex"><MdOutlineListAlt className='mt-1'/> <span className='px-2'>Peta Tematik</span></Link><span className="mx-3 text-white">/</span>
-            <Link to="" className="textsize12 text-white-a d-flex"><MdOutlineListAlt className='mt-1'/> <span className='px-2'> Koleksi {tema}</span></Link>
+            <Link to="/" className="textsize10 text-white-a d-flex"> <MdHomeFilled className='mt-1'/> <span className='px-2'> Beranda</span></Link><span className="mx-3 text-white">/</span>
+            <Link to="/Tematik" className="textsize10 text-white-a d-flex"><MdOutlineListAlt className='mt-1'/> <span className='px-2'>Peta Tematik</span></Link><span className="mx-3 text-white">/</span>
+            <Link to="" className="textsize10 text-white-a d-flex"><MdOutlineListAlt className='mt-1'/> <span className='px-2'> Koleksi {tema}</span></Link>
            
           </div>
         </Col>
@@ -150,14 +150,14 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
           className={`font_weight700 textsize24 mt-3 text-body`}
         >Pencarian Visual Peta untuk kebutuhanmu</p>
         <p 
-          className={`block py-1 text-white px-5 py-2 rad10 textsize14`}
+          className={`block py-1 text-white px-5 py-2 rad10 textsize12`}
           style={{backgroundColor:bgtitleku}}
         >Jelajahi fitur pencarian kami yang dirancang untuk membantu Anda menemukan solusi visual terbaik, mulai dari peta tematik interaktif, hingga layout profesional dan story maps yang membawa narasi Anda ke level berikutnya.</p>
         
           <Row className="">
             <Col md={12} className="mt-3">
               <TextField
-                className="textsize14"
+                className="textsize12"
                 placeholder="Cari Peta Tematik..."
                 variant="standard"
                 value={kunci}
@@ -479,13 +479,13 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               <Container fluid className=''>   
                 <Row className="mb-3 pb-2" style={{borderBottom:"1px solid #c5c3c3"}}>
                   <Col className="text-start">
-                    <p className="mb-0 text-muted textsize12 italicku text-body">
+                    <p className="mb-0 text-muted textsize10 italicku text-body">
                       Ditemukan <strong>{sortedData.length}</strong> Map Lokasi
                     </p>
                   </Col>
                   <Col className="d-flex justify-content-end">
                     <select
-                      className="form-select form-select-sm w-auto textsize12"
+                      className="form-select form-select-sm w-auto textsize10"
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
                     >
@@ -692,7 +692,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                     </>
                   ) : (
                     <Col xs={12} className="text-center py-5 bg-white rad10">
-                      <p className="textsize16 text-silver italicku"><MdOutlineErrorOutline className="text-orange"/> Data Tidak Ditemukan.</p>
+                      <p className="textsize14 text-silver italicku"><MdOutlineErrorOutline className="text-orange"/> Data Tidak Ditemukan.</p>
                     </Col>
                   )}
 

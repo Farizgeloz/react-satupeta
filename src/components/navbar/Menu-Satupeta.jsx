@@ -50,8 +50,8 @@ function MenuItem({title,submenu,linked}){
 
     if (menuku2 !== null && !semuaKosong) {
       return(
-        <div className="nav-link textsize12 font_weight600 text-black nav-item dropdown">
-          <Link aria-expanded="false" role="button" className={color2 ? 'dropdown-toggle nav-link textsize12 font_weight600 text-light uppercaseku' : 'dropdown-toggle nav-link textsize10 font_weight600 text-light uppercaseku'} to="#">{title}</Link>
+        <div className="nav-link textsize10 font_weight600 text-black nav-item dropdown">
+          <Link aria-expanded="false" role="button" className={color2 ? 'dropdown-toggle nav-link textsize10 font_weight600 text-light uppercaseku' : 'dropdown-toggle nav-link textsize8 font_weight600 text-light uppercaseku'} to="#">{title}</Link>
           <div data-bs-popper="static" className="dropdown-menu" aria-labelledby="">
             {
               menuku2.map((item,index)=>(
@@ -64,7 +64,7 @@ function MenuItem({title,submenu,linked}){
       );
     }else{
       return(
-        <Link className={color2 ? 'text-white-a mx-1 textsize12 px-4 bg-border4 btn-overlay-white' : 'text-white-a mx-1 textsize12 px-4 bg-border4 btn-overlay-white'} to={linkedFinal}>{title}</Link>
+        <Link className={color2 ? 'text-white-a mx-1 textsize10 px-4 bg-border4 btn-overlay-white' : 'text-white-a mx-1 textsize10 px-4 bg-border4 btn-overlay-white'} to={linkedFinal}>{title}</Link>
       );
     }
 }

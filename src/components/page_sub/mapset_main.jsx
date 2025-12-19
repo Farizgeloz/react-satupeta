@@ -225,12 +225,12 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
         />
       </div>
 
-      <Col md={9} className="px-4 mb-5" style={{marginTop:"-22%", zIndex:"13"}}>
+      <Col md={9} className="px-4 mb-3" style={{marginTop:"-27%", zIndex:"13"}}>
        
           <Row className="px-0">
             <Col md={12} className="text-center d-flex align-items-center">
               <TextField
-                className="textsize16"
+                className="textsize14"
                 placeholder="Cari Peta Tematik Yang Terhubung..."
                 variant="standard"
                 value={kunci}
@@ -267,9 +267,9 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                     paddingLeft: '16px',
                     paddingTop: '10px',
                     paddingBottom: '10px',
-                    height: '50px',
+                    height: '40px',
                     border: '1px solid #b2dfdb',
-                    fontSize: '1.5rem',
+                    fontSize: '1.2rem',
                     transition: 'border 0.25s ease, box-shadow 0.25s ease', // <--- animasi halus
                     '&:hover': {
                       border: '1px solid #26a69a',
@@ -306,7 +306,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                   }}
                 >
                   <FaSearch className="" />
-                  <span className="mb-0 textsize14">Cari</span>
+                  <span className="mb-0 textsize12">Cari</span>
                 </Link>
 
               
@@ -316,7 +316,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
             
           </Row>
       </Col>
-      <Col md={12} className="text-center" style={{marginTop:"-16%", zIndex:"13"}}>
+      <Col md={12} className="text-center" style={{marginTop:"-20%", zIndex:"13"}}>
         <AppCount/>
       </Col>
       <Col md={11}>
@@ -418,12 +418,12 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                           </Col>
                           <Col sm={8} className="label text-center py-2">
                             <p 
-                              className={`text-white textsize12 mb-0 shaddow3 p-1 mx-1 rad10`}
+                              className={`text-white textsize10 mb-0 shaddow3 p-1 mx-1 rad10`}
                               style={{backgroundColor:bgcontentku}}
                             >
                               {data.koleksi_data}
                             </p>
-                            <p className={`textsize14 mx-1 ${activeIndex === index ? 'text-body' : 'text-body'}`}>{data.title}</p>
+                            <p className={`textsize12 mx-1 ${activeIndex === index ? 'text-body' : 'text-body'}`}>{data.title}</p>
                           </Col>
                         </Row>
                       );
@@ -497,13 +497,13 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                   
                   <Col md={10} sm={7} className='py-2'>
                     <p 
-                      className={`rad15 textsize16 text-white shaddow3 text-center py-2`} 
+                      className={`rad15 textsize14 text-white shaddow3 text-center py-2`} 
                       style={{maxWidth:"45vh",backgroundColor:bgtitleku}}>Peta Tematik Interaktif</p>  
                    </Col>
                    <Col md={2} sm={5} className='py-3'>
                     <Link 
                       to="/Tematik/Koleksi/Peta Interaktif"
-                      className="bg-orange rad15 textsize10 text-white-a shaddow3 text-center d-flex justify-content-center" 
+                      className="bg-orange rad15 textsize8 text-white-a shaddow3 text-center d-flex justify-content-center" 
                       style={{maxWidth:"300px"}}
                       cursor="pointer"
                     >
@@ -553,7 +553,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                   >
                                     {data.koleksi_data}
                                   </p>
-                                  <p className="text-body textsize14 mt-2" style={{height:"70px"}}>{data.title}</p>
+                                  <p className="text-body textsize12 mt-2" style={{height:"50px"}}>{data.title}</p>
                                  
                                  
                                  
@@ -569,7 +569,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                     </>
                   ) : (
                     <Col xs={12} className="text-center py-5">
-                      <p className="textsize16 text-silver-light italicku"><MdOutlineErrorOutline className="text-orange"/> Data Tidak Ditemukan.</p>
+                      <p className="textsize14 text-silver-light italicku"><MdOutlineErrorOutline className="text-orange"/> Data Tidak Ditemukan.</p>
                     </Col>
                   )}
                   
@@ -601,13 +601,13 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                   
                    <Col md={10} sm={7} className='py-2'>
                     <p 
-                      className={`rad15 textsize16 text-white shaddow3 text-center py-2`} 
+                      className={`rad15 textsize14 text-white shaddow3 text-center py-2`} 
                       style={{maxWidth:"45vh",backgroundColor:bgtitleku}}>Peta Tematik Layout</p>  
                    </Col>
                    <Col md={2} sm={5} className='py-2'>
                     <Link 
                       to="/Tematik/Koleksi/Peta Layout"
-                      className="bg-orange rad15 textsize10 text-white-a shaddow3 text-center d-flex justify-content-center" 
+                      className="bg-orange rad15 textsize8 text-white-a shaddow3 text-center d-flex justify-content-center" 
                       style={{maxWidth:"300px"}}
                       cursor="pointer"
                     >
@@ -655,7 +655,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                     >
                                       {data.koleksi_data}
                                     </p>
-                                    <p className="text-body textsize14 mt-2" style={{height:"70px"}}>{data.title}</p>
+                                    <p className="text-body textsize12 mt-2" style={{height:"50px"}}>{data.title}</p>
                                     
                                   </div>
                                 </Link>
@@ -671,7 +671,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                     </>
                   ) : (
                     <Col xs={12} className="text-center py-5">
-                      <p className="textsize16 text-silver-light italicku"><MdOutlineErrorOutline className="text-orange"/> Data Tidak Ditemukan.</p>
+                      <p className="textsize14 text-silver-light italicku"><MdOutlineErrorOutline className="text-orange"/> Data Tidak Ditemukan.</p>
                     </Col>
                   )}
                   
@@ -702,13 +702,13 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                 <Row className='portfoliolist justify-content-md-center p-2'>
                    <Col md={10} sm={7} className='py-2'>
                     <p 
-                      className={`rad15 textsize16 text-white shaddow3 text-center py-2`} 
+                      className={`rad15 textsize14 text-white shaddow3 text-center py-2`} 
                       style={{maxWidth:"45vh",backgroundColor:bgtitleku}}>Artikel Seputar Peta</p>  
                    </Col>
                    <Col md={2} sm={5} className='py-2'>
                     <Link 
                       to="/Artikel"
-                      className="bg-orange rad15 textsize10 text-white-a shaddow3 text-center d-flex justify-content-center" 
+                      className="bg-orange rad15 textsize8 text-white-a shaddow3 text-center d-flex justify-content-center" 
                       style={{maxWidth:"100%"}}
                       cursor="pointer"
                     >
@@ -746,22 +746,22 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                   <div className='label text-left py-2 mt-2 px-3' style={{minHeight:"300px"}}>
                                    <div style={{minHeight:"250px"}}>
                                       <p
-                                        className="text-body textsize14 font_weight600 mb-2"
+                                        className="text-body textsize12 font_weight600 mb-2"
                                         style={{ lineHeight: '1.2' }}
                                       >
                                         {data.title}
                                       </p>
-                                       <p className='text-red textsize10 mb-1'>{convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
+                                       <p className='text-red textsize8 mb-1'>{convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
                                     
                                       <p
-                                        className="text-body textsize12 font_weight400 mb-2"
+                                        className="text-body textsize10 font_weight400 mb-2"
                                         style={{ lineHeight: '1.2' }}
                                       >
                                         {data.content_a.length > 120 ? data.content_a.slice(0, 120) + '...' : data.content_a}
                                       </p>
                                     </div>
                                     <Link to={`/Artikel/Detail/${slugify(data.title)}`} 
-                                      className={`text-white-a textsize10 p-2 rad10`}
+                                      className={`text-white-a textsize8 p-2 rad10`}
                                       style={{backgroundColor:bgcontentku}}
                                       >Baca Selengkapnya </Link>
                                   </div>
@@ -804,7 +804,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                     </>
                   ) : (
                     <Col xs={12} className="text-center py-5">
-                      <p className="textsize16 text-silver-light italicku"><MdOutlineErrorOutline className="text-orange"/> Data Tidak Ditemukan.</p>
+                      <p className="textsize14 text-silver-light italicku"><MdOutlineErrorOutline className="text-orange"/> Data Tidak Ditemukan.</p>
                     </Col>
                   )}
                   

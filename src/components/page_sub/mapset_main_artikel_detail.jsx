@@ -252,9 +252,9 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                     
           {/* Breadcrumb */}
           <div className="px-3 d-flex rad10 italicku" style={{ paddingTop:"5px", paddingBottom:"5px", width:"fit-content"}}>
-            <Link to="/" className="textsize12 text-white-a d-flex"> <MdHomeFilled className='mt-1'/> <span className='px-2'> Beranda</span></Link><span className="mx-3 text-white">/</span>
-            <Link to="/Artikel" className="textsize12 text-white-a d-flex"><MdOutlineListAlt className='mt-1'/> <span className='px-2'> Artikel Seputar Peta</span></Link><span className="mx-3 text-white">/</span>
-            <Link to="" className="textsize12 text-white-a d-flex"><MdOutlineFeaturedPlayList className='mt-1'/> <span className='px-2'> {deslugify(id)}</span></Link>
+            <Link to="/" className="textsize10 text-white-a d-flex"> <MdHomeFilled className='mt-1'/> <span className='px-2'> Beranda</span></Link><span className="mx-3 text-white">/</span>
+            <Link to="/Artikel" className="textsize10 text-white-a d-flex"><MdOutlineListAlt className='mt-1'/> <span className='px-2'> Artikel Seputar Peta</span></Link><span className="mx-3 text-white">/</span>
+            <Link to="" className="textsize10 text-white-a d-flex"><MdOutlineFeaturedPlayList className='mt-1'/> <span className='px-2'> {deslugify(id)}</span></Link>
            
           </div>
         </Col>
@@ -274,8 +274,8 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               className="textsize24 font_weight600 uppercaseku text-body" style={{lineHeight:"1.2",marginTop:"30px"}}
             >{dataku.title}</p>
             <div className="d-flex mb-4">
-              <p className="mb-0 textsize14 text-body font_weight600 italicku">Admin {dataku.nick_admin}  <FaMinus className="mx-2" />  </p>
-              <p className="mb-0 textsize14 text-body font_weight600 italicku">{convertDate(dataku.updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, ''))}</p>
+              <p className="mb-0 textsize12 text-body font_weight600 italicku">Admin {dataku.nick_admin}  <FaMinus className="mx-2" />  </p>
+              <p className="mb-0 textsize12 text-body font_weight600 italicku">{convertDate(dataku.updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, ''))}</p>
             </div>
             {dataku.presignedUrl_a && (
               <motion.img
@@ -297,7 +297,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               />
             )}
             {dataku && typeof dataku.content_a === 'string' ? (
-              <div className="textsize12 mt-3 mb-5 text-body">
+              <div className="textsize10 mt-3 mb-5 text-body">
                 <div className='text-body' dangerouslySetInnerHTML={{ __html: dataku.content_a }} />
               </div>
             ) : ("")}
@@ -321,7 +321,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               />
             )}
             {typeof dataku?.content_b === "string" && dataku.content_b ? (
-              <div className="textsize12 mt-3 mb-5 text-body">
+              <div className="textsize10 mt-3 mb-5 text-body">
                 <div className='text-body' dangerouslySetInnerHTML={{ __html: dataku.content_b }} />
               </div>
             ) : ("")}
@@ -345,12 +345,12 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
               />
             )}
             {dataku && typeof dataku.content_c === 'string' ? (
-              <div className="textsize12 mt-3 mb-5 text-body">
+              <div className="textsize10 mt-3 mb-5 text-body">
                 <div className='text-body' dangerouslySetInnerHTML={{ __html: dataku.content_c }} />
               </div>
             ) : ("")}
             {typeof dataku?.sumber === "string" && dataku.sumber ? (
-              <p className="mt-5 mb-0 textsize12 font_weight600 text-body">Sumber: <span className="font_weight400">{dataku.sumber}</span></p>
+              <p className="mt-5 mb-0 textsize10 font_weight600 text-body">Sumber: <span className="font_weight400">{dataku.sumber}</span></p>
             ) : ("")}
             {dataku.download_file && dataku.download_file.length >= 3 ? (
               <Link
@@ -366,7 +366,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
         )}  
       </Col>
       <Col md={3}>
-        <p className="textsize12 text-center mt-5 text-body">Bagikan :</p>
+        <p className="textsize10 text-center mt-5 text-body">Bagikan :</p>
         <ShareButtons url={`/Artikel/${dataku.id}`} title={dataku.judul} className="mb-5" />
 
         <Row className='portfoliolist justify-content-md-center p-2 mt-5'>
@@ -397,15 +397,15 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                             />
                           </div>
                           <div className='label text-left py-2 mt-0 mb-2'>
-                            <p className='text-body textsize12 mb-1'>{convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
+                            <p className='text-body textsize10 mb-1'>{convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
                             <p
-                              className="text-body textsize14 font_weight600 mb-2"
+                              className="text-body textsize12 font_weight600 mb-2"
                               style={{ lineHeight: '1.2' }}
                             >
                               {data.title.length > 70 ? data.title.slice(0, 70) + '...' : data.title}
                             </p>
                             <Link to={`/Artikel/Detail/${slugify(data.title)}`} 
-                              className={` text-white-a textsize10 p-2 rad10`}
+                              className={` text-white-a textsize8 p-2 rad10`}
                               style={{backgroundColor:bgcontentku}}
                             >Baca Selengkapnya </Link>
                           </div>

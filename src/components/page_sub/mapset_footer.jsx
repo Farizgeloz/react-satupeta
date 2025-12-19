@@ -99,13 +99,13 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
              
 
             </div>
-            <span className='designation text-white textsize14'>{alamatku}</span>
-            <p className='text-white textsize14'>Kab. Probolinggo</p>
+            <span className='designation text-white textsize12'>{alamatku}</span>
+            <p className='text-white textsize12'>Kab. Probolinggo</p>
           </div>
           <div className='content py-3 d-flex'>
             <img src={image1} className='img-header' alt="logo kab"  />
             <div className="footer-logo  text-left px-2">
-              <Link to="https://jdih.probolinggokab.go.id/" target="_blank" className='textsize14 font_weight600 text-white-a' rel="noreferrer">Dinas Komunikasi, Statistik dan Persandian Kabupaten Probolinggo</Link>
+              <Link to="https://jdih.probolinggokab.go.id/" target="_blank" className='textsize12 font_weight600 text-white-a' rel="noreferrer">Dinas Komunikasi, Statistik dan Persandian Kabupaten Probolinggo</Link>
               
             </div>
             
@@ -114,7 +114,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
         <Col  sm={12} xs={12} md={3}>
           
           <div className='content py-3 justify-content-center'>
-            <p className='textsize14 text-white font_weight600 text-center'>Aplikasi Terhubung</p>
+            <p className='textsize12 text-white font_weight600 text-center'>Aplikasi Terhubung</p>
             <Row className="px-3">
               {dataku.map((datas, index) => (
                 datas.title !== "Portal Satu Peta" ? (
@@ -134,7 +134,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
         <Col  sm={12} xs={12} md={3}>
           
           <div className='content py-3 justify-content-center'>
-            <p className='textsize14 text-white font_weight600 text-center'>Ikuti Kami</p>
+            <p className='textsize12 text-white font_weight600 text-center'>Ikuti Kami</p>
             <div className="socials justify-content-center">
               <ul className="justify-content-center d-flex">
                 <li  className="justify-content-center "><Link to={facebookku} className="justify-content-center  d-flex"><i className="fab fa-facebook-f"></i></Link></li>
@@ -143,7 +143,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
                 <li className="justify-content-center"><Link to={linkedinku} className="justify-content-center d-flex"><i className="fab fa-linkedin-in"></i></Link></li>
               </ul>
             </div>
-            <p className='mt-3 textsize14 text-white font_weight600 text-center mb-0'>Pengunjung</p>
+            <p className='mt-3 textsize12 text-white font_weight600 text-center mb-0'>Pengunjung</p>
             <div className='content justify-content-center w-100'>
               
               <Table 
@@ -156,7 +156,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
                 </thead>
                 <tbody style={{backgroundColor: "#ffffff00"}}>
                   <tr style={{ height: "25px",backgroundColor: "#ffffff00" }}>
-                    <td className="text-start textsize12 text-white" style={{ height: "25px", padding: "0", lineHeight: "20px",backgroundColor: "#ffffff00" }}>
+                    <td className="text-start textsize10 text-white" style={{ height: "25px", padding: "0", lineHeight: "20px",backgroundColor: "#ffffff00" }}>
                       <FaCalendarDay className=' text-white mt-0' style={{width:'25px',height:'25px'}} /> Hari Ini
                     </td>
                     <td className=" text-white" style={{ height: "25px", padding: "0", lineHeight: "25px",backgroundColor: "#ffffff00" }}>
@@ -164,7 +164,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
                     </td>
                   </tr>
                   <tr style={{ height: "25px",backgroundColor: "#ffffff00" }}>
-                    <td className="text-start text-white textsize12" style={{ height: "25px", padding: "0", lineHeight: "20px",backgroundColor: "#ffffff00" }}>
+                    <td className="text-start text-white textsize10" style={{ height: "25px", padding: "0", lineHeight: "20px",backgroundColor: "#ffffff00" }}>
                       <FaCalendarWeek className=' text-white mt-0' style={{width:'25px',height:'25px'}} /> Bulan Ini
                     </td>
                     <td className=" text-white" style={{ height: "25px", padding: "0", lineHeight: "20px",backgroundColor: "#ffffff00" }}>
@@ -172,7 +172,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
                     </td>
                   </tr>
                   <tr style={{ height: "25px",backgroundColor: "#ffffff00" }}>
-                    <td className="text-start text-white textsize12" style={{ height: "25px", padding: "0", lineHeight: "20px",backgroundColor: "#ffffff00" }}>
+                    <td className="text-start text-white textsize10" style={{ height: "25px", padding: "0", lineHeight: "20px",backgroundColor: "#ffffff00" }}>
                       <FaCalendar className=' text-white mt-0' style={{width:'25px',height:'25px'}} /> Tahun Ini
                     </td>
                     <td className=" text-white" style={{ height: "25px", padding: "0", lineHeight: "25px",backgroundColor: "#ffffff00" }}>
@@ -180,7 +180,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
                     </td>
                   </tr>
                   <tr style={{ height: "25px",backgroundColor: "#ffffff00" }}>
-                    <td className="text-start text-white textsize12" style={{ height: "25px", padding: "0", lineHeight: "20px",backgroundColor: "#ffffff00" }}>
+                    <td className="text-start text-white textsize10" style={{ height: "25px", padding: "0", lineHeight: "20px",backgroundColor: "#ffffff00" }}>
                       Total Pengunjung
                     </td>
                     <td className='text-white' style={{ height: "25px", padding: "0", lineHeight: "25px",backgroundColor: "#ffffff00" }}>
