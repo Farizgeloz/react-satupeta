@@ -87,5 +87,6 @@
     "@arcgis/core": {
       "sideEffects": false
     }
-  }
+  },
+  "homepage": "/"
 }

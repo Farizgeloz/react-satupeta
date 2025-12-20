@@ -1,36 +1,62 @@
-name: Deploy React App to GitHub Pages
+name: Build & Deploy React (Staging & Production)
 
 on:
   push:
     branches:
-      - main   # ganti kalau branch utama kamu bukan 'main'
+      - main
+      - staging  # branch staging otomatis deploy ke server staging
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
+    env:
+      # Tentukan environment berdasarkan branch
+      ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+
     steps:
-      # Checkout repo
-      - name: Checkout code
-        uses: actions/checkout@v4
+      # 1. Checkout code
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      # Setup Node.js
+      # 2. Setup Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 20
 
-      # Install dependencies
+      # 3. Cache npm dependencies
+      - name: Cache npm
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # 4. Install dependencies
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
 
-      # Build project
-      - name: Build React App
+      # 5. Build React
+      - name: Build React
         run: npm run build
 
-      # Deploy ke GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+      # 6. Upload build folder via rsync (hanya file berubah)
+      #- name: Deploy to server via SSH
+       # uses: appleboy/ssh-action@v0.1.7
+       # with:
+       #   host: ${ secrets.SERVER_HOST }}
+        #  username: ${ secrets.SERVER_USER }}
+        #  key: ${ secrets.SERVER_SSH_KEY }}
+        #  port: ${ secrets.SERVER_PORT }}
+        #  script: |
+         #   echo "Deploying ${ENV} build..."
+            # Backup current version (rollback)
+         #   if [ -d /var/www/html/myapp ]; then
+         #     mv /var/www/html/myapp /var/www/html/myapp_backup_$(date +%Y%m%d%H%M%S)
+         #   fi
+            # Copy build
+        #    rsync -av --delete ./dist/ /var/www/html/myapp/
+            # Restart server
+        #    sudo systemctl restart nginx
