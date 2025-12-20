@@ -40,7 +40,7 @@ jobs:
 
       # 5. Build React
       - name: Build React
-        run: npm run build
+        run: node --max-old-space-size=8192 node_modules/vite/bin/vite.js build
 
       # 6. Upload build folder via rsync (hanya file berubah)
       #- name: Deploy to server via SSH
