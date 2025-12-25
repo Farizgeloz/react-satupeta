@@ -499,7 +499,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getData_Images = async () => {
     try {
-      const response_image = await api_url_satuadmin.get( 'open-item/images_item', {
+      const response_image = await api_url_satuadmin.get( 'openitem/images_item', {
         params: {
           portal:portal
         }

@@ -599,7 +599,7 @@ const MapsetMarker2 = ({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcont
   // ambil data gambar
   const getData_Images = async () => {
     try {
-      const response_image = await api_url_satuadmin.get( "open-item/images_item", {
+      const response_image = await api_url_satuadmin.get( "openitem/images_item", {
         params: { portal: portal },
       });
       const data_image = response_image.data.image_logo;

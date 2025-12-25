@@ -48,7 +48,7 @@ const PopupIklan = () => {
  
   const getData = async () => {
     try {
-      const response = await api_url_satuadmin.get( 'open-item/satupeta-iklan');
+      const response = await api_url_satuadmin.get( 'openitem/satupeta-iklan');
       const data = response.data.resultWithUrls;
       if (Array.isArray(data) && data.length > 0) {
         const item = data[0]; // Ambil item pertama

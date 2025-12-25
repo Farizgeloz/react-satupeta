@@ -44,7 +44,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
 
   const getStatistik = async () => {
     try {
-      const response = await api_url_satuadmin.get( 'open-item/ekosistem-bioinfo');
+      const response = await api_url_satuadmin.get( 'openitem/ekosistem-bioinfo');
       const data = response.data;
       
       setAlamat(data.alamat);
@@ -53,7 +53,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
       setLinkedin(data.linkedin);
       setTwitter(data.twitter);
 
-      const response_image = await api_url_satuadmin.get( 'open-item/images_item', {
+      const response_image = await api_url_satuadmin.get( 'openitem/images_item', {
         params: {
           portal:portal
         }
@@ -71,7 +71,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
 
   const getData = async () => {
     try {
-      const response = await api_url_satuadmin.get( `open-item/komponen`);
+      const response = await api_url_satuadmin.get( `openitem/komponen`);
       const data = response.data;
       // Cek apakah response.data itu array atau object
       //const payload = Array.isArray(response.data) ? response.data : response.data.datas;
