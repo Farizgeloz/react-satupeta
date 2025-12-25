@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api_url_satudata = axios.create({
-  baseURL: "https://api.mataprabulinggih.net/api/v1/public/",
+  /* baseURL: "https://api.mataprabulinggih.net/api/v1/public/", */
+  baseURL: "/api-mataprabu/",
   headers: {
     "Content-Type": "application/json",
   },
