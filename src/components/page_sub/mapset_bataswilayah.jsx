@@ -1438,7 +1438,7 @@ useEffect(() => {
                             </div>
                           </Col>
                           
-                          <Col md={8} className="p-1">
+                          <Col md={7} className="p-1">
                             <div
                               className="d-flex py-1 px-2 rad15 bg-border"
                               style={{
