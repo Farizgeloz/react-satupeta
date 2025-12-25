@@ -84,7 +84,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getDataById = async () => {
     try {
-      const response = await api_url_satuadmin.get(`api/satupeta/map_artikel/detail/${id}`);
+      const response = await api_url_satuadmin.get(`satupeta/map_artikel/detail/${id}`);
 
       if (response?.data) {
         setdataku(response.data); // langsung ambil objek plainItem
@@ -103,7 +103,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   const getData = async (page = 1) => {
     try {
       
-      const response_artikel = await api_url_satuadmin.get( 'api/satupeta/map_artikel', {
+      const response_artikel = await api_url_satuadmin.get( 'satupeta/map_artikel', {
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' })
       });
 

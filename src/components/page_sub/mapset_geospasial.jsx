@@ -784,7 +784,7 @@ useEffect(() => {
 
       // Ambil GeoJSON kecamatan
       const response = await api_url_satuadmin.get(
-        "api/satupeta/map_datageospasial",
+        "satupeta/map_datageospasial",
         {
           params: noSelection ? {} : { search_kecamatan: selectedKecamatanIds },
           paramsSerializer: (params) =>
@@ -822,7 +822,7 @@ useEffect(() => {
       const noSelection = selectedDesaIds.length === 0;
       
       const response = await api_url_satuadmin.get(
-          "api/satupeta/map_datageospasial",
+          "satupeta/map_datageospasial",
         {
           params: { search_kecamatan: selectedKecamatanIds,search_desa: selectedDesaIds, search_koleksi: (koleksi || []).map((loc) => loc.id_maplist) },
           paramsSerializer: (params) =>
@@ -905,7 +905,7 @@ useEffect(() => {
   // ambil data gambar
   const getData_Images = async () => {
     try {
-      const response_image = await api_url_satuadmin.get( "api/open-item/images_item", {
+      const response_image = await api_url_satuadmin.get( "open-item/images_item", {
         params: { portal: portal },
       });
       const data_image = response_image.data.image_logo;
@@ -923,7 +923,7 @@ useEffect(() => {
   // ambil data unsur
   const getMapsetUnsur = async () => {
     try {
-      const response = await api_url_satuadmin.get( "api/satupeta/map_item", {
+      const response = await api_url_satuadmin.get( "satupeta/map_item", {
         params: { search_kecamatan: kecamatan.map((loc) => loc.id_kecamatan) },
         paramsSerializer: (params) =>
           qs.stringify(params, { arrayFormat: "repeat" }),

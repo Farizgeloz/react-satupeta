@@ -23,10 +23,10 @@ function DatasetPengelolah() {
     const increaseVisitor = async () => {
       try {
         // Increment visitor di backend
-        await api_url_satuadmin.post(`api/satupeta_visitor/visitor`);
+        await api_url_satuadmin.post(`satupeta_visitor/visitor`);
 
         // Ambil total
-        const response = await api_url_satuadmin.get(`api/satupeta_visitor/count`);
+        const response = await api_url_satuadmin.get(`satupeta_visitor/count`);
         setTotalVisitors(response.data);
       } catch (error) {
         console.error('Gagal ambil data pengunjung:', error);

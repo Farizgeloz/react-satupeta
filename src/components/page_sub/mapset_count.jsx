@@ -36,7 +36,7 @@ function AppStatistik() {
   const getStatistik = async () => {
     try {
 
-      const response3 = await api_url_satuadmin.get( 'api/satupeta/count');
+      const response3 = await api_url_satuadmin.get( 'satupeta/count');
       const data3 = response3.data;
       //console.log('DATA DARI BACKEND:', response3.data);
       setCountMapset(data3.count_mapset);

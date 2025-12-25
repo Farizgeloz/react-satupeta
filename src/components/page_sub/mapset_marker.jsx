@@ -499,7 +499,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getData_Images = async () => {
     try {
-      const response_image = await api_url_satuadmin.get( 'api/open-item/images_item', {
+      const response_image = await api_url_satuadmin.get( 'open-item/images_item', {
         params: {
           portal:portal
         }
@@ -517,7 +517,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getMapsetUnsur = async () => {
     try {
-      const response = await api_url_satuadmin.get( 'api/satupeta/map_item', {
+      const response = await api_url_satuadmin.get( 'satupeta/map_item', {
         params: {
           search_kecamatan: kecamatan.map(loc => loc.id_kecamatan)
         },
@@ -554,7 +554,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getMarker = async () => {
     try {
-      const res = await api_url_satuadmin.get( 'api/satupeta/map_data', {
+      const res = await api_url_satuadmin.get( 'satupeta/map_data', {
         params: {
           search_location: location.map(loc => loc.id_location),
           search_kecamatan: kecamatan.map(loc => loc.id_kecamatan),
@@ -618,7 +618,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getDataGeo_Kecamatan = async () => {
     try {
-      const response = await api_url_satuadmin.get( 'api/satupeta/map_datageo_kecamatan', {
+      const response = await api_url_satuadmin.get( 'satupeta/map_datageo_kecamatan', {
         params: {
           search_kecamatan: kecamatan.value
         },
@@ -632,7 +632,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   };
   const getDataGeo_Desa = async () => {
     try {
-      const response = await api_url_satuadmin.get( 'api/satupeta/map_datageo_desa', {
+      const response = await api_url_satuadmin.get( 'satupeta/map_datageo_desa', {
         params: {
           search_kecamatan: kecamatan.value,
           search_desa: desa.value

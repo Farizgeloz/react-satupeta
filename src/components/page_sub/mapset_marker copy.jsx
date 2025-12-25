@@ -208,7 +208,7 @@ function AppTeams() {
 
   const getData_Images = async () => {
     try {
-      const response_image = await api_url_satuadmin.get(`api/open-item/images_item`);
+      const response_image = await api_url_satuadmin.get(`open-item/images_item`);
       const data_image = response_image.data.image_satupeta;
       setImage1(data_image.presignedUrl1);
       setImage2(data_image.presignedUrl2);

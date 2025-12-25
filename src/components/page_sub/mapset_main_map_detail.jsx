@@ -130,7 +130,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
       try {
         //console.log("increaseVisitor fire, id =", id);
         await api_url_satuadmin.post(
-          `api/satupeta/locationmaplist_visitor`,
+          `satupeta/locationmaplist_visitor`,
           { id_maplist: String(id) },                           // kirim JSON
           { headers: { "Content-Type": "application/json" } }
         );
@@ -142,7 +142,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
 
   const setDownloadvisitor = async () => {
-    await api_url_satuadmin.post(`api/satupeta/locationmaplist_download`,
+    await api_url_satuadmin.post(`satupeta/locationmaplist_download`,
       { id_maplist: String(id) },                           // kirim JSON
       { headers: { "Content-Type": "application/json" } }
     );
@@ -150,7 +150,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   }
   const getDataById = async () => {
     try {
-      const response = await api_url_satuadmin.get( `api/satupeta/Koleksi-Peta/detail/${id}`);
+      const response = await api_url_satuadmin.get( `satupeta/Koleksi-Peta/detail/${id}`);
 
       // Ambil data utama
       setkoleksi_data(response.data.data.koleksi_data);

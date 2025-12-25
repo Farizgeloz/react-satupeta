@@ -33,7 +33,7 @@ function AppStatistik({bgcontentku}) {
   
   const getData_Images = async () => {
     try {
-      const response_image = await api_url_satuadmin.get(`api/open-item/komponen`);
+      const response_image = await api_url_satuadmin.get(`open-item/komponen`);
       const data_image = response_image.data.data_satupeta_fitur;
       setImage1(data_image.presignedUrl_a);
       setImage2(data_image.presignedUrl_b);

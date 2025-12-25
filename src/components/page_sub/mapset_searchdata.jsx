@@ -75,7 +75,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getMapsetUnsur = async () => {
     try {
-      const response = await api_url_satuadmin.get( 'api/satupeta/map_item');
+      const response = await api_url_satuadmin.get( 'satupeta/map_item');
       setsektorku(response.data.resultsektor);
     } catch (error) {
       console.error('Failed to fetch data:', error);
@@ -84,7 +84,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getData = async (page = 1) => {
     try {
-      const response = await api_url_satuadmin.get( 'api/satupeta/map_list2', {
+      const response = await api_url_satuadmin.get( 'satupeta/map_list2', {
         params: {
           search_sektor: sektor,
           search_koleksipeta: koleksipeta,

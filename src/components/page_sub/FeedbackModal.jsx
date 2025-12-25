@@ -37,7 +37,7 @@ const FeedbackModal = () => {
     const getMenu = async () => {
         try {
 
-        const response_image = await api_url_satuadmin.get('api/open-item/images_item', {
+        const response_image = await api_url_satuadmin.get('open-item/images_item', {
             params: {
             portal:portal
             }
@@ -77,7 +77,7 @@ const FeedbackModal = () => {
         formData.append("feedback", feedback);
 
         try {
-            await api_url_satuadmin.post( 'api/open-item/satupeta_feedback', formData);
+            await api_url_satuadmin.post( 'open-item/satupeta_feedback', formData);
 
             setShow(false);
             sweetsuccess();

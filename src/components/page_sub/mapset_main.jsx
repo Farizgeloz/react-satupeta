@@ -116,7 +116,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getMapsetUnsur = async () => {
     try {
-      const response = await api_url_satuadmin.get( 'api/satupeta/map_item');
+      const response = await api_url_satuadmin.get( 'satupeta/map_item');
 
       const data = response.data;
 
@@ -129,7 +129,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getData_Images = async () => {
     try {
-      const response_image = await api_url_satuadmin.get(`api/open-item/komponen`);
+      const response_image = await api_url_satuadmin.get(`open-item/komponen`);
       const data_image = response_image.data.data_satupeta_motto;
       setImage1(data_image.presignedUrl_a);
       setImage2(data_image.presignedUrl_b);
@@ -145,14 +145,14 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
   const getData = async (page = 1) => {
     try {
-      const response = await api_url_satuadmin.get( 'api/satupeta/map_list2', {
+      const response = await api_url_satuadmin.get( 'satupeta/map_list2', {
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' })
       });
 
       const res = response.data;
       setdata(res.data);
 
-      const response_artikel = await api_url_satuadmin.get( 'api/satupeta/map_artikel', {
+      const response_artikel = await api_url_satuadmin.get( 'satupeta/map_artikel', {
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' })
       });
 

@@ -41,7 +41,7 @@ function AppKategori({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgconten
 
   const getData = async () => {
     try {
-      const response = await api_url_satuadmin.get( 'api/open-item/satupeta-bantuan');
+      const response = await api_url_satuadmin.get( 'open-item/satupeta-bantuan');
       const data = response.data.resultWithUrls;
      setData(data);
      

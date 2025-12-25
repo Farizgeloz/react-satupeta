@@ -57,7 +57,7 @@ function MenuItem({title,submenu,linked,backgroundd}){
     
     const getMenu = async () => {
       try {
-        const response = await api_url_satuadmin.get("api/open-item/menu-satupeta2", {
+        const response = await api_url_satuadmin.get("open-item/menu-satupeta2", {
           params: title ? { categoryku: title } : {}
         });
 
@@ -108,14 +108,14 @@ function Menu({ bgku }) {
 
   const getMenu = async () => {
     try {
-      const response = await api_url_satuadmin.get( `api/open-item/menu-satupeta`);
+      const response = await api_url_satuadmin.get( `open-item/menu-satupeta`);
 
       // Cek apakah response.data itu array atau object
       const payload = Array.isArray(response.data) ? response.data : response.data.datas;
 
       setMenu(payload);
 
-      const response_image = await api_url_satuadmin.get( 'api/open-item/images_item', {
+      const response_image = await api_url_satuadmin.get( 'open-item/images_item', {
         params: {
           portal:portal
         }
