@@ -90,7 +90,7 @@ function DatasetPengelolah() {
           )}
           {image1 && (
             <motion.img
-              src={`/logo.png`}
+              src={`./logo.png`}
               alt="Logo"
               className={`rad15 w-50 ${imageLoaded ? 'visible' : 'hidden'}`}
               onLoad={() => setImageLoaded(true)}
