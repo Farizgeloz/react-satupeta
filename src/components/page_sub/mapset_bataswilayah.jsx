@@ -473,6 +473,8 @@ useEffect(() => {
             };
           })
         };
+
+        console.log("mergedGeoData:", mergedGeoData);
       }
 
     } catch (err) {
