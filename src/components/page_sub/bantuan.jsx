@@ -49,7 +49,7 @@ function AppKategori() {
                 <Accordion.Body>
                   <ul className="list-unstyled mb-0">
                     {dataku
-                      .filter(datas => datas.kategori === "Opendata")
+                      .filter(datas => datas.kategori === "Satupeta")
                       .map((datas, index) => (
                         <li key={index} className="mb-2">
                           {/* 3. Gunakan HashLink dengan properti smooth */}
@@ -72,7 +72,7 @@ function AppKategori() {
                 <Accordion.Body>
                   <ul className="list-unstyled mb-0">
                     {dataku
-                      .filter(datas => datas.kategori === "Dataset")
+                      .filter(datas => datas.kategori === "Mapset")
                       .map((datas, index) => (
                         <li key={index} className="mb-2">
                           <HashLink
