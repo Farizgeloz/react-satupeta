@@ -433,32 +433,37 @@ useEffect(() => {
 
         const detailResponses = await Promise.all(detailPromises);
         //const details = detailResponses.map((res) => res.data);
-        const details = detailResponses.map((res) => res.data.data || res.data);
+        const details = detailResponses.map((res) => {
+            // 1. Cek apakah data ada di res.data.data (standar API) 
+            // atau langsung di res.data
+            return res.data?.data || res.data; 
+        }).filter(Boolean); // Menghapus data yang null/failed
+
+        console.log("Isi Detail Pertama (Cek Fieldnya):", details[0]);
        
         
        
         mergedGeoData = {
           ...geoData,
           features: geoData.features.map((feat) => {
-           const matched = details.find((d) => {
-              // Ambil ID dari API, pastikan tidak null/undefined
-              const apiId = isKecamatan ? (d?.id_kecamatan) : (d?.id_desa);
-              // Ambil ID dari GeoJSON
-              const geoId = isKecamatan ? (feat.properties.id_kecamatan) : (feat.properties.id_desa);
+           const geoId = String(isKecamatan ? feat.properties.id_kecamatan : feat.properties.id_desa);
 
-              // Paksa keduanya jadi string dan bandingkan
-              return String(apiId) === String(geoId);
-          });
+        const matched = details.find((d) => {
+            // 2. Cek field ID yang tepat dari API
+            // Kadang di API namanya 'id', bukan 'id_kecamatan'
+            const apiId = String(isKecamatan ? (d?.id_kecamatan || d?.id) : (d?.id_desa || d?.id));
+            return apiId === geoId;
+        });
             // DEBUG DISINI (Setelah 'matched' didefinisikan)
           // Letakkan ini tepat setelah baris .find()
-if (!matched) {
+/* if (!matched) {
     console.warn(`❌ Gagal Match ID: ${feat.properties.id_kecamatan}`);
     console.log("Contoh ID dari API yang tersedia:", details.slice(0, 3).map(d => ({
         id: d.id_kecamatan,
         tipe: typeof d.id_kecamatan
     })));
     console.log("Tipe ID dari GeoJSON:", typeof feat.properties.id_kecamatan);
-}
+} */
 
             const profil = isKecamatan ? matched?.profil_kecamatan || {} : matched?.profil_desa || {};
             const kepala = matched?.kepala_desa || {};
@@ -490,7 +495,7 @@ if (!matched) {
           })
         };
 
-        console.log("mergedGeoData:", mergedGeoData);
+       /*  console.log("mergedGeoData:", mergedGeoData); */
       }
 
     } catch (err) {
