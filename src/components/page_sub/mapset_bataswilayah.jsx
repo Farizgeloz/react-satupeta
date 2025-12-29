@@ -440,15 +440,25 @@ useEffect(() => {
         mergedGeoData = {
           ...geoData,
           features: geoData.features.map((feat) => {
-            const matched = details.find((d) =>
-            isKecamatan ? String(d.id_kecamatan) === String(feat.properties.id_kecamatan)
-              : String(d.id_desa) === String(feat.properties.id_desa)
-);
+           const matched = details.find((d) => {
+              // Ambil ID dari API, pastikan tidak null/undefined
+              const apiId = isKecamatan ? (d?.id_kecamatan) : (d?.id_desa);
+              // Ambil ID dari GeoJSON
+              const geoId = isKecamatan ? (feat.properties.id_kecamatan) : (feat.properties.id_desa);
+
+              // Paksa keduanya jadi string dan bandingkan
+              return String(apiId) === String(geoId);
+          });
             // DEBUG DISINI (Setelah 'matched' didefinisikan)
-    console.log("Matching Process:", {
-      featureId: isKecamatan ? feat.properties.id_kecamatan : feat.properties.id_desa,
-      foundInDetails: matched
-    });
+          // Letakkan ini tepat setelah baris .find()
+if (!matched) {
+    console.warn(`❌ Gagal Match ID: ${feat.properties.id_kecamatan}`);
+    console.log("Contoh ID dari API yang tersedia:", details.slice(0, 3).map(d => ({
+        id: d.id_kecamatan,
+        tipe: typeof d.id_kecamatan
+    })));
+    console.log("Tipe ID dari GeoJSON:", typeof feat.properties.id_kecamatan);
+}
 
             const profil = isKecamatan ? matched?.profil_kecamatan || {} : matched?.profil_desa || {};
             const kepala = matched?.kepala_desa || {};
