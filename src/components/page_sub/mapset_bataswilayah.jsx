@@ -433,6 +433,8 @@ useEffect(() => {
 
         const detailResponses = await Promise.all(detailPromises);
         const details = detailResponses.map((res) => res.data);
+        console.log("detail:", details);
+        
 
         mergedGeoData = {
           ...geoData,
