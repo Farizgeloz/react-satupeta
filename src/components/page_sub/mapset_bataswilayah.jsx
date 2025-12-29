@@ -432,7 +432,8 @@ useEffect(() => {
         
 
         const detailResponses = await Promise.all(detailPromises);
-        const details = detailResponses.map((res) => res.data);
+        //const details = detailResponses.map((res) => res.data);
+        const details = detailResponses.map((res) => res.data.data || res.data);
         console.log("detail:", details);
         
 
@@ -440,9 +441,9 @@ useEffect(() => {
           ...geoData,
           features: geoData.features.map((feat) => {
             const matched = details.find((d) =>
-              isKecamatan ? d.id_kecamatan === feat.properties.id_kecamatan
-                          : d.id_desa === feat.properties.id_desa
-            );
+            isKecamatan ? String(d.id_kecamatan) === String(feat.properties.id_kecamatan)
+              : String(d.id_desa) === String(feat.properties.id_desa)
+);
 
             const profil = isKecamatan ? matched?.profil_kecamatan || {} : matched?.profil_desa || {};
             const kepala = matched?.kepala_desa || {};
