@@ -434,9 +434,9 @@ useEffect(() => {
         const detailResponses = await Promise.all(detailPromises);
         //const details = detailResponses.map((res) => res.data);
         const details = detailResponses.map((res) => res.data.data || res.data);
-        console.log("detail:", details);
+       
         
-
+       
         mergedGeoData = {
           ...geoData,
           features: geoData.features.map((feat) => {
@@ -444,6 +444,11 @@ useEffect(() => {
             isKecamatan ? String(d.id_kecamatan) === String(feat.properties.id_kecamatan)
               : String(d.id_desa) === String(feat.properties.id_desa)
 );
+            // DEBUG DISINI (Setelah 'matched' didefinisikan)
+    console.log("Matching Process:", {
+      featureId: isKecamatan ? feat.properties.id_kecamatan : feat.properties.id_desa,
+      foundInDetails: matched
+    });
 
             const profil = isKecamatan ? matched?.profil_kecamatan || {} : matched?.profil_desa || {};
             const kepala = matched?.kepala_desa || {};
