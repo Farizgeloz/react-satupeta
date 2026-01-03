@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api_url_satudata = axios.create({
-  baseURL: "https://apisatudata.probolinggokab.go.id/api/",
+  baseURL: "https://apisatudata.probolinggokab.go.id/",
   /* baseURL: "/api-mataprabu/", */
   headers: {
     "Content-Type": "application/json",
