@@ -225,7 +225,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
         />
       </div>
 
-      <Col md={9} className="px-4 mb-3" style={{marginTop:"-27%", zIndex:"13"}}>
+      <Col md={9} className="px-1 mb-3" style={{marginTop:"-27%", zIndex:"13"}}>
        
           <Row className="px-0">
             <Col md={12} className="text-center d-flex align-items-center">
@@ -522,7 +522,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                         let link = `/Tematik/Mapset/${slugify(data.title)}`;
 
                         return (
-                          <Col sm={6} md={3} lg={3} xs={6} key={data.id_maplist} className="py-2 col-6">
+                          <Col sm={6} md={3} lg={3} xs={12} key={data.id_maplist} className="py-2 col-6">
                             <div className="portfolio-wrapper rad15 bg-body shaddow4 bg-border2">
                               <Link
                                 to={link}
@@ -626,7 +626,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                       .map((data) => {
                         let link = `/Tematik/Mapset/${slugify(data.title)}`;
                         return (
-                          <Col sm={6} md={3} lg={3} xs={6} key={data.id_maplist} className="py-2 col-6">
+                          <Col sm={6} md={3} lg={3} xs={12} key={data.id_maplist} className="py-2 col-6">
                             <div className='portfolio-wrapper rad15 bg-body shaddow4 bg-border2'>
                                 <Link
                                   to={link}

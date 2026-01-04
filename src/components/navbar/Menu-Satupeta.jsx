@@ -143,44 +143,41 @@ function Menu({ bgku }) {
       fixed="top" >
         <Navbar expand="lg" className="w-100">
         
-        <Container className="px-0" style={{maxWidth:'95%'}}>
-          <Navbar.Brand href="#home" className='d-flex text-blue margin-logo' style={{width:"40vh"}}>
+        <Container className="px-0" style={{ maxWidth: '95%' }}>
+          <Navbar.Brand
+            href="#home"
+            className="d-flex text-blue margin-logo brand-logo"
+          >
             <img
-              src={isMobile ? image1 : (color ? image1 : image1)}
-              className="img-header rad10"
-              style={{ width: "40vh", height: "auto" }}
+              src={image1}
+              className="img-header"
+              alt="Logo"
             />
-            
           </Navbar.Brand>
+
           <Navbar.Toggle
             aria-controls="basic-navbar-nav"
-            className="btn-toggle text-white"
+            className="btn-toggle-custom"
           />
 
           <Navbar.Collapse
-              id="basic-navbar-nav"
-              style={{
-                maxWidth: 'calc(100% - 40vh)', // lebar 100% minus 250px
-                flex: '1 1 auto',
-                whiteSpace: 'nowrap',
-                position: 'relative',
-              }}
-            >
+            id="basic-navbar-nav"
+            className={isMobile ? 'collapse-mobile' : 'collapse-desktop'}
+          >
             <Nav className="ms-auto">
-              {
-                menuku.map((menu,index) => {
-                  return (
-                    <MenuItem key={index} title={menu.category} submenu={menu.sub_menu} linked={menu.linked}/>
-                    
-                  );
-                })
-              
-              }
+              {menuku.map((menu, index) => (
+                <MenuItem
+                  key={index}
+                  title={menu.category}
+                  submenu={menu.sub_menu}
+                  linked={menu.linked}
+                />
+              ))}
               <Toogle_Mode />
-              
             </Nav>
           </Navbar.Collapse>
         </Container>
+
       </Navbar>
     </header>
     </>

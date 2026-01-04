@@ -96,11 +96,19 @@ function MenuItem({title,submenu,linked,backgroundd}){
 }
 function Menu({ bgku }) {
   const bgkuu=bgku;
+  const [isMobile, setIsMobile] = useState(false);
   const [menuku, setMenu] = useState([]);
   const [image1, setImage1] = useState("");
   const [image2, setImage2] = useState("");
   const [contents, setContents] = useState("");
   const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     getMenu();
@@ -161,8 +169,8 @@ function Menu({ bgku }) {
       <Navbar expand="lg" className="r">
         
          <Container style={{maxWidth:'95%'}}>
-          <Navbar.Brand href="#home" className='d-flex text-blue margin-logo' style={{width:"40vh"}}>
-            <img src={image2} className={`img-header3 shaddow2 rad10`} style={{ width: "40vh", height: "auto" }}  />
+          <Navbar.Brand href="#home" className='d-flex text-blue margin-logo'>
+            <img src={image2} className={`img-header3 shaddow2 rad10`}  />
           </Navbar.Brand>
           <Navbar.Toggle
             aria-controls="basic-navbar-nav"
@@ -170,12 +178,7 @@ function Menu({ bgku }) {
           />
           <Navbar.Collapse
             id="basic-navbar-nav"
-            style={{
-              maxWidth: 'calc(100% - 40vh)', // lebar 100% minus 250px
-              flex: '1 1 auto',
-              whiteSpace: 'nowrap',
-              position: 'relative',
-            }}
+            className={isMobile ? 'collapse-mobile' : 'collapse-desktop'}
           >
             <Nav className="ms-auto ">
               {

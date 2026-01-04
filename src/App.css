@@ -2675,3 +2675,26 @@ leaflet-popup.popup-zindex {
   box-shadow: none;
 }
 
+.brand-logo {
+  width: 35vh;
+}
+
+.img-header {
+  width: 35vh;
+  height: auto;
+}
+
+/* Jika mobile */
+@media (max-width: 768px) {
+  .brand-logo {
+    width: 20vh;
+  }
+
+  .img-header {
+    width: 20vh;
+  }
+  .img-header3 {
+    width: 20vh;
+    height: auto;
+  }
+}

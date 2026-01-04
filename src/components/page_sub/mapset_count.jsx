@@ -59,7 +59,7 @@ function AppStatistik() {
       
       <Container fluid className=''>
        
-        <Row className='px-5 justify-content-md-center'>
+        <Row className='px-1 justify-content-md-center'>
            
             <Col sm={12} className='   rad5'>
               
@@ -67,7 +67,7 @@ function AppStatistik() {
                 
                  <Row className='d-flex justify-content-center p-1'>
                     
-                    <Col md={2} sm={6} xs={6} className="p-1">
+                    <Col md={2} sm={6} xs={12} className="p-1">
                       <OverlayTrigger
                         placement="top"
                         overlay={

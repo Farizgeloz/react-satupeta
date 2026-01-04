@@ -50,13 +50,13 @@ function AppStatistik({bgcontentku}) {
        
       <Container fluid className=' bg-body rad5 shaddow4 py-5'>
        
-        <Row className='px-5'>
+        <Row className='px-1'>
           
             <Col sm={12} xs={12} md={5} style={{ display: isMobile ? 'none' : 'block' }}>
               <img data-aos="zoom-in-up" src={image1} className=" aos-init aos-animate"></img>
              
             </Col>
-            <Col sm={12} xs={12} md={7}  className='rad15 p-3'>
+            <Col sm={12} xs={12} md={6}  className='rad15 p-3'>
               <p 
                 className={`rad15 textsize16 text-white shaddow1 text-center py-2`}
                 style={{ backgroundColor: bgcontentku }}

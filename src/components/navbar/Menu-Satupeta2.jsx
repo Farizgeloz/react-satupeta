@@ -142,23 +142,24 @@ function Menu({ bgku, namelinkkku }) {
         <Navbar expand="lg" className="w-100">
         
         <Container style={{maxWidth:'95%'}}>
-          <Navbar.Brand href="#home" className='d-flex text-blue margin-logo' style={{width:"40vh"}}>
+          <Navbar.Brand
+            href="#home"
+            className="d-flex text-blue margin-logo brand-logo"
+          >
             <img
               src={isMobile ? image1 : (color ? image1 : image1)}
-              className="img-header rad10"
-              style={{ width: "40vh", height: "auto" }}
+              className="img-header"
+              alt="Logo"
             />
-            
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" className="btn-toggle text-white" />
+          
+          <Navbar.Toggle
+            aria-controls="basic-navbar-nav"
+            className="btn-toggle-custom"
+          />
           <Navbar.Collapse
             id="basic-navbar-nav"
-            style={{
-              maxWidth: 'calc(100% - 40vh)', // lebar 100% minus 250px
-              flex: '1 1 auto',
-              whiteSpace: 'nowrap',
-              position: 'relative',
-            }}
+            className={isMobile ? 'collapse-mobile' : 'collapse-desktop'}
           >
             <Nav className="ms-auto">
               {

@@ -16,7 +16,6 @@ const api_url_satuadmin = axios.create({
 // API SatuAdmin (create/post)
 const api_url_satuadmin_create = axios.create({
   baseURL: "https://apisatuadmin.probolinggokab.go.id/api/",
-  headers: { "Content-Type": "application/json" },
   withCredentials: true, // wajib kalau backend pakai session/cookie
 });
 
