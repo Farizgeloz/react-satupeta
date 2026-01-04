@@ -9,15 +9,13 @@ const api_url_satudata = axios.create({
 // API SatuAdmin (read)
 const api_url_satuadmin = axios.create({
   baseURL: "https://apisatuadmin.probolinggokab.go.id/api/",
-  headers: { "Content-Type": "application/json" },
-  withCredentials: true,
+  headers: { "Content-Type": "application/json" }
 });
 
 // API SatuAdmin (create/post)
 const api_url_satuadmin_create = axios.create({
   baseURL: "https://apisatuadmin.probolinggokab.go.id/api/",
-  headers: { "Content-Type": "application/json" },
-  withCredentials: true,
+  headers: { "Content-Type": "application/json" }
 });
 
 export { api_url_satudata, api_url_satuadmin, api_url_satuadmin_create };
