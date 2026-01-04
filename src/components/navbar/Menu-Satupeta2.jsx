@@ -34,9 +34,18 @@ function MenuItem({title,submenu,linked}){
         });
 
         setMenu2(response.data);
-
       } catch (error) {
         console.error("Failed to fetch data:", error);
+
+        // Jika error Axios, bisa tampilkan info detail
+        if (error.response) {
+          console.error("Status:", error.response.status);
+          console.error("Data:", error.response.data);
+        } else if (error.request) {
+          console.error("No response received:", error.request);
+        } else {
+          console.error("Axios setup error:", error.message);
+        }
       }
     };
 
