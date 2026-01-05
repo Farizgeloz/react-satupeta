@@ -94,7 +94,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
           
           <div className='content py-3'>
             <div className="d-flex">
-              <img src={image2} className='img-header' alt="logo opendata"  />
+              <img src={image2} className='img-header'  />
               
              
 
@@ -103,7 +103,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
             <p className='text-white textsize12'>Kab. Probolinggo</p>
           </div>
           <div className='content py-3 d-flex'>
-            <img src={image1} className='img-header' alt="logo kab"  />
+            <img src={image1} className='img-header'  />
             <div className="footer-logo  text-left px-2">
               <Link to="https://jdih.probolinggokab.go.id/" target="_blank" className='textsize12 font_weight600 text-white-a' rel="noreferrer">Dinas Komunikasi, Statistik dan Persandian Kabupaten Probolinggo</Link>
               

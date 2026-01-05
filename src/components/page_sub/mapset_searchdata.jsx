@@ -129,6 +129,20 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
       .trim()
       .replace(/\s+/g, '-')        // Ganti spasi dengan strip (-)
   };
+
+  const downloadImage = async () => {
+      const response = await fetch(modalData.image);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `gambar-${modalData.title}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    };
   
 
   return (
@@ -612,15 +626,12 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                         <Image src={modalData.image} fluid className="rad10" />
                       </Modal.Body>
                       <Modal.Footer>
-                        <Link
-                          to={modalData.image}
-                          download
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-success textsize10"
-                        >
-                          <FaDownload /> Download Gambar
-                        </Link>
+                         <button
+                            onClick={downloadImage}
+                            className="btn btn-success textsize10"
+                          >
+                            <FaDownload /> Download Gambar
+                          </button>
                         <Button variant="secondary" onClick={() => setShowModal(false)} className="textsize10">
                           Tutup
                         </Button>

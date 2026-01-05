@@ -103,7 +103,6 @@ const PopupIklan = () => {
         {images_a && (
           <img
             src={images_a}
-            alt="iklan"
             className="img-fluid "
             style={{
               maxHeight: "auto",

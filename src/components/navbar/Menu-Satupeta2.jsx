@@ -149,7 +149,6 @@ function Menu({ bgku, namelinkkku }) {
             <img
               src={isMobile ? image1 : (color ? image1 : image1)}
               className="img-header"
-              alt="Logo"
             />
           </Navbar.Brand>
           

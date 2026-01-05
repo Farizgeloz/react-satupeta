@@ -395,7 +395,7 @@ useEffect(() => {
 
 
 
-  const safeAddGeoJSONLayer = async (
+  /* const safeAddGeoJSONLayer = async (
     view,
     geoData,
     ref,
@@ -410,8 +410,9 @@ useEffect(() => {
 
     try {
       // Tentukan tipe data: kecamatan atau desa
-      const isKecamatan = geoData.features[0]?.properties?.id_kecamatan !== undefined;
-      const isDesa = geoData.features[0]?.properties?.id_desa !== undefined;
+      const isKecamatan = geoData.features[0]?.properties?.kode_daerah?.length === 6; // 6 digit kode kecamatan
+      const isDesa = geoData.features[0]?.properties?.kode_daerah?.length > 6; // lebih dari 6 digit = desa
+
 
       // Hanya fetch jika detail belum ada
       const needsDetail = geoData.features.some(
@@ -421,9 +422,9 @@ useEffect(() => {
       if (needsDetail) {
         const detailPromises = geoData.features.map((feat) => {
           if (isKecamatan) {
-            return api_url_satudata.get(`profil-daerah/kecamatan/${feat.properties.id_kecamatan}`);
+            return api_url_satudata.get(`profil-daerah/kecamatan/${feat.properties.kode_daerah}`);
           } else if (isDesa) {
-            return api_url_satudata.get(`profil-daerah/desa/${feat.properties.id_desa}`);
+            return api_url_satudata.get(`profil-daerah/desa/${feat.properties.kode_daerah}`);
           } else {
             return Promise.resolve({ data: {} });
           }
@@ -432,38 +433,27 @@ useEffect(() => {
         
 
         const detailResponses = await Promise.all(detailPromises);
-        //const details = detailResponses.map((res) => res.data);
         const details = detailResponses.map((res) => {
-            // 1. Cek apakah data ada di res.data.data (standar API) 
-            // atau langsung di res.data
             return res.data?.data || res.data; 
         }).filter(Boolean); // Menghapus data yang null/failed
 
-        console.log("Isi Detail Pertama (Cek Fieldnya):", details[0]);
        
         
        
         mergedGeoData = {
           ...geoData,
           features: geoData.features.map((feat) => {
-           const geoId = String(isKecamatan ? feat.properties.id_kecamatan : feat.properties.id_desa);
+           //const geoId = String(isKecamatan ? feat.properties.id_kecamatan : feat.properties.id_desa);
+           const geoId = String(feat.properties.kode_daerah);
 
         const matched = details.find((d) => {
-            // 2. Cek field ID yang tepat dari API
-            // Kadang di API namanya 'id', bukan 'id_kecamatan'
-            const apiId = String(isKecamatan ? (d?.id_kecamatan || d?.id) : (d?.id_desa || d?.id));
-            return apiId === geoId;
+          const apiId = String(d?.kode_daerah || d?.id); // selalu pakai kode_daerah terbaru dari API
+          return apiId === geoId;
         });
-            // DEBUG DISINI (Setelah 'matched' didefinisikan)
-          // Letakkan ini tepat setelah baris .find()
-/* if (!matched) {
-    console.warn(`❌ Gagal Match ID: ${feat.properties.id_kecamatan}`);
-    console.log("Contoh ID dari API yang tersedia:", details.slice(0, 3).map(d => ({
-        id: d.id_kecamatan,
-        tipe: typeof d.id_kecamatan
-    })));
-    console.log("Tipe ID dari GeoJSON:", typeof feat.properties.id_kecamatan);
-} */
+
+        if (!matched) {
+          console.warn(`❌ Gagal match kode_daerah: ${geoId}`, feat.properties);
+        }
 
             const profil = isKecamatan ? matched?.profil_kecamatan || {} : matched?.profil_desa || {};
             const kepala = matched?.kepala_desa || {};
@@ -495,7 +485,6 @@ useEffect(() => {
           })
         };
 
-       /*  console.log("mergedGeoData:", mergedGeoData); */
       }
 
     } catch (err) {
@@ -552,11 +541,140 @@ useEffect(() => {
     });
 
     
+  }; */
 
-    // console.log(`✅ Layer ${isKecamatan ? "kecamatan" : isDesa ? "desa" : "unknown"} siap`, mergedGeoData.features);
-  };
+const safeAddGeoJSONLayer = async (
+  view,
+  geoData,
+  ref,
+  id,
+  color,
+  popupTemplate,
+  visible = true
+) => {
+  if (!view || !geoData?.features?.length) return;
 
+  let mergedGeoData = geoData;
 
+  try {
+    // Tentukan tipe data: kecamatan atau desa
+    const isKecamatan = geoData.features[0]?.properties?.kode_daerah?.toString().length === 6; // kode 6 digit → kecamatan
+    const isDesa = geoData.features[0]?.properties?.kode_daerah?.toString().length > 6; // kode >6 digit → desa
+
+    // Hanya fetch jika detail belum ada
+    const needsDetail = geoData.features.some(
+      (f) => isKecamatan ? !f.properties.profil_kecamatan : !f.properties.profil_desa
+    );
+
+    if (needsDetail) {
+      const detailPromises = geoData.features.map((feat) => {
+        const kode = feat.properties.kode_daerah;
+        if (isKecamatan) {
+          return api_url_satudata.get(`profil-daerah/kecamatan/${kode}`);
+        } else if (isDesa) {
+          return api_url_satudata.get(`profil-daerah/desa/${kode}`);
+        } else {
+          return Promise.resolve({ data: {} });
+        }
+      });
+
+      const detailResponses = await Promise.all(detailPromises);
+      const details = detailResponses
+        .map((res) => res.data?.data || res.data)
+        .filter(Boolean);
+
+      // Merge detail ke GeoJSON
+      mergedGeoData = {
+        ...geoData,
+        features: geoData.features.map((feat) => {
+          const geoKode = String(feat.properties.kode_daerah);
+
+          const matched = details.find((d) => {
+            // API bisa mengembalikan id_kecamatan/id_desa atau id
+            const apiId = String(d?.id_kecamatan || d?.id_desa || d?.id);
+            return apiId === geoKode;
+          });
+
+          const profil = isKecamatan ? matched?.profil_kecamatan || {} : matched?.profil_desa || {};
+          const kepala = matched?.kepala_desa || {};
+          const jenis_wilayah = matched?.jenis_wilayah || {};
+
+          return {
+            ...feat,
+            properties: {
+              ...feat.properties,
+              luas_wilayah: profil.luas_wilayah ?? "N/A",
+              penduduk_lk: profil.penduduk_lk ?? "N/A",
+              penduduk_pr: profil.penduduk_pr ?? "N/A",
+              total_penduduk: profil.total_penduduk ?? "N/A",
+              kampung_kb: profil.is_kampung_kb ?? "N/A",
+              desa_inklusi: profil.is_desa_inklusi ?? "N/A",
+              desa_bersinar: profil.is_desa_bersinar ?? "N/A",
+              jenis_idm: matched?.jenis_idm?.nama ?? "N/A",
+              kepala_desa_nama: kepala?.nama_lengkap ?? "N/A",
+              kepala_desa_no_hp: kepala?.no_hp ?? "N/A",
+              kepala_desa_foto: kepala?.foto ?? "",
+              kepala_desa_tempatlahir: kepala?.tempat_lahir ?? "Kosong",
+              kepala_desa_tgllahir: kepala?.tanggal_lahir ?? "Kosong",
+              kepala_desa_kelamin: kepala?.jenis_kelamin ?? "Kosong",
+              jenis_wilayah_nama: jenis_wilayah?.nama ?? "Kosong",
+            },
+          };
+        }),
+      };
+    }
+  } catch (err) {
+    console.error("❌ Gagal fetch detail wilayah:", err);
+  }
+
+  // Hapus layer lama jika ada
+  if (ref.current) {
+    try { view.map.remove(ref.current); } catch (e) {}
+    ref.current = null;
+  }
+
+  // Buat layer baru
+  const blob = new Blob([JSON.stringify(mergedGeoData)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const layer = new GeoJSONLayer({
+    url,
+    id,
+    renderer: {
+      type: "simple",
+      symbol: { type: "simple-fill", color, outline: { color: [0, 0, 0], width: 1 } }
+    },
+    visible,
+  });
+
+  await layer.load().catch(() => {});
+  view.map.add(layer);
+  ref.current = layer;
+
+  // Klik layer → set infoData
+  view.on("click", async (event) => {
+    setLoading(true);
+    if (!desaLayerRef.current && !kecLayerRef.current) return;
+
+    const viewPoint = event.mapPoint;
+    const layers = [desaLayerRef.current, kecLayerRef.current].filter(Boolean);
+
+    for (const layer of layers) {
+      const results = await layer.queryFeatures({
+        geometry: viewPoint,
+        spatialRelationship: "intersects",
+        returnGeometry: false,
+      });
+
+      if (results.features.length > 0) {
+        setInfoData(results.features[0].attributes);
+
+        setLoading(false);
+        break;
+      }
+    }
+  });
+};
 
 
   // Update atau buat GeoJSON layer terpisah untuk Kecamatan & Desa
@@ -663,6 +781,39 @@ useEffect(() => {
   };
 
 
+  const convertGeoJSONKecamatan = (geojsonBaru) => {
+    if (!geojsonBaru?.length) return { type: "FeatureCollection", features: [] };
+
+    return {
+      type: "FeatureCollection",
+      features: geojsonBaru.map((feat) => ({
+        type: "Feature",
+        geometry: feat.geometry, // ambil geometry langsung dari GeoJSON baru
+        properties: {
+          ...feat.properties.data_geografis, // ambil data_geografis jadi properties
+          kode_warna: feat.properties.kode_warna || "N/A"
+        }
+      }))
+    };
+  };
+
+  const convertGeoJSONDesa = (geojsonBaru) => {
+    if (!geojsonBaru?.length) return { type: "FeatureCollection", features: [] };
+
+    return {
+      type: "FeatureCollection",
+      features: geojsonBaru.map((feat) => ({
+        type: "Feature",
+        geometry: feat.geometry,
+        properties: {
+          ...feat.properties.data_geografis, // nama_desa, kode_daerah
+          kode_warna: feat.properties.kode_warna || "N/A"
+        }
+      }))
+    };
+  };
+
+
 
     const selectedKecamatanIds = kecamatan.map(k => k.id_kecamatan); // [351306, 351313]
     const selectedDesaIds = desa.map(k => k.id_desa); // [351306, 351313]
@@ -673,22 +824,32 @@ useEffect(() => {
       const noSelection = selectedKecamatanIds.length === 0;
 
       // Ambil GeoJSON kecamatan
-      const response = await api_url_satuadmin.get(
-        "satupeta/map_datageo_kecamatan",
-        {
-          params: noSelection ? {} : { search_kecamatan: selectedKecamatanIds },
-          paramsSerializer: (params) =>
-            qs.stringify(params, { arrayFormat: "repeat" }),
-        }
-      );
+      const response = await api_url_satudata.get(
+        "geojson/area/kecamatan");
+
+      const geojson = response.data;
+     
 
       // Simpan GeoJSON dasar saja
-      setGeoDataKecamatan(response.data);
+      const geoDataConverted = convertGeoJSONKecamatan(geojson);
+      console.log("GeoJSON Kecamatan:", geoDataConverted);
+      
+      const filteredGeoJSON = {
+        ...geoDataConverted,
+        features: geoDataConverted.features.filter(f =>
+          selectedKecamatanIds.length === 0 ||
+          selectedKecamatanIds.includes(Number(f.properties.kode_daerah))
+        )
+      };
 
+      setGeoDataKecamatan(filteredGeoJSON);  
+      //setGeoDataKecamatan(geoDataConverted);
 
-      if (!geoDataKecamatan?.features?.length) return;
+      
+      //getDataGeo_Desa();
+      if (!geoDataConverted?.features?.length) return;
       if(noSelection){
-         setShowDesa(false);
+       setShowDesa(false);
       }else{
           setShowDesa(true);
            getDataGeo_Desa();
@@ -705,28 +866,46 @@ useEffect(() => {
 
 
   const getDataGeo_Desa = async () => {
-   
-    
-    try {
-      const noSelection = selectedDesaIds.length === 0;
+  try {
+    const response = await api_url_satudata.get("geojson/area/desa");
+    const geoDataConverted = convertGeoJSONDesa(response.data);
 
-      const response = await api_url_satuadmin.get(
-          "satupeta/map_datageo_desa",
-        {
-          params: { search_kecamatan: selectedKecamatanIds,search_desa: selectedDesaIds },
-          paramsSerializer: (params) =>
-            qs.stringify(params, { arrayFormat: "repeat" }),
-        }
-      );
+    const filteredGeoJSON = {
+      ...geoDataConverted,
+      features: geoDataConverted.features.filter((f) => {
+        const kodeDesa = Number(f.properties.kode_daerah);
+        const kodeKecamatan = Math.floor(kodeDesa / 10_000);
 
-      setGeoDataDesa(response.data);
 
-      
+        const matchKecamatan =
+          selectedKecamatanIds.length === 0 ||
+          selectedKecamatanIds.includes(kodeKecamatan);
 
-    } catch (error) {
-      console.error("❌ Failed to fetch data desa:", error);
-    }
-  };
+        const matchDesa =
+          selectedDesaIds.length === 0 ||
+          selectedDesaIds.includes(kodeDesa);
+
+        return matchKecamatan && matchDesa;
+      }),
+    };
+
+    console.log("selectedKecamatanIds:", selectedKecamatanIds);
+    console.log("contoh desa:", geoDataConverted.features[0].properties.kode_daerah);
+    console.log(
+      "kecamatan dari desa:",
+      Math.floor(geoDataConverted.features[0].properties.kode_daerah / 1000)
+    );
+
+    console.log("GeoJSON Desa (filtered):", filteredGeoJSON);
+
+    setGeoDataDesa(filteredGeoJSON);
+  } catch (error) {
+    console.error("❌ Failed to fetch data desa:", error);
+  }
+};
+
+
+
 
 
   const view = viewRef.current;
@@ -1407,7 +1586,7 @@ useEffect(() => {
                  
                  
                   {infoData ? (
-                    infoData.id_desa ? (
+                    infoData.kode_daerah.toString().length > 6 ? (
                       // === Ini DESA ===
                       <div>
                         <p className="mb-0">

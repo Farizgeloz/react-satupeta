@@ -280,7 +280,6 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
             {dataku.presignedUrl_a && (
               <motion.img
                 src={dataku.presignedUrl_a}
-                alt="[Foto]"
                 className="rad10 w-100"
                 onLoad={() => setLoading(false)} // ✅ selesai load → ubah state
                 initial={{ opacity: 0 }}
@@ -304,7 +303,6 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
             {dataku.presignedUrl_b && (
               <motion.img
                 src={dataku.presignedUrl_b}
-                alt="[Foto]"
                 className="rad10 w-100"
                 onLoad={() => setLoading(false)} // ✅ selesai load → ubah state
                 initial={{ opacity: 0 }}
@@ -328,7 +326,6 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
             {dataku.presignedUrl_c && (
               <motion.img
                 src={dataku.presignedUrl_c}
-                alt="[Foto]"
                 className="rad10 w-100"
                 onLoad={() => setLoading(false)} // ✅ selesai load → ubah state
                 initial={{ opacity: 0 }}

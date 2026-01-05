@@ -151,7 +151,6 @@ function Menu({ bgku }) {
             <img
               src={image1}
               className="img-header"
-              alt="Logo"
             />
           </Navbar.Brand>
 

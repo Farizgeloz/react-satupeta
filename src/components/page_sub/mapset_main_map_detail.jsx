@@ -348,7 +348,8 @@ const convertDate2 = (value) => {
       });
     };
 
-    
+   
+
 
     
 
@@ -432,11 +433,24 @@ const convertDate2 = (value) => {
     return (
       <img
         src={urlMap[sektor_id] || defaultIcon}
-        alt="Custom Icon"
         style={{ width: '4%', height: '3%', marginRight:'10px' }}
       />
     );
   };
+
+   const downloadImage = async () => {
+      const response = await fetch(modalData.image);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `gambar-${modalData.title}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    };
 
   return (
     <>
@@ -530,15 +544,12 @@ const convertDate2 = (value) => {
                       <Image src={modalData.image} fluid className="rad10" />
                     </Modal.Body>
                     <Modal.Footer>
-                      <Link
-                        to={modalData.image}
-                        download
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        onClick={downloadImage}
                         className="btn btn-success textsize10"
                       >
                         <FaDownload /> Download Gambar
-                      </Link>
+                      </button>
                       <Button variant="secondary" onClick={() => setShowModal(false)} className="textsize10">
                         Tutup
                       </Button>
