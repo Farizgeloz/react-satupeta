@@ -2683,6 +2683,11 @@ leaflet-popup.popup-zindex {
   height: auto;
 }
 
+.img-header4 {
+  width: 8vh;
+  height: 8vh;
+}
+
 /* Jika mobile */
 @media (max-width: 768px) {
   .brand-logo {

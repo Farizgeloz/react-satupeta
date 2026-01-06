@@ -145,7 +145,7 @@ function Menu({ bgku }) {
         
         <Container className="px-0" style={{ maxWidth: '95%' }}>
           <Navbar.Brand
-            href="#home"
+            href="/"
             className="d-flex text-blue margin-logo brand-logo"
           >
             <img

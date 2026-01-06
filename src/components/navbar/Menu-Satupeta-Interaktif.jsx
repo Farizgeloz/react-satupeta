@@ -169,7 +169,7 @@ function Menu({ bgku }) {
       <Navbar expand="lg" className="r">
         
          <Container style={{maxWidth:'95%'}}>
-          <Navbar.Brand href="#home" className='d-flex text-blue margin-logo'>
+          <Navbar.Brand href="/" className='d-flex text-blue margin-logo'>
             <img src={image2} className={`img-header3 shaddow2 rad10`}  />
           </Navbar.Brand>
           <Navbar.Toggle

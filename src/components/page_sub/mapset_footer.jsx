@@ -18,6 +18,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
 
   const [image1, setImage1] = useState("");
   const [image2, setImage2] = useState("");
+    const [linkedkominfo, setLinkKominfo] = useState("");
 
   const [dataku, setData] = useState([]);
 
@@ -62,6 +63,7 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
       const data_image2 = response_image.data.image_logo;
       setImage1(data_image.presignedUrl1);
       setImage2(data_image2.presignedUrl1);
+      setLinkKominfo(data_image.linked);
 
     } catch (error) {
       console.error("Failed to fetch data:", error);
@@ -103,9 +105,9 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
             <p className='text-white textsize12'>Kab. Probolinggo</p>
           </div>
           <div className='content py-3 d-flex'>
-            <img src={image1} className='img-header'  />
+            <img src={image1} className='img-header4'  />
             <div className="footer-logo  text-left px-2">
-              <Link to="https://jdih.probolinggokab.go.id/" target="_blank" className='textsize12 font_weight600 text-white-a' rel="noreferrer">Dinas Komunikasi, Statistik dan Persandian Kabupaten Probolinggo</Link>
+              <Link to={linkedkominfo} target="_blank" className='textsize12 font_weight600 text-white-a' rel="noreferrer">Dinas Komunikasi, Statistik dan Persandian Kabupaten Probolinggo</Link>
               
             </div>
             
@@ -137,10 +139,10 @@ function AppFooter({ bgfooterku, visitor_today, visitor_month, visitor_year, vis
             <p className='textsize12 text-white font_weight600 text-center'>Ikuti Kami</p>
             <div className="socials justify-content-center">
               <ul className="justify-content-center d-flex">
-                <li  className="justify-content-center "><Link to={facebookku} className="justify-content-center  d-flex"><i className="fab fa-facebook-f"></i></Link></li>
-                <li className="justify-content-center"><Link to={twitterku} className="justify-content-center d-flex"><i className="fab fa-twitter"></i></Link></li>
-                <li className="justify-content-center"><Link to={instagramku} className="justify-content-center d-flex"><i className="fab fa-instagram"></i></Link></li>
-                <li className="justify-content-center"><Link to={linkedinku} className="justify-content-center d-flex"><i className="fab fa-linkedin-in"></i></Link></li>
+                <li  className="justify-content-center "><Link to={facebookku} target="_blank" className="justify-content-center  d-flex"><i className="fab fa-facebook-f"></i></Link></li>
+                <li className="justify-content-center"><Link to={twitterku} target="_blank" className="justify-content-center d-flex"><i className="fab fa-twitter"></i></Link></li>
+                <li className="justify-content-center"><Link to={instagramku} target="_blank" className="justify-content-center d-flex"><i className="fab fa-instagram"></i></Link></li>
+                <li className="justify-content-center"><Link to={linkedinku} target="_blank" className="justify-content-center d-flex"><i className="fab fa-linkedin-in"></i></Link></li>
               </ul>
             </div>
             <p className='mt-3 textsize12 text-white font_weight600 text-center mb-0'>Pengunjung</p>
