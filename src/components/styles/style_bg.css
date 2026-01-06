@@ -20,6 +20,7 @@
     --indigo-dark:#1A237E;
     --green:#2E7D32;
     --green-dark:#1B5E20;
+    --green-sage:#72805a;
     --teal:#00695C;
     --teal-dark:#01372e;
     --red:#B71C1C;
@@ -157,6 +158,9 @@
   }
   .bg-green{
     background-color: #2E7D32;
+  }
+  .bg-green-sage{
+    background-color: #72805a;
   }
   .bg-green-dark{
     background-color: var(--green-dark);

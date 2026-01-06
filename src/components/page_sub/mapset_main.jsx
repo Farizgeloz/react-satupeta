@@ -10,7 +10,15 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 import { FaSearch } from "react-icons/fa";
 import { MdOutlineErrorOutline } from "react-icons/md";
-
+import { 
+  FaMapMarkerAlt, 
+  FaMapMarkedAlt, 
+  FaThLarge,
+  FaDrawPolygon,
+  FaCalendarDay,
+  FaListAlt,
+  FaLongArrowAltRight
+} from "react-icons/fa";
 
 import MultiImageZoomBackground from "./mapset_movingbackground";
 import Content_Main from "./mapset_main_content";
@@ -180,7 +188,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
     const selectedDate = new Date(datePicker);
 
     const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-    const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
     const dayName = dayNames[selectedDate.getDay()];
     const day = selectedDate.getDate();
@@ -204,6 +212,20 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
       //.replace(/[^\w\-]+/g, '')    // Hapus karakter non-kata
       //.replace(/\-\-+/g, '-');     // Hapus strip ganda
   };
+  
+  const getTipeIcon = (tipe) => {
+    switch (tipe?.toLowerCase()) {
+      case "marker":
+        return <FaMapMarkerAlt className="px-2  text-tosca" size={30} style={{ marginTop: "-3px" }} />;
+      case "geomap":
+        return <FaDrawPolygon className="px-2  text-orange" size={30} style={{ marginTop: "-3px" }} />;
+      case "layout":
+        return <FaThLarge className="px-2  text-orange" size={30} style={{ marginTop: "-3px" }} />;
+      default:
+        return <FaDrawPolygon className="px-2  text-orange" size={30} style={{ marginTop: "-3px" }} />;
+    }
+  };
+
   
 
   return (
@@ -523,16 +545,12 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
                         return (
                           <Col sm={6} md={3} lg={3} xs={12} key={data.id_maplist} className="py-2 col-6">
-                            <div className="portfolio-wrapper rad15 bg-body shaddow4 bg-border2">
-                              <Link
-                                to={link}
-                                rel="noopener noreferrer"
-                                className="justify-content-center"
-                              >
+                            <div className="portfolio-wrapper rad15 bg-body shaddow4 bg-border2 p-2">
+                              
                                 <Image
                                   src={data.presignedUrl}
-                                  className="shaddow3 rad10"
-                                  style={{ height: '160px' }}
+                                  className="shaddow3 rad10 w-100"
+                                  style={{ height: '130px' }}
                                   onContextMenu={(e) => e.preventDefault()}
                                   draggable={false}
                                 />
@@ -540,25 +558,54 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                   
                                   
                                    <Row className="px-3">
-                                    <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
-                                      <p className="text-white textsize10  bg-indigo-light rad15">{data.tipe}</p>
-                                    </Col>
-                                    <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
-                                      <p className="text-white textsize10 bg-tosca rad15">{data.tahun_rilis}</p>
-                                    </Col>
-                                  </Row>
-                                   <p 
-                                    className={`text-white textsize10 mb-0 shaddow3 p-1 mx-1 rad10`}
-                                    style={{ backgroundColor: bgcontentku}}
-                                  >
-                                    {data.koleksi_data}
-                                  </p>
-                                  <p className="text-body textsize12 mt-2" style={{height:"50px"}}>{data.title}</p>
+                                      <Col sm={6} md={6} lg={6} xs={6} className="d-flex text-center px-1">
+                                        {getTipeIcon(data.tipe)} <p className="textsize8  rad15 mb-0" style={{ color: bgtitleku }}>{data.tipe}</p>
+                                      </Col>
+                                      <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
+                                        <p className="text-white textsize10 bg-green-sage rad15 mb-1">{data.tahun_rilis}</p>
+                                      </Col>
+                                    </Row>
+                                   <p className="text-body textsize12 font_weight600 text-left px-3" style={{height:"40px",lineHeight:"1"}}>{data.title}</p>
+                                   <Row className="px-3">
+                                      <Col sm={12} md={12} lg={12} xs={12} className="d-flex px-1">
+                                        <FaCalendarDay className="textsize10 text-body"/> 
+                                        <p className="textsize8 rad15 text-left text-body">
+                                          {data.nama_opd?.length > 30
+                                            ? data.nama_opd.substring(0, 30) + "..."
+                                            : data.nama_opd}
+                                        </p>
+                                      </Col>
+                                      <Col sm={6} md={6} lg={6} xs={6} className="d-flex px-1">
+                                        <FaCalendarDay  className="textsize10" style={{color:bgtitleku}} /> <p className="textsize8  rad15" style={{color:bgtitleku}}>{convertDate(data.updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, ''))}</p>
+                                      </Col>
+                                      <Col sm={6} md={6} lg={6} xs={6} className="d-flex px-1">
+                                        <FaListAlt   className="textsize10"  style={{color:bgtitleku}} /> 
+                                        <p className="textsize8 rad15 text-left" style={{ color: bgtitleku }}>
+                                          {data.koleksi_data}
+                                        </p> 
+                                      </Col>
+                                    </Row>
+                                    
+                                    <div className="mx-1 rad10 px-5 py-2"  style={{ backgroundColor: bgcontentku}}>
+                                      <Link
+                                        to={link}
+                                        rel="noopener noreferrer"
+                                        className="justify-content-center"
+                                      >
+                                        <p 
+                                          className={`text-white textsize8 bg-orange mb-0 shaddow3 p-1 mx-1 rad10`}
+                                        
+                                        >
+                                          Baca Selengkapnya <FaLongArrowAltRight />
+                                        </p>
+                                    </Link>
+                                    </div>
+                                   
+                                 
                                  
                                  
                                  
                                 </div>
-                              </Link>
                             </div>
                           </Col>
                         );
@@ -627,38 +674,67 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                         let link = `/Tematik/Mapset/${slugify(data.title)}`;
                         return (
                           <Col sm={6} md={3} lg={3} xs={12} key={data.id_maplist} className="py-2 col-6">
-                            <div className='portfolio-wrapper rad15 bg-body shaddow4 bg-border2'>
-                                <Link
-                                  to={link}
-                                  rel="noopener noreferrer"
-                                  className="justify-content-center"
-                                >
-                                  <Image
-                                    src={data.presignedUrl}
-                                    className='shaddow3 rad10'
-                                    style={{ height: '160px' }}
-                                    onContextMenu={(e) => e.preventDefault()}
-                                    draggable={false}
-                                  />
-                                  <div className='label text-center py-2'>
-                                    <Row className="px-3">
-                                      <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
-                                        <p className="text-white textsize10  bg-indigo-light rad15">{data.tipe}</p>
+                            <div className="portfolio-wrapper rad15 bg-body shaddow4 bg-border2 p-2">
+                              
+                                <Image
+                                  src={data.presignedUrl}
+                                  className="shaddow3 rad10 w-100 rad10"
+                                  style={{ height: '130px' }}
+                                  onContextMenu={(e) => e.preventDefault()}
+                                  draggable={false}
+                                />
+                                <div className="label text-center py-2">
+                                  
+                                  
+                                   <Row className="px-3">
+                                      <Col sm={6} md={6} lg={6} xs={6} className="d-flex text-center px-1">
+                                        {getTipeIcon(data.tipe)} <p className="textsize8  rad15 mb-0" style={{ color: bgtitleku }}>{data.tipe}</p>
                                       </Col>
                                       <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
-                                        <p className="text-white textsize10 bg-tosca rad15">{data.tahun_rilis}</p>
+                                        <p className="text-white textsize10 bg-green-sage rad15 mb-1">{data.tahun_rilis}</p>
                                       </Col>
                                     </Row>
-                                    <p 
-                                      className={`text-white textsize10 mb-0 shaddow3 p-1 mx-1 rad10`}
-                                      style={{ backgroundColor: bgcontentku}}
-                                    >
-                                      {data.koleksi_data}
-                                    </p>
-                                    <p className="text-body textsize12 mt-2" style={{height:"50px"}}>{data.title}</p>
+                                   <p className="text-body textsize12 font_weight600 text-left px-3" style={{height:"40px",lineHeight:"1"}}>{data.title}</p>
+                                   <Row className="px-3">
+                                      <Col sm={12} md={12} lg={12} xs={12} className="d-flex px-1">
+                                        <FaCalendarDay className="textsize10 text-body"/> 
+                                        <p className="textsize8 rad15 text-left text-body">
+                                          {data.nama_opd?.length > 30
+                                            ? data.nama_opd.substring(0, 30) + "..."
+                                            : data.nama_opd}
+                                        </p>
+                                      </Col>
+                                      <Col sm={6} md={6} lg={6} xs={6} className="d-flex px-1">
+                                        <FaCalendarDay  className="textsize10" style={{color:bgtitleku}} /> <p className="textsize8  rad15" style={{color:bgtitleku}}>{convertDate(data.updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, ''))}</p>
+                                      </Col>
+                                      <Col sm={6} md={6} lg={6} xs={6} className="d-flex px-1">
+                                        <FaListAlt   className="textsize10"  style={{color:bgtitleku}} /> 
+                                        <p className="textsize8 rad15 text-left" style={{ color: bgtitleku }}>
+                                          {data.koleksi_data}
+                                        </p> 
+                                      </Col>
+                                    </Row>
                                     
-                                  </div>
-                                </Link>
+                                    <div className="mx-1 rad10 px-5 py-2"  style={{ backgroundColor: bgcontentku}}>
+                                      <Link
+                                        to={link}
+                                        rel="noopener noreferrer"
+                                        className="justify-content-center"
+                                      >
+                                        <p 
+                                          className={`text-white textsize8 bg-orange mb-0 shaddow3 p-1 mx-1 rad10`}
+                                        
+                                        >
+                                          Baca Selengkapnya <FaLongArrowAltRight />
+                                        </p>
+                                    </Link>
+                                    </div>
+                                   
+                                 
+                                 
+                                 
+                                 
+                                </div>
                             </div>
                           </Col>
                         );
@@ -751,19 +827,18 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                       >
                                         {data.title}
                                       </p>
-                                       <p className='text-red textsize8 mb-1'>{convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
+                                       <p className='textsize8 mb-1' style={{color:bgtitleku}}><FaCalendarDay className="textsize10"/> {convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
                                     
-                                      <p
-                                        className="text-body textsize10 font_weight400 mb-2"
-                                        style={{ lineHeight: '1.2' }}
-                                      >
-                                        {data.content_a.length > 120 ? data.content_a.slice(0, 120) + '...' : data.content_a}
-                                      </p>
+                                      
+                                        {typeof data.content_a === 'string' ? (
+                                          <div className="textsize10 mt-3 mb-5 text-body">
+                                            <div className='text-body' dangerouslySetInnerHTML={{ __html: data.content_a.length > 120 ? data.content_a.slice(0, 120) + '...' : data.content_a }} />
+                                          </div>
+                                        ) : ("")}
                                     </div>
                                     <Link to={`/Artikel/Detail/${slugify(data.title)}`} 
-                                      className={`text-white-a textsize8 p-2 rad10`}
-                                      style={{backgroundColor:bgcontentku}}
-                                      >Baca Selengkapnya </Link>
+                                      className={`text-white-a textsize8 p-2 rad10 bg-orange`}
+                                      >Baca Selengkapnya <FaLongArrowAltRight /> </Link>
                                   </div>
                                 </div>
                             </div>

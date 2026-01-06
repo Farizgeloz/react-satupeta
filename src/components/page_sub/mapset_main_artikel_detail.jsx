@@ -230,6 +230,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   };
 
   const slugify = (text) => {
+    if (!text) return ""; // ⬅️ KUNCI UTAMA
     return text
       .toString()
       .toLowerCase()
@@ -364,7 +365,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
       </Col>
       <Col md={3}>
         <p className="textsize10 text-center mt-5 text-body">Bagikan :</p>
-        <ShareButtons url={`/Artikel/${dataku.id}`} title={dataku.judul} className="mb-5" />
+        <ShareButtons url={`/Artikel/Detail/${slugify(dataku.title)}`} title={dataku.title} className="mb-5" />
 
         <Row className='portfoliolist justify-content-md-center p-2 mt-5'>
           

@@ -14,6 +14,15 @@ import { MdHomeFilled, MdInfoOutline, MdOutlineFeaturedPlayList, MdOutlineFeed }
 import { FaDownload } from "react-icons/fa6";
 import { api_url_satuadmin } from "../../api/axiosConfig";
 
+import { 
+  FaMapMarkerAlt, 
+  FaMapMarkedAlt, 
+  FaThLarge,
+  FaDrawPolygon,
+  FaCalendarDay,
+  FaListAlt,
+  FaLongArrowAltRight
+} from "react-icons/fa";
 
 
 const Spinner = () => 
@@ -321,10 +330,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                                     />
                                   </div>
                                   <div className='label text-left py-2'>
-                                    <p 
-                                      className={` textsize8 mb-1`}
-                                      style={{color:colordateku}}
-                                    >{convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
+                                    <p className='textsize8 mb-1' style={{color:bgtitleku}}><FaCalendarDay className="textsize10"/> {convertDate(data.updated_at.toString().replace(/T/, ' ').replace(/\.\w*/, ''))}</p>
                                     <p
                                       className={` textsize10 font_weight600 mb-2 text-body`}
                                       style={{ lineHeight: '1.2',minHeight:"70px" }}
