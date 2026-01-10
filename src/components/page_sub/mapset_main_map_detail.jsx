@@ -80,6 +80,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   const [sektorid, setsektorid] = useState(null);
   const [sektor, setsektor] = useState(null);
 
+  const [idku, set_id] = useState("");
   const [koleksi_data, setkoleksi_data] = useState("");
   const [location_id, setlocation_id] = useState("");
   const [title, settitle] = useState("");
@@ -122,7 +123,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   
 
   useEffect(() => {
-    if (!id) return;                 // tunggu id siap
+    if (!idku) return;                 // tunggu id siap
     if (hasSentRef.current) return;  // cegah double-fire di StrictMode
     hasSentRef.current = true;
 
@@ -131,19 +132,19 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
         //console.log("increaseVisitor fire, id =", id);
         await api_url_satuadmin.post(
           `satupeta/locationmaplist_visitor`,
-          { id_maplist: String(id) },                           // kirim JSON
+          { id_maplist: String(idku) },                           // kirim JSON
           { headers: { "Content-Type": "application/json" } }
         );
       } catch (error) {
         console.error("Gagal tambah visitor:", error?.response?.data || error.message);
       }
     })();
-  }, [id, api_url_satuadmin]);
+  }, [idku, api_url_satuadmin]);
 
 
   const setDownloadvisitor = async () => {
     await api_url_satuadmin.post(`satupeta/locationmaplist_download`,
-      { id_maplist: String(id) },                           // kirim JSON
+      { id_maplist: String(idku) },                           // kirim JSON
       { headers: { "Content-Type": "application/json" } }
     );
 
@@ -153,6 +154,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
       const response = await api_url_satuadmin.get( `satupeta/Koleksi-Peta/detail/${id}`);
 
       // Ambil data utama
+      set_id(response.data.data.id_maplist);
       setkoleksi_data(response.data.data.koleksi_data);
       setlocation_id(response.data.data.location_id);
       settitle(response.data.data.title);

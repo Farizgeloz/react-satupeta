@@ -14,7 +14,6 @@ import FeedbackModal from "../page_sub/FeedbackModal";
 import PopupIklan from '../page_sub/PopupIklan';
 
 import Menu from '../navbar/Menu-Satupeta';
-import { MdInfoOutline } from 'react-icons/md';
 import { FcFeedback } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 import { api_url_satuadmin } from "../../api/axiosConfig";
