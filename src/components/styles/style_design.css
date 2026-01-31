@@ -1101,3 +1101,109 @@ filter: progid:DXImageTransform.Microsoft.gradient(
   }
 }
 
+/* ===============================
+   CONTAINER LUAR (YANG DI-HIDDEN)
+================================ */
+.slider-outer {
+  max-width: 100%;
+  margin: auto;
+  overflow: hidden; /* 🔥 hanya di sini */
+  padding: 90px 0;  /* ruang scale */
+}
+
+/* ===============================
+   BIARKAN SWIPER BOLEH KELUAR
+================================ */
+.slider-swiper {
+  overflow: visible !important;
+}
+
+.slider-swiper .swiper-wrapper {
+  overflow: visible !important;
+}
+
+/* ===============================
+   DEFAULT SLIDE
+================================ */
+.slider-swiper .swiper-slide {
+  display: flex;
+  width: 120px;
+  height: auto;
+  justify-content: center;
+  transition: transform 0.45s ease, opacity 0.45s ease;
+  transform: scale(1);
+  opacity: 0.5;
+}
+
+/* ===============================
+   SLIDE TENGAH (BESAR)
+================================ */
+.slider-swiper .swiper-slide-active {
+    width: 200px;
+    height: auto;
+  transform: scale(1.2) !important;
+  opacity: 1;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .slider-swiper .swiper-slide-active {
+    width: 100%;
+    transform: scale(1) !important;
+  }
+
+
+}
+
+/* ===============================
+   SLIDE SAMPING
+================================ */
+.slider-swiper .swiper-slide-prev,
+.slider-swiper .swiper-slide-next {
+  transform: scale(1);
+  opacity: 0.8;
+  z-index: 5;
+}
+
+/* ===============================
+   ISI SLIDE
+================================ */
+.slide-box {
+  
+  
+  background: linear-gradient(135deg, #0d6dfd00, #6710f200);
+  border-radius: 16px;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===============================
+   PAGINATION
+================================ */
+.swiper-pagination {
+  bottom: -20% !important; /* posisi pagination */
+}
+
+.swiper-pagination-bullet {
+  background: #0d6efd;
+  opacity: 0.4;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+}
+.hiddenmobile{
+    display: block;
+}
+
+@media (max-width: 768px) {
+  .hiddenmobile {
+    display: none;
+  }
+
+
+}

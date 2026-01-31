@@ -193,7 +193,7 @@ const FeedbackModal = () => {
                         className="bg-input textsize10"
                         value={temu}
                         onChange={(e) => setTemu(e.target.value)}
-                        placeholder="Contoh: Peneliti/Akademisi..."
+                        placeholder="Contoh: Iya/Tidak/Sebagian..."
                         required
                     />
                     <datalist id="temuOptions">

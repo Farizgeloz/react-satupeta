@@ -2,7 +2,7 @@ import { useState, useEffect,useRef  } from "react";
 import axios from "axios";
 import qs from 'qs';
 
-import { Container, Row, Col, Image,Modal, Button } from "react-bootstrap";
+import { Container, Row, Col, Image,Modal, Button,OverlayTrigger,Tooltip } from "react-bootstrap";
 import { motion } from "framer-motion";
 
 import { TextField, InputAdornment, IconButton,Box } from '@mui/material';
@@ -27,12 +27,13 @@ import { FaDownload } from "react-icons/fa6";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, EffectCoverflow } from 'swiper/modules'
+import { Autoplay, EffectCoverflow,Pagination } from "swiper/modules";
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+
 import { Link } from "react-router-dom";
 import { api_url_satuadmin } from "../../api/axiosConfig";
 
@@ -159,6 +160,9 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
       const res = response.data;
       setdata(res.data);
+
+      console.log("koleksi:", res.data);
+      
 
       const response_artikel = await api_url_satuadmin.get( 'satupeta/map_artikel', {
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' })
@@ -464,6 +468,69 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                     })}
                   </Swiper>
                 </div>
+                {/* <div className="slider-outer">
+                  <Swiper
+                    modules={[Autoplay, Pagination]}
+                    slidesPerView={3}
+                    centeredSlides={true}
+                    loop={true}
+                    spaceBetween={100}
+                    autoplay={{
+                      delay: 3000,
+                      disableOnInteraction: false,
+                      pauseOnMouseEnter: true,
+                    }}
+                    pagination={{ clickable: true }}
+                    breakpoints={{
+                      0: {
+                        slidesPerView: 1.3,
+                      },
+                      768: {
+                        slidesPerView: 3,
+                      },
+                    }}
+                    className="slider-swiper"
+                  >
+                    {dataku.map((data, index) => {
+                      let link = `/Tematik/Mapset/${slugify(data.title)}`;
+
+                      const isi = (
+                        <Row key={index} className="justify-content-center bg-body  d-flex rad10" style={{ cursor: "pointer" }}>
+                          <Col sm={12} className="py-2">
+                            <Image
+                              src={data.presignedUrl}
+                              className="shaddow3 rad10"
+                              style={{ height: "25vh" }}
+                              onContextMenu={(e) => e.preventDefault()}
+                              draggable={false}
+                            />
+                          </Col>
+                          <Col sm={8} className="label text-center py-2">
+                            <p 
+                              className={`text-white textsize10 mb-0 shaddow3 p-1 mx-1 rad10`}
+                              style={{backgroundColor:bgcontentku}}
+                            >
+                              {data.koleksi_data}
+                            </p>
+                            <p className={`textsize12 mx-1 ${activeIndex === index ? 'text-body' : 'text-body'}`}>{data.title}</p>
+                          </Col>
+                        </Row>
+                      );
+
+                      return (
+                        <SwiperSlide key={data.id_maplist}>
+                          <div className={`slide-box rad15 px-2 ${activeIndex === index ? `bg-body` : ''}`}>
+                            
+                              <Link to={link} rel="noopener noreferrer">
+                                {isi}
+                              </Link>
+                            
+                          </div>
+                        </SwiperSlide>
+                      );
+                    })}
+                  </Swiper>
+                </div> */}
 
                 {/* Modal */}
                 {/* <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered style={{ zIndex: 9999 }}>
@@ -502,7 +569,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
         </section>
       </Col>
       <Col md={11}>
-        <section className={`block py-1 mt-5 rad15 px-2`}>
+        <section className={`block py-1 mt-5 rad15 px-2 py-3`}>
           {loading ? (
             <Spinner />
           ) : (
@@ -517,106 +584,142 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                  
                 <Row className='portfoliolist justify-content-center p-2'>
                   
-                  <Col md={10} sm={7} className='py-2'>
-                    <p 
-                      className={`rad15 textsize14 text-white shaddow3 text-center py-2`} 
-                      style={{maxWidth:"45vh",backgroundColor:bgtitleku}}>Peta Tematik Interaktif</p>  
-                   </Col>
-                   <Col md={2} sm={5} className='py-3'>
-                    <Link 
-                      to="/Tematik/Koleksi/Peta Interaktif"
-                      className="bg-orange rad15 textsize8 text-white-a shaddow3 text-center d-flex justify-content-center" 
-                      style={{maxWidth:"300px"}}
-                      cursor="pointer"
-                    >
-                      <span className="px-2 py-2" style={{maxWidth:"40vh",cursor:"pointer"}} >Lihat Lebih Banyak</span> 
-                      <FaExternalLinkAlt className="mt-3" />
-                    </Link>  
-                    
-                   </Col>
                   {dataku.length > 0 ? (
                     <>
-                    {
-                      dataku
-                      .filter((data) => data.koleksi_data === 'Peta Interaktif')
-                      .slice(0, 4)
-                      .map((data) => {
-                        let link = `/Tematik/Mapset/${slugify(data.title)}`;
+                      {(() => {
+                        const dataPeta = dataku
+                          .filter((data) => data.koleksi_data === 'Peta Interaktif')
+                          .slice(0, 4);
+
+                        const firstData = dataPeta[0];
+                        const sideData = dataPeta.slice(1);
 
                         return (
-                          <Col sm={6} md={3} lg={3} xs={12} key={data.id_maplist} className="py-2 col-6">
-                            <div className="portfolio-wrapper rad15 bg-body shaddow4 bg-border2 p-2">
-                              
-                                <Image
-                                  src={data.presignedUrl}
-                                  className="shaddow3 rad10 w-100"
-                                  style={{ height: '130px' }}
-                                  onContextMenu={(e) => e.preventDefault()}
-                                  draggable={false}
-                                />
-                                <div className="label text-center py-2">
-                                  
-                                  
-                                   <Row className="px-3">
-                                      <Col sm={6} md={6} lg={6} xs={6} className="d-flex text-center px-1">
-                                        {getTipeIcon(data.tipe)} <p className="textsize8  rad15 mb-0" style={{ color: bgtitleku }}>{data.tipe}</p>
-                                      </Col>
-                                      <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
-                                        <p className="text-white textsize10 bg-green-sage rad15 mb-1">{data.tahun_rilis}</p>
-                                      </Col>
-                                    </Row>
-                                   <p className="text-body textsize12 font_weight600 text-left px-3" style={{height:"40px",lineHeight:"1"}}>{data.title}</p>
-                                   <Row className="px-3">
-                                      <Col sm={12} md={12} lg={12} xs={12} className="d-flex px-1">
-                                        <FaCalendarDay className="textsize10 text-body"/> 
-                                        <p className="textsize8 rad15 text-left text-body">
-                                          {data.nama_opd?.length > 30
-                                            ? data.nama_opd.substring(0, 30) + "..."
-                                            : data.nama_opd}
-                                        </p>
-                                      </Col>
-                                      <Col sm={6} md={6} lg={6} xs={6} className="d-flex px-1">
-                                        <FaCalendarDay  className="textsize10" style={{color:bgtitleku}} /> <p className="textsize8  rad15" style={{color:bgtitleku}}>{convertDate(data.updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, ''))}</p>
-                                      </Col>
-                                      <Col sm={6} md={6} lg={6} xs={6} className="d-flex px-1">
-                                        <FaListAlt   className="textsize10"  style={{color:bgtitleku}} /> 
-                                        <p className="textsize8 rad15 text-left" style={{ color: bgtitleku }}>
-                                          {data.koleksi_data}
-                                        </p> 
-                                      </Col>
-                                    </Row>
-                                    
-                                    <div className="mx-1 rad10 px-5 py-2"  style={{ backgroundColor: bgcontentku}}>
-                                      <Link
-                                        to={link}
-                                        rel="noopener noreferrer"
-                                        className="justify-content-center"
+                          <Row className="justify-content-center">
+                            <Col md={10} sm={10} xs={10} className='py-2'>
+                                 
+                                      <p 
+                                        className={`rad15 textsize14 text-white shaddow3 text-center py-2`} 
+                                        style={{maxWidth:"45vh",backgroundColor:bgtitleku}}>Peta Tematik Interaktif</p>  
+
+                                      
+                                  </Col>
+                                  <Col md={2} sm={2} xs={2} className='py-2'>
+                                    <OverlayTrigger
+                                      placement="top"
+                                      overlay={
+                                        <Tooltip id="tooltip-peta-tematik">
+                                         Lihat Lebih Banyak Peta Interaktif
+                                        </Tooltip>
+                                      }
+                                    >
+                                      <Link 
+                                        to="/Tematik/Koleksi/Peta Interaktif"
+                                        className="rad15 textsize8 text-white-a shaddow3 text-center d-flex justify-content-center"
+                                        style={{height:"40px",width:"40px",backgroundColor:bgcontentku}} 
+                                        cursor="pointer"
                                       >
-                                        <p 
-                                          className={`text-white textsize8 bg-orange mb-0 shaddow3 p-1 mx-1 rad10`}
-                                        
-                                        >
-                                          Baca Selengkapnya <FaLongArrowAltRight />
-                                        </p>
-                                    </Link>
-                                    </div>
-                                   
-                                 
-                                 
-                                 
-                                 
-                                </div>
-                            </div>
-                          </Col>
+                                        <FaExternalLinkAlt size={20} className="mt-1" />
+                                      </Link>  
+
+                                    </OverlayTrigger>
+                                    
+                                  </Col>
+                                 <Col md={9} sm={9} xs={9} className='py-2'>
+                                   <p className="text-left capitalizeku textsize10 mb-3 text-center italicku" style={{color:bgtitleku}}>
+                                        Penyajian peta tematik interaktif yang dapat dieksplorasi secara dinamis, menampilkan berbagai tema peta yang diperkaya informasi umum dan metadata lengkap sebagai konteks data.
+                                    </p>
+                                 </Col>
+                            {/* ITEM PERTAMA - COL 6 */}
+                            
+
+                            {/* 4 ITEM DI SAMPING - 2 x 2 */}
+                            <Col lg={12} md={12} sm={12} xs={12}>
+                              <Row>
+                                {dataPeta.map((data) => {
+                                  let link = `/Tematik/Mapset/${slugify(data.title)}`;
+                                  return (
+                                    <Col lg={3} md={3} sm={3} xs={12} key={data.id_maplist} className="py-3">
+                                      <div className="portfolio-wrapper rad15 bg-body shaddow4 bg-border2 p-2">
+                                        <Image
+                                          src={data.presignedUrl}
+                                          className="shaddow3 rad10 w-100"
+                                          style={{ height: isMobile ? 'auto' :  '130px' }}
+                                          onContextMenu={(e) => e.preventDefault()}
+                                          draggable={false}
+                                        />
+
+                                        <div className="label text-center py-2">
+                                          <Row className="px-3">
+                                             
+                                            <Col xs={6} className="d-flex px-1">
+                                              {getTipeIcon(data.tipe)}
+                                              <p className="textsize8 mb-0" style={{ color: bgtitleku }}>
+                                                {data.tipe}
+                                              </p>
+                                            </Col>
+                                            <Col xs={6} className="text-center px-1">
+                                              <p className="text-white textsize10 bg-green-sage rad15 mb-1">
+                                                {data.tahun_rilis}
+                                              </p>
+                                            </Col>
+                                          </Row>
+
+                                          <p
+                                            className="text-body textsize12 font_weight600 text-left px-3"
+                                            style={{ height: "40px", lineHeight: "1" }}
+                                          >
+                                            {data.title}
+                                          </p>
+
+                                          <Row className="px-3">
+                                            <Col sm={12} md={12} lg={12} xs={12} className="d-flex px-1">
+                                              <FaCalendarDay className="textsize10 text-body"/> 
+                                              <p className="textsize8 rad15 text-left text-body">
+                                                {data.nama_opd?.length > 30
+                                                  ? data.nama_opd.substring(0, 30) + "..."
+                                                  : data.nama_opd}
+                                              </p>
+                                            </Col>
+                                            <Col xs={6} className="d-flex px-1">
+                                              <FaCalendarDay className="textsize10" style={{ color: bgtitleku }} />
+                                              <p className="textsize8" style={{ color: bgtitleku }}>
+                                                {convertDate(
+                                                  data.updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, '')
+                                                )}
+                                              </p>
+                                            </Col>
+                                            <Col xs={6} className="d-flex px-1">
+                                              <FaListAlt className="textsize10" style={{ color: bgtitleku }} />
+                                              <p className="textsize8" style={{ color: bgtitleku }}>
+                                                {data.koleksi_data}
+                                              </p>
+                                            </Col>
+                                          </Row>
+
+                                          <div className="mx-1 rad10 px-3 py-1" style={{ backgroundColor: bgcontentku }}>
+                                            <Link to={link}>
+                                              <p className="text-white textsize8 bg-orange mb-0 shaddow3 p-1 rad10">
+                                                Baca Selengkapnya <FaLongArrowAltRight />
+                                              </p>
+                                            </Link>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </Col>
+                                  );
+                                })}
+                              </Row>
+                            </Col>
+                          </Row>
                         );
-                      })
-                      
-                    }
-                    
+                      })()}
                     </>
                   ) : (
                     <Col xs={12} className="text-center py-5">
-                      <p className="textsize14 text-silver-light italicku"><MdOutlineErrorOutline className="text-orange"/> Data Tidak Ditemukan.</p>
+                      <p className="textsize14 text-silver-light italicku">
+                        <MdOutlineErrorOutline className="text-orange" /> Data Tidak Ditemukan.
+                      </p>
                     </Col>
                   )}
                   
@@ -631,7 +734,7 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
       </Col>
 
       <Col md={11}>
-        <section className={`block py-1 mt-5 rad15 px-2`}>
+        <section className={`block py-3 mt-5 rad15 px-2`}>
           {loading ? (
             <Spinner />
           ) : (
@@ -646,110 +749,223 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
                  
                 <Row className='portfoliolist justify-content-md-center p-2'>
                   
-                   <Col md={10} sm={7} className='py-2'>
-                    <p 
-                      className={`rad15 textsize14 text-white shaddow3 text-center py-2`} 
-                      style={{maxWidth:"45vh",backgroundColor:bgtitleku}}>Peta Tematik Layout</p>  
-                   </Col>
-                   <Col md={2} sm={5} className='py-2'>
-                    <Link 
-                      to="/Tematik/Koleksi/Peta Layout"
-                      className="bg-orange rad15 textsize8 text-white-a shaddow3 text-center d-flex justify-content-center" 
-                      style={{maxWidth:"300px"}}
-                      cursor="pointer"
-                    >
-                      <span className="px-2 py-2" style={{maxWidth:"40vh",cursor:"pointer"}} >Lihat Lebih Banyak</span> 
-                      <FaExternalLinkAlt className="mt-1" />
-                    </Link>  
-                    
-                   </Col>
+                  
                   
                   {dataku.length > 0 ? (
                     <>
-                    {
-                      dataku
-                      .filter((data) => data.koleksi_data === 'Peta Layout')
-                      .slice(0, 4)
-                      .map((data) => {
-                        let link = `/Tematik/Mapset/${slugify(data.title)}`;
+                      {(() => {
+                        const dataPeta = dataku
+                          .filter((data) => data.koleksi_data === 'Peta Layout')
+                          .slice(0, 5);
+
+                        const firstData = dataPeta[0];
+                        const sideData = dataPeta.slice(1);
+
                         return (
-                          <Col sm={6} md={3} lg={3} xs={12} key={data.id_maplist} className="py-2 col-6">
-                            <div className="portfolio-wrapper rad15 bg-body shaddow4 bg-border2 p-2">
-                              
-                                <Image
-                                  src={data.presignedUrl}
-                                  className="shaddow3 rad10 w-100 rad10"
-                                  style={{ height: '130px' }}
-                                  onContextMenu={(e) => e.preventDefault()}
-                                  draggable={false}
-                                />
-                                <div className="label text-center py-2">
-                                  
-                                  
-                                   <Row className="px-3">
-                                      <Col sm={6} md={6} lg={6} xs={6} className="d-flex text-center px-1">
-                                        {getTipeIcon(data.tipe)} <p className="textsize8  rad15 mb-0" style={{ color: bgtitleku }}>{data.tipe}</p>
-                                      </Col>
-                                      <Col sm={6} md={6} lg={6} xs={6} className="text-center px-1">
-                                        <p className="text-white textsize10 bg-green-sage rad15 mb-1">{data.tahun_rilis}</p>
-                                      </Col>
-                                    </Row>
-                                   <p className="text-body textsize12 font_weight600 text-left px-3" style={{height:"40px",lineHeight:"1"}}>{data.title}</p>
-                                   <Row className="px-3">
-                                      <Col sm={12} md={12} lg={12} xs={12} className="d-flex px-1">
-                                        <FaCalendarDay className="textsize10 text-body"/> 
-                                        <p className="textsize8 rad15 text-left text-body">
-                                          {data.nama_opd?.length > 30
-                                            ? data.nama_opd.substring(0, 30) + "..."
-                                            : data.nama_opd}
+                          <Row className="justify-content-end">
+                            {/* ITEM PERTAMA - COL 6 */}
+                            {firstData && (
+                              <Col lg={6} md={6} sm={12} xs={12} order={2} orderMd={1} className="py-2 ms-auto">
+                                <Row className="justify-content-center">
+
+                                 <Col md={10} sm={10} xs={10} className='py-2'>
+                                 
+                                      <p 
+                                        className={`rad15 textsize14 text-white shaddow3 text-center py-2`} 
+                                        style={{maxWidth:"45vh",backgroundColor:bgtitleku}}>Peta Tematik Layout</p>  
+
+                                      
+                                  </Col>
+                                  <Col md={2} sm={2} xs={2} className='py-2'>
+                                    <OverlayTrigger
+                                      placement="top"
+                                      overlay={
+                                        <Tooltip id="tooltip-peta-tematik">
+                                         Lihat Lebih Banyak Peta Layout
+                                        </Tooltip>
+                                      }
+                                    >
+                                      <Link 
+                                        to="/Tematik/Koleksi/Peta Layout"
+                                        className="rad15 textsize8 text-white-a shaddow3 text-center d-flex justify-content-center"
+                                        style={{height:"40px",width:"40px",backgroundColor:bgcontentku}} 
+                                        cursor="pointer"
+                                      >
+                                        <FaExternalLinkAlt size={20} className="mt-1" />
+                                      </Link>  
+
+                                    </OverlayTrigger>
+                                    
+                                  </Col>
+                                  <Col md={9} sm={9} xs={9} className='py-2'>
+                                   <p className="text-left capitalizeku textsize10 mb-3 text-center italicku" style={{color:bgtitleku}}>
+                                        Peta tematik statis yang menyajikan berbagai tema secara visual, dilengkapi informasi umum dan metadata lengkap untuk memudahkan pemahaman data.
+                                    </p>
+                                  </Col>
+                                </Row>
+                                <div className="portfolio-wrapper rad15 bg-body shaddow4 bg-border2 p-2">
+                                  <Image
+                                    src={firstData.presignedUrl}
+                                    className="shaddow3 rad10 w-100"
+                                    style={{ height: isMobile ? 'auto' :  '260px' }}
+                                    onContextMenu={(e) => e.preventDefault()}
+                                    draggable={false}
+                                  />
+
+                                  <div className="label text-center py-2">
+                                    <Row className="px-3">
+                                      <Col sm={6} xs={6} className="d-flex text-center px-1">
+                                        {getTipeIcon(firstData.tipe)}
+                                        <p className="textsize8 rad15 mb-0" style={{ color: bgtitleku }}>
+                                          {firstData.tipe}
                                         </p>
                                       </Col>
-                                      <Col sm={6} md={6} lg={6} xs={6} className="d-flex px-1">
-                                        <FaCalendarDay  className="textsize10" style={{color:bgtitleku}} /> <p className="textsize8  rad15" style={{color:bgtitleku}}>{convertDate(data.updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, ''))}</p>
-                                      </Col>
-                                      <Col sm={6} md={6} lg={6} xs={6} className="d-flex px-1">
-                                        <FaListAlt   className="textsize10"  style={{color:bgtitleku}} /> 
-                                        <p className="textsize8 rad15 text-left" style={{ color: bgtitleku }}>
-                                          {data.koleksi_data}
-                                        </p> 
+                                      <Col sm={6} xs={6} className="text-center px-1">
+                                        <p className="text-white textsize10 bg-green-sage rad15 mb-1">
+                                          {firstData.tahun_rilis}
+                                        </p>
                                       </Col>
                                     </Row>
+
+                                    <p
+                                      className="text-body textsize12 font_weight600 text-left px-3"
+                                      style={{ height: "auto", lineHeight: "1" }}
+                                    >
+                                      {firstData.title}
+                                    </p>
+
                                     
-                                    <div className="mx-1 rad10 px-5 py-2"  style={{ backgroundColor: bgcontentku}}>
-                                      <Link
-                                        to={link}
-                                        rel="noopener noreferrer"
-                                        className="justify-content-center"
-                                      >
-                                        <p 
-                                          className={`text-white textsize8 bg-orange mb-0 shaddow3 p-1 mx-1 rad10`}
-                                        
-                                        >
+                                    {firstData.deskripsi && firstData.deskripsi?.length >= 200 ? (
+                                      <div className='text-body text-left hiddenmobile px-3' dangerouslySetInnerHTML={{ __html: firstData.deskripsi.substring(0, 200) + "..." }} />
+                                    ) : (
+                                      <div className='text-body text-left hiddenmobile px-3' dangerouslySetInnerHTML={{ __html: firstData.deskripsi }} />
+                                    )}
+
+                                    <Row className="px-3">
+                                      <Col xs={12} className="d-flex px-1">
+                                        <FaCalendarDay className="textsize10 text-body" />
+                                        <p className="textsize8 text-body">
+                                          {firstData.nama_opd}
+                                        </p>
+                                      </Col>
+                                      <Col xs={6} className="d-flex px-1">
+                                        <FaCalendarDay className="textsize10" style={{ color: bgtitleku }} />
+                                        <p className="textsize8" style={{ color: bgtitleku }}>
+                                          {convertDate(
+                                            firstData.updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, '')
+                                          )}
+                                        </p>
+                                      </Col>
+                                      <Col xs={6} className="d-flex px-1">
+                                        <FaListAlt className="textsize10" style={{ color: bgtitleku }} />
+                                        <p className="textsize8" style={{ color: bgtitleku }}>
+                                          {firstData.koleksi_data}
+                                        </p>
+                                      </Col>
+                                    </Row>
+
+                                    <div className="mx-1 rad10 px-5 py-2" style={{ backgroundColor: bgcontentku }}>
+                                      <Link to={`/Tematik/Mapset/${slugify(firstData.title)}`}>
+                                        <p className="text-white textsize8 bg-orange mb-0 shaddow3 p-1 mx-1 rad10">
                                           Baca Selengkapnya <FaLongArrowAltRight />
                                         </p>
-                                    </Link>
+                                      </Link>
                                     </div>
-                                   
-                                 
-                                 
-                                 
-                                 
+                                  </div>
                                 </div>
-                            </div>
-                          </Col>
-                        );
-                      })
+                              </Col>
+                            )}
 
-                      
-                    }
-                    
-                    
+                            {/* 4 ITEM DI SAMPING - 2 x 2 */}
+                            <Col lg={6} md={6} sm={12} xs={12}  order={1} orderMd={2}>
+                              <Row>
+                                {sideData.map((data) => {
+                                  let link = `/Tematik/Mapset/${slugify(data.title)}`;
+                                  return (
+                                    <Col lg={6} md={6} sm={6} xs={12} key={data.id_maplist} className="py-3">
+                                      <div className="portfolio-wrapper rad15 bg-body shaddow4 bg-border2 p-2">
+                                        <Image
+                                          src={data.presignedUrl}
+                                          className="shaddow3 rad10 w-100"
+                                          style={{ height: isMobile ? 'auto' :  '130px' }}
+                                          onContextMenu={(e) => e.preventDefault()}
+                                          draggable={false}
+                                        />
+
+                                        <div className="label text-center py-2">
+                                          <Row className="px-3">
+                                             
+                                            <Col xs={6} className="d-flex px-1">
+                                              {getTipeIcon(data.tipe)}
+                                              <p className="textsize8 mb-0" style={{ color: bgtitleku }}>
+                                                {data.tipe}
+                                              </p>
+                                            </Col>
+                                            <Col xs={6} className="text-center px-1">
+                                              <p className="text-white textsize10 bg-green-sage rad15 mb-1">
+                                                {data.tahun_rilis}
+                                              </p>
+                                            </Col>
+                                          </Row>
+
+                                          <p
+                                            className="text-body textsize12 font_weight600 text-left px-3"
+                                            style={{ height: "40px", lineHeight: "1" }}
+                                          >
+                                            {data.title}
+                                          </p>
+
+                                          <Row className="px-3">
+                                            <Col sm={12} md={12} lg={12} xs={12} className="d-flex px-1">
+                                              <FaCalendarDay className="textsize10 text-body"/> 
+                                              <p className="textsize8 rad15 text-left text-body">
+                                                {data.nama_opd?.length > 30
+                                                  ? data.nama_opd.substring(0, 30) + "..."
+                                                  : data.nama_opd}
+                                              </p>
+                                            </Col>
+                                            <Col xs={6} className="d-flex px-1">
+                                              <FaCalendarDay className="textsize10" style={{ color: bgtitleku }} />
+                                              <p className="textsize8" style={{ color: bgtitleku }}>
+                                                {convertDate(
+                                                  data.updated_at?.replace(/T/, ' ')?.replace(/\.\w*/, '')
+                                                )}
+                                              </p>
+                                            </Col>
+                                            <Col xs={6} className="d-flex px-1">
+                                              <FaListAlt className="textsize10" style={{ color: bgtitleku }} />
+                                              <p className="textsize8" style={{ color: bgtitleku }}>
+                                                {data.koleksi_data}
+                                              </p>
+                                            </Col>
+                                          </Row>
+
+                                          <div className="mx-1 rad10 px-3 py-1" style={{ backgroundColor: bgcontentku }}>
+                                            <Link to={link}>
+                                              <p className="text-white textsize8 bg-orange mb-0 shaddow3 p-1 rad10">
+                                                Baca Selengkapnya <FaLongArrowAltRight />
+                                              </p>
+                                            </Link>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </Col>
+                                  );
+                                })}
+                              </Row>
+                            </Col>
+                          </Row>
+                        );
+                      })()}
                     </>
                   ) : (
                     <Col xs={12} className="text-center py-5">
-                      <p className="textsize14 text-silver-light italicku"><MdOutlineErrorOutline className="text-orange"/> Data Tidak Ditemukan.</p>
+                      <p className="textsize14 text-silver-light italicku">
+                        <MdOutlineErrorOutline className="text-orange" /> Data Tidak Ditemukan.
+                      </p>
                     </Col>
                   )}
+
                   
 
                 </Row>

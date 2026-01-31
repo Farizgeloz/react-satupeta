@@ -256,7 +256,7 @@ color: var(--silver);
     text-align: left;
   }
 
-  @media (max-width: 575px) {
+  /* @media (max-width: 575px) {
 
     .textsize5{
       font-size: 50%;
@@ -736,8 +736,87 @@ color: var(--silver);
       font-size: 300%;
     }
 
-  }
+  } */
   
+  .textsize5{
+      font-size: clamp(0.5rem, 3vw, 0.5rem);
+    }
+    .textsize6{
+      font-size: clamp(0.6rem, 3vw, 0.6rem);
+    }
+    .textsize7{
+      font-size: clamp(0.7rem, 3vw, 0.7rem);
+    }
+    .textsize8{
+      font-size: clamp(0.8rem, 3vw, 0.8rem);
+    }
+    .textsize9{
+      font-size: clamp(0.8rem, 3vw, 0.9rem);
+    }
+    .textsize10{
+      font-size: clamp(0.8rem, 3vw, 1rem);
+    }
+    .textsize11{
+      font-size: clamp(0.8rem, 3vw, 1.1rem);
+    }
+    .textsize12{
+      font-size: clamp(0.9rem, 3vw, 1.2rem);
+    }
+    .textsize13{
+      font-size: clamp(0.9rem, 3vw, 1.3rem);
+    }
+    .textsize14{
+      font-size: clamp(0.9rem, 3vw, 1.4rem);
+    }
+    .textsize15{
+      font-size: clamp(1rem, 3vw, 1.5rem);
+    }
+    .textsize16{
+      font-size: clamp(1.0rem, 3vw, 1.6rem);
+    }
+    .textsize17{
+      font-size: clamp(1.0rem, 3vw, 1.7rem);
+    }
+    .textsize18{
+     font-size: clamp(1.1rem, 3vw, 1.8rem);
+    }
+    .textsize19{
+      font-size: clamp(1.2rem, 3vw, 1.9rem);
+    }
+    .textsize20{
+      font-size: clamp(1.3rem, 3vw, 2rem);
+    }
+    .textsize21{
+      font-size: clamp(1.3rem, 3vw, 2.1rem);
+    }
+    .textsize22{
+      font-size: clamp(1.3rem, 3vw, 2.2rem);
+    }
+    .textsize23{
+      font-size: clamp(1.3rem, 3vw, 2.3rem);
+    }
+    .textsize24{
+      font-size: clamp(1.4rem, 3vw, 2.4rem);
+    }
+    .textsize25{
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+    }
+    
+    .textsize26{
+      font-size: clamp(1.6rem, 3vw, 2.6rem);
+    }
+    .textsize27{
+      font-size: clamp(1.7rem, 3vw, 2.7rem);
+    }
+    .textsize28{
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+    }
+    .textsize29{
+      font-size: clamp(1.9rem, 3vw, 2.9rem);
+    }
+    .textsize30{
+      font-size: clamp(2rem, 3vw, 3rem);
+    }
   
   
   /*---------------- FONT WEIGHT -----------*/

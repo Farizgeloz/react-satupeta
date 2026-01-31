@@ -22,9 +22,10 @@ import { FaDownload } from "react-icons/fa6";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, EffectCoverflow } from 'swiper/modules'
+import { Autoplay, EffectCoverflow } from 'swiper/modules';
 import { MdHomeFilled,MdOutlineFeaturedPlayList, MdOutlineListAlt,MdOutlineCollectionsBookmark,MdGridOn,
-        MdAssuredWorkload,MdLocationPin,MdOutlinePersonOutline,MdOutlineDownloadForOffline,MdOutlineScale,MdOutlineUpdate,MdDateRange 
+        MdAssuredWorkload,MdLocationPin,MdOutlinePersonOutline,MdOutlineDownloadForOffline,MdOutlineScale,MdOutlineUpdate,MdDateRange,
+        MdCollectionsBookmark 
         } from 'react-icons/md';
 import { api_url_satuadmin } from "../../api/axiosConfig";
 
@@ -71,10 +72,12 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   const [loading, setLoading] = useState(true);
   const hasSentRef = useRef(false);
   const [totalvisitor_maplist, setvisitor_maplist] = useState(null);
-  const [data, setData] = useState([]);
+  const [data_titiklokasi, setDataTitikLokasi] = useState([]);
+  const [data_geospasial, setDataGeospasial] = useState([]);
   const [datacount, setDataCount] = useState("");
   const [datacountdownload, setDataCountDownload] = useState("");
-  const [columns, setColumns] = useState([]);
+  const [columns_titiklokasi, setColumns_Titiklokasi] = useState([]);
+  const [columns_geospasial, setColumns_Geospasial] = useState([]);
   const [location, setlocation] = useState(null);
   const [satker, setsatker] = useState(null);
   const [sektorid, setsektorid] = useState(null);
@@ -175,29 +178,32 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
       setupdated_at(response.data.data.updated_at);
       setDataCount(response.data.datacount);
       setDataCountDownload(response.data.datacountdownload);
-      setData(response.data.resultLocationPoint);
+      setDataTitikLokasi(response.data.resultLocationPoint);
+      setDataGeospasial(response.data.resultLocationGeospasial);
+      
 
       // ✅ Filter baris kosong atau tidak valid
-      const cleanedData = response.data.resultLocationPoint.filter(row =>
+      const titiklokasi_cleanedData = response.data.resultLocationPoint.filter(row =>
         row &&
         Object.keys(row).some(key => row[key] !== "")
       );
 
       // Tambah ID + nomor urut
-      const rowscleanWithId = cleanedData.map((row, index) => ({
+      const titiklokasi_rowscleanWithId = titiklokasi_cleanedData.map((row, index) => ({
         id: index + 1,          // untuk DataGrid (wajib unik)
         no: index + 1,          // 👉 nomor urut buat ditampilkan
         ...row
       }));
 
-      setData(rowscleanWithId);
+      setDataTitikLokasi(titiklokasi_rowscleanWithId);
+      
 
       // ✅ Kolom tabel (dinamis dari keys)
-      const hiddenFields = ["id_location_point", "_key", "id", ""];
-      const keys = Object.keys(cleanedData[0] || {});
+      const titiklokasi_hiddenFields = ["id_location_point","created_at","updated_at", "_key", "id", ""];
+      const titiklokasi_keys = Object.keys(titiklokasi_cleanedData[0] || {});
 
       // Tambah kolom NO manual di paling depan
-      const columnDefs = [
+      const titiklokasi_columnDefs = [
         {
           field: "no",
           headerName: "NO",
@@ -207,16 +213,16 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
           width: 70,
           minWidth: 70
         },
-        ...keys
-          .filter((key) => !hiddenFields.includes(key))
+        ...titiklokasi_keys
+          .filter((key) => !titiklokasi_hiddenFields.includes(key))
           .map((key) => ({
             field: key,
             headerName: key.toUpperCase(),
-            headerAlign: "center",
+            headerAlign: "left",
             headerClassName: "custom-header",
             flex: key.toLowerCase() === "id" ? 0 : 1,
             minWidth: 100,
-            align: "center",
+            align: "left",
             renderCell: (params) => {
               const row = params.row;
               return (
@@ -230,7 +236,75 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
           }))
       ];
 
-      setColumns(columnDefs);
+      setColumns_Titiklokasi(titiklokasi_columnDefs);
+
+
+
+
+      // ✅ Filter baris kosong atau tidak valid
+      const geospasial_cleanedData = response.data.resultLocationGeospasial.filter(row =>
+        row &&
+        Object.keys(row).some(key => row[key] !== "")
+      );
+
+      // Tambah ID + nomor urut
+      const geospasial_rowscleanWithId = geospasial_cleanedData.map((row, index) => ({
+        id: index + 1,          // untuk DataGrid (wajib unik)
+        no: index + 1,          // 👉 nomor urut buat ditampilkan
+        ...row
+      }));
+
+      setDataGeospasial(geospasial_rowscleanWithId);
+      
+
+      // ✅ Kolom tabel (dinamis dari keys)
+      const geospasial_hiddenFields = ["id_location_geospasial","created_at","updated_at", "_key", "id", ""];
+      const geospasial_geoFields = ["geojson"];
+      const geospasial_keys = Object.keys(geospasial_cleanedData[0] || {});
+
+      // Tambah kolom NO manual di paling depan
+      const geospasial_columnDefs = [
+        {
+          field: "no",
+          headerName: "NO",
+          headerAlign: "center",
+          headerClassName: "custom-header",
+          align: "left",
+          width: 70,
+          minWidth: 70
+        },
+        ...geospasial_keys
+          .filter((key) => !geospasial_hiddenFields.includes(key))
+          .map((key) => {
+            const isGeoField = geospasial_geoFields.includes(key.toLowerCase());
+
+            return {
+              field: key,
+              headerName: key.toUpperCase(),
+              headerAlign: "left",
+              headerClassName: "custom-header",
+              align: "left",
+
+              // 👉 geo field jadi 2x lebar
+              flex: isGeoField ? 3 : 1,
+              minWidth: isGeoField ? 300 : 100,
+
+              renderCell: (params) => {
+                const row = params.row;
+                return (
+                  <div>
+                    <p className="textsize8 text-body">
+                      {`${row[key]}`}
+                    </p>
+                  </div>
+                );
+              }
+            };
+          })
+
+      ];
+
+      setColumns_Geospasial(geospasial_columnDefs);
 
     } catch (err) {
       console.error("❌ Gagal ambil data detail:", err);
@@ -239,11 +313,11 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
 
 
   // Hilangkan id sebelum export
-  const filterData = data.map(({ id_location_point,id,no, ...rest }) => rest);
+  const filterData_Titiklokasi = data_titiklokasi.map(({ id_location_point,id,no, ...rest }) => rest);
 
   // Download JSON
-  const downloadJSON = () => {
-    const jsonString = JSON.stringify(filterData, null, 2);
+  const downloadJSONTitikLokasi = () => {
+    const jsonString = JSON.stringify(filterData_Titiklokasi, null, 2);
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
 
@@ -255,11 +329,11 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   };
 
   // Download CSV
-  const downloadCSV = () => {
-    if (!filterData || filterData.length === 0) return;
+  const downloadCSVTitikLokasi = () => {
+    if (!filterData_Titiklokasi || filterData_Titiklokasi.length === 0) return;
 
-    const header = Object.keys(filterData[0]).join(",") + "\n";
-    const rows = filterData.map((row) => Object.values(row).join(",")).join("\n");
+    const header = Object.keys(filterData_Titiklokasi[0]).join(",") + "\n";
+    const rows = filterData_Titiklokasi.map((row) => Object.values(row).join(",")).join("\n");
     const csvString = header + rows;
 
     const blob = new Blob([csvString], { type: "text/csv" });
@@ -273,13 +347,32 @@ function AppTeams({ bgku,bgbodyku,bgtitleku,bgcontentku,bgcontentku2,bgcontentku
   };
 
   // Download Excel
-  const downloadExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(filterData);
+  const downloadExcelTitikLokasi = () => {
+    const worksheet = XLSX.utils.json_to_sheet(filterData_Titiklokasi);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Data");
     XLSX.writeFile(workbook, title+".xlsx");
   };
+
+  // Hilangkan id sebelum export
+  const filterData_Geospasial = data_geospasial.map(({ id_location_geospasial,id,no, ...rest }) => rest);
   
+  const downloadCSVGeospasial = () => {
+    if (!filterData_Geospasial || filterData_Geospasial.length === 0) return;
+
+    const header = Object.keys(filterData_Geospasial[0]).join(",") + "\n";
+    const rows = filterData_Geospasial.map((row) => Object.values(row).join(",")).join("\n");
+    const csvString = header + rows;
+
+    const blob = new Blob([csvString], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = title+".csv";
+    link.click();
+    URL.revokeObjectURL(url);
+  };
   
 
 
@@ -628,52 +721,52 @@ const convertDate2 = (value) => {
                   </Col> 
                   <Col md={12} className="bg-border2 bg-body px-3 py-2  rad10">
                     <Row className="">
-                      <Col md={4} xs={4} className="bg-body">
+                      <Col md={4} xs={12} className="bg-body">
                         <p className="mb-0 textsize10 py-2 text-body" ><MdAssuredWorkload  style={{color:colortitleku}} /> Opd / Walidata</p>
                       </Col>
-                      <Col md={8} xs={8} className="bg-body">
+                      <Col md={8} xs={12} className="bg-body">
                         <p className="mb-0 textsize10 py-2 font_weight600 uppercaseku text-body">{satker}</p>
                       </Col>
-                      <Col md={4} xs={4} style={{backgroundColor:'#99999987'}}>
+                      <Col md={4} xs={12} style={{backgroundColor:'#99999987'}}>
                         <p className="mb-0 textsize10 py-2 text-body" ><MdLocationPin  style={{color:colortitleku}} /> Jenis Lokasi</p>
                       </Col>
-                      <Col md={8} xs={8} style={{backgroundColor:'#99999987'}}>
+                      <Col md={8} xs={12} style={{backgroundColor:'#99999987'}}>
                         <p className="mb-0 textsize10 py-2 font_weight600 uppercaseku text-body">{location}</p>
                       </Col>
-                      <Col md={4} xs={4} className="bg-body">
+                      <Col md={4} xs={12} className="bg-body">
                         <p className="mb-0 textsize10 py-2 text-body" ><MdDateRange  style={{color:colortitleku}}  /> Tahun Rilis</p>
                       </Col>
-                      <Col md={8} xs={8} className="bg-body">
+                      <Col md={8} xs={12} className="bg-body">
                         <p className="mb-0 textsize10 py-2 font_weight600 uppercaseku text-body">{tahun}</p>
                       </Col>
-                      <Col md={4} xs={4} style={{backgroundColor:'#99999987'}}>
+                      <Col md={4} xs={12} style={{backgroundColor:'#99999987'}}>
                         <p className="mb-0 textsize10 py-2 text-body" ><MdOutlinePersonOutline  style={{color:colortitleku}} /> Visitor</p>
                       </Col>
-                      <Col md={8} xs={8} style={{backgroundColor:'#99999987'}}>
+                      <Col md={8} xs={12} style={{backgroundColor:'#99999987'}}>
                         <p className="mb-0 textsize10 py-2 font_weight600 uppercaseku text-body">{datacount}</p>
                       </Col>
-                      <Col md={4} xs={4} className="bg-body">
+                      <Col md={4} xs={12} className="bg-body">
                         <p className="mb-0 textsize10 py-2 text-body" ><MdOutlineDownloadForOffline  style={{color:colortitleku}} /> Unduhan</p>
                       </Col>
-                      <Col md={8} xs={8} className="bg-body">
+                      <Col md={8} xs={12} className="bg-body">
                         <p className="mb-0 textsize10 py-2v uppercaseku text-body">{datacountdownload}</p>
                       </Col>
-                      <Col md={4} xs={4} style={{backgroundColor:'#99999987'}}>
+                      <Col md={4} xs={12} style={{backgroundColor:'#99999987'}}>
                         <p className="mb-0 textsize10 py-2 text-body" ><MdOutlineScale  style={{color:colortitleku}} /> Pengukuran</p>
                       </Col>
-                      <Col md={8} xs={8} style={{backgroundColor:'#99999987'}}>
+                      <Col md={8} xs={12} style={{backgroundColor:'#99999987'}}>
                         <p className="mb-0 textsize10 py-2 font_weight600 uppercaseku text-body">{pengukuran}</p>
                       </Col>
-                      <Col md={4} xs={4} className="bg-body">
+                      <Col md={4} xs={12} className="bg-body">
                         <p className="mb-0 textsize10 py-2 text-body" ><MdOutlineUpdate  style={{color:colortitleku}} /> Mapset Dibuat</p>
                       </Col>
-                      <Col md={8} xs={8} className="bg-body py-2">
+                      <Col md={8} xs={12} className="bg-body py-2">
                         <p className="mb-0 textsize10 py-2 font_weight600 uppercaseku text-body">{convertDate(created_at)}</p>
                       </Col>
-                      <Col md={4} xs={4} style={{backgroundColor:'#99999987'}}>
+                      <Col md={4} xs={12} style={{backgroundColor:'#99999987'}}>
                         <p className="mb-0 textsize10 py-2 text-body" ><MdOutlineUpdate  style={{color:colortitleku}} /> Mapset Update</p>
                       </Col>
-                      <Col md={8} xs={8} style={{backgroundColor:'#99999987'}}>
+                      <Col md={8} xs={12} style={{backgroundColor:'#99999987'}}>
                         <p className="mb-0 textsize10 py-2 font_weight600 uppercaseku text-body">{convertDate(updated_at)}</p>
                       </Col>
                     </Row>
@@ -682,7 +775,7 @@ const convertDate2 = (value) => {
             </Col>
           </Row>
           <Row className=" mx-3 mb-5 px-2 d-flex justify-content-centerrad10 py-2"> 
-            {data && data.length > 0 ? (
+            {data_titiklokasi && data_titiklokasi.length > 0 ? (
               <>
             <Col md={12}>
               <Dropdown className="custom-dropdown m-2">
@@ -695,7 +788,7 @@ const convertDate2 = (value) => {
                     <Link 
                     onClick={(e) => {
                       e.preventDefault(); // cegah reload/redirect default dari <Link>
-                      downloadExcel();
+                      downloadExcelTitikLokasi();
                       setDownloadvisitor();
                     }} 
                     className="custom-dropdown-link">
@@ -706,7 +799,7 @@ const convertDate2 = (value) => {
                     <Link 
                       onClick={(e) => {
                         e.preventDefault(); // cegah reload/redirect default dari <Link>
-                        downloadCSV();
+                        downloadCSVTitikLokasi();
                         setDownloadvisitor();
                       }} 
                       className="custom-dropdown-link">
@@ -717,7 +810,7 @@ const convertDate2 = (value) => {
                     <Link 
                       onClick={(e) => {
                         e.preventDefault(); // cegah reload/redirect default dari <Link>
-                        downloadJSON();
+                        downloadJSONTitikLokasi();
                         setDownloadvisitor();
                       }} 
                       className="custom-dropdown-link">
@@ -729,12 +822,12 @@ const convertDate2 = (value) => {
             </Col>
             
             <Col md={12}>
-                <ThemeProvider theme={theme}>
+              <ThemeProvider theme={theme}>
                 <DataGrid
                 
                   loading={loading}
-                  rows={data}
-                  columns={columns}
+                  rows={data_titiklokasi}
+                  columns={columns_titiklokasi}
                   pageSizeOptions={[5, 10, 50, 100]}
                   initialState={{
                     pagination: {
@@ -822,6 +915,132 @@ const convertDate2 = (value) => {
               </ThemeProvider>
             
             </Col>
+            </>
+            ) : (
+              ""
+            )}  
+
+            {data_geospasial && data_geospasial.length > 0 ? (
+              <>
+              <Col md={12}>
+                <Dropdown className="custom-dropdown m-2">
+                  <Dropdown.Toggle id="dropdown-custom-toggle" variant="light" className="rad15 px-4 py-2 text-white textsize10"  style={{backgroundColor:bgcontentku}}>
+                    Download Data
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu className="custom-dropdown-menu rad15">
+                    
+                    <Dropdown.Item as="div">
+                      <Link 
+                        onClick={(e) => {
+                          e.preventDefault(); // cegah reload/redirect default dari <Link>
+                          downloadCSVGeospasial();
+                          setDownloadvisitor();
+                        }} 
+                        className="custom-dropdown-link">
+                        📊 Download CSV
+                      </Link>
+                    </Dropdown.Item>
+                    
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Col>
+              
+              <Col md={12}>
+                  <ThemeProvider theme={theme}>
+                  <DataGrid
+                  
+                    loading={loading}
+                    rows={data_geospasial}
+                    columns={columns_geospasial}
+                    pageSizeOptions={[5, 10, 50, 100]}
+                    initialState={{
+                      pagination: {
+                        paginationModel: { pageSize: 10, page: 0 }
+                      }
+                    }}
+                  
+                    disableSelectionOnClick
+                    getRowHeight={() => 'auto'}
+                    
+                    sx={{
+                      "--DataGrid-color-background-base": "transparent",
+                        backgroundColor: "transparent !important", // paksa transparan table
+                        border: "none", // hilangkan border utama,
+                        marginBottom:"50px",
+                      "& .MuiDataGrid-root": {
+                        backgroundColor: "transparent", // ⬅ background utama transparan
+                        marginBottom:"50px"
+                      },
+                      "& .MuiDataGrid-row": {
+                        marginTop: "8px",
+                        paddingTop:"10px",
+                        paddingBottom:"10px",
+                        paddingLeft:"5px",
+                        paddingRight:"5px",
+                        borderRadius: "6px",
+                        boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+                        fontSize: "1rem", // bisa diatur juga di row
+                        fontWeight: 500
+                      },
+                      "& .custom-header": {
+                        backgroundColor:bgku,
+                        color: "white",
+                        fontWeight: "bold",
+                        textTransform: "uppercase",
+                        fontSize: "80%",
+                        textAlign:"left"
+                      },
+                      "& .MuiDataGrid-columnHeader .MuiDataGrid-menuIcon": {
+                        opacity: 1,
+                        visibility: "visible",
+                        width: "auto",
+                        color: "#fff"
+                      },
+                      "& .MuiDataGrid-columnHeader:hover .MuiDataGrid-menuIcon": {
+                        opacity: 1
+                      },
+                      "& .MuiDataGrid-columnHeader .MuiDataGrid-menuIcon button svg": {
+                        fill: "#fff"
+                      },
+                      // ✅ font row lebih besar
+                      "& .MuiDataGrid-cell": {
+                        whiteSpace: "normal", // teks wrap
+                        textAlign: "left",
+                        lineHeight: "1.5rem",
+                        padding: "15px 10px",
+                        fontSize: "1.2rem", // ukuran font row
+                        backgroundColor:"transparent !important", // paksa transparan table
+                      },
+                      "& .MuiTablePagination-select option:not([value='5']):not([value='10']):not([value='20'])": {
+                        display: "none" // sembunyikan opsi default MUI yang tidak diinginkan
+                      },
+                      "& .MuiTablePagination-selectLabel": {
+                        color: "#444",
+                        fontWeight: "bold",
+                        marginTop: "15px"
+                      },
+                      "& .MuiTablePagination-displayedRows": {
+                        color: "#666",
+                        marginTop: "15px"
+                      },
+                      "& .MuiTablePagination-select": {
+                        color: "#000",
+                        fontWeight: "600",
+                        backgroundColor: "#dbdbdb",
+                        borderRadius: "6px"
+                      },
+                      "& .MuiDataGrid-row:hover": {
+                        backgroundColor: theme === "dark" ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.05)",
+                        cursor: "pointer",
+                        boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+                        transition: "all 0.2s ease-in-out"
+                      }
+                    }}
+                  />
+                </ThemeProvider>
+              
+              </Col>
             </>
             ) : (
               ""
